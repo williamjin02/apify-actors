@@ -158,5 +158,13 @@ await t('e2e not_html + cost cap', async () => {
     const st = r.rows.map((x) => x.status).sort();
     assert.ok(st.includes('not_html')); assert.equal(st.filter((s) => s === 'ok').length, 1); assert.match(r.summary.stoppedBecause, /cost cap/);
 });
+await t('free-plan trial cap only for built-in key on the free plan', async () => {
+    const { freeTrialCap, isFreePlan } = await import('../src/plan.js');
+    assert.equal(isFreePlan({ APIFY_USER_IS_PAYING: '0' }), true); assert.equal(isFreePlan({ APIFY_USER_IS_PAYING: '1' }), false); assert.equal(isFreePlan({}), false);
+    assert.deepEqual(freeTrialCap({ requested: 50, byok: false, limit: 10, env: { APIFY_USER_IS_PAYING: '0' } }), { cap: 10, limited: true });
+    assert.deepEqual(freeTrialCap({ requested: 50, byok: true, limit: 10, env: { APIFY_USER_IS_PAYING: '0' } }), { cap: 50, limited: false });
+    assert.deepEqual(freeTrialCap({ requested: 50, byok: false, limit: 10, env: { APIFY_USER_IS_PAYING: '1' } }), { cap: 50, limited: false });
+    assert.deepEqual(freeTrialCap({ requested: 5, byok: false, limit: 10, env: { APIFY_USER_IS_PAYING: '0' } }), { cap: 5, limited: false });
+});
 ai.close(); site.close();
 console.log(`${n} tests passed`);

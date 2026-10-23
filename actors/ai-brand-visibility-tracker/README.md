@@ -69,7 +69,7 @@ No OpenAI key needed. **$0.04 per check** (one prompt asked once), or **$0.01 pe
 | Check with the built-in AI (web search included) | **$0.04** |
 | Check with your own OpenAI key | **$0.01** (+ your OpenAI usage, about $0.01-0.02 per check on the default model) |
 
-Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.20. Set *Max checks* or the run's maximum cost to cap spend.
+Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.20. Set *Max checks* or the run's maximum cost to cap spend. On the Apify free plan, the built-in AI runs up to 10 checks per run; add your own OpenAI key, or use any paid Apify plan, for bigger runs.
 
 ## How it works and limitations
 
@@ -80,6 +80,29 @@ Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.
 - **Privacy**: query strings are stripped from every URL (some sites put tracking IDs or e-mail addresses in them), and e-mail addresses and phone numbers in answers are removed. Track brands, not people.
 - Coming next: Perplexity, Gemini and Google AI Overviews engines.
 
+## How to track AI visibility every week
+
+1. Run it once with your brand, competitors and 10-30 buyer prompts, then **Save as task**.
+2. In **Schedules**, run the task weekly (same prompts every time, so the numbers are comparable).
+3. Send each run's `OUTPUT` summary to a Google Sheet, Slack or a webhook. You get a share-of-voice trend line per brand.
+
+## Integrations and API
+
+- **Make, n8n and Zapier:** use the official Apify app or node, choose *Run Actor* and pick `swillz/ai-brand-visibility-tracker`.
+- **API:** `POST https://api.apify.com/v2/acts/swillz~ai-brand-visibility-tracker/run-sync-get-dataset-items?token=YOUR_TOKEN` with the input JSON returns one row per check.
+- **AI agents (MCP):** add `https://mcp.apify.com?tools=swillz/ai-brand-visibility-tracker` to Claude, Cursor or any MCP client and ask "how often does ChatGPT recommend us vs Coda for wiki prompts?".
+- **Looker Studio or BI:** export the dataset as CSV or JSON, or append it to a sheet on every run.
+
+## AI Brand Visibility Tracker vs alternatives
+
+| | This Actor | GEO SaaS dashboards | Asking ChatGPT by hand |
+|---|---|---|---|
+| Price | $0.04 per check, no subscription | Typically a monthly subscription | Your time |
+| Raw data (answers, citations, ranks) | ✅ JSON / CSV / Sheets | Varies | ❌ |
+| Competitor share of voice | ✅ up to 20 competitors | ✅ | ❌ |
+| Scheduling and API | ✅ Apify schedules, API, MCP | Varies | ❌ |
+| Reproducible benchmark | ✅ same prompts, samples per prompt | ✅ | ❌ |
+
 ## FAQ
 
 **Can I schedule it?** Yes. Save your input as a task and add an Apify schedule (e.g. weekly). Each run's summary makes a clean time series.
@@ -87,5 +110,20 @@ Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.
 **Which model is used?** `gpt-6-luna` with web search by default. With your own key you can choose any web-search-capable OpenAI model.
 
 **Is it legal?** It only sends your prompts to OpenAI's public API under OpenAI's terms and returns the answers. No website is scraped.
+
+## Related tools
+
+More tools from the same developer, built to work together:
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): jobs from Greenhouse, Lever, Ashby, Workable and Recruitee boards, with salary fields, as a jobs API or CSV.
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): turn a list of domains into company name, emails, phones, social links and tech stack.
+- [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
+- [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
+
+**Popular workflows**
+
+- **Weekly AI-visibility report:** schedule this Actor weekly and append each run's share of voice to a sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/ai-brand-visibility-tracker. Issues and feature requests are welcome in the Issues tab.

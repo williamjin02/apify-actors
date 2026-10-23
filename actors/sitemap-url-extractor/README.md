@@ -143,6 +143,18 @@ Open an issue on the **Issues** tab. Bug reports and feature requests are welcom
 
 ## Related tools
 
-- **Website Content Crawler:** turn the extracted URLs into clean text for LLMs and RAG.
+More tools from the same developer, built to work together:
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): jobs from Greenhouse, Lever, Ashby, Workable and Recruitee boards, with salary fields, as a jobs API or CSV.
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): turn a list of domains into company name, emails, phones, social links and tech stack.
+- [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
+- [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
+- [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+
+**Popular workflows**
+
+- **Catalog or content extraction:** list every product or article URL with this Actor, turn each page into JSON with [AI Extract](https://apify.com/swillz/ai-extract), and export with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **Site audits for prospects:** check a prospect's pages and status codes with this Actor, then get their contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/sitemap-url-extractor

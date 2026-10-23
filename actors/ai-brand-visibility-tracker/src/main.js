@@ -1,6 +1,8 @@
 import { Actor, log } from 'apify';
 import { parseEntity, analyzeAnswer, summarize, sanitizeText } from './analyze.js';
 import { askChatGPT, classify, DEFAULT_MODEL, EngineError } from './engine.js';
+import { freeTrialCap } from './plan.js';
+const FREE_TRIAL_CHECKS = 10;
 
 const EVENT_BUILTIN = 'brand-check';
 const EVENT_BYOK = 'brand-check-own-key';
@@ -46,6 +48,8 @@ try {
         if (model && model !== mdl) { if (BUILTIN_MODELS.includes(model)) mdl = model; else log.warning(`Model ${model} needs your own OpenAI key; using ${mdl}.`); }
     }
     const EVENT = byok ? EVENT_BYOK : EVENT_BUILTIN;
+    const trial = freeTrialCap({ requested: cap, byok, limit: FREE_TRIAL_CHECKS });
+    if (trial.limited) log.warning(`Apify free plan: the built-in AI runs at most ${FREE_TRIAL_CHECKS} checks per run. Add your own OpenAI API key, or use any paid Apify plan, to run up to ${cap}.`);
 
     // Owner test budget: hard stop on the operator's own runs (customers pay per check, so they are not limited by it).
     const env = Actor.getEnv();
@@ -60,8 +64,8 @@ try {
     }
 
     const jobs = []; for (const p of ps) for (let s = 1; s <= samples; s++) jobs.push({ prompt: p, sample: s });
-    if (jobs.length > cap) log.warning(`${jobs.length} checks requested; "Max checks" is ${cap}, so only the first ${cap} run.`);
-    const todo = jobs.slice(0, cap);
+    if (jobs.length > trial.cap) log.warning(`${jobs.length} checks requested; the limit is ${trial.cap}, so only the first ${trial.cap} run.`);
+    const todo = jobs.slice(0, trial.cap);
     log.info(`${main.name} vs ${entities.length - 1} competitors; ${ps.length} prompts x ${samples} sample(s) = ${todo.length} checks on ChatGPT (${mdl}, ${byok ? 'your key' : 'built-in key'}${cc ? `, ${cc}` : ''}).`);
 
     const charging = Actor.getChargingManager();

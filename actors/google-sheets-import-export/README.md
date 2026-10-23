@@ -127,6 +127,20 @@ Every run also stores a summary in the key-value store record `OUTPUT`:
 
 ## Related tools
 
-- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): get every URL of a website, then export them to a sheet with this actor.
+More tools from the same developer, built to work together:
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): jobs from Greenhouse, Lever, Ashby, Workable and Recruitee boards, with salary fields, as a jobs API or CSV.
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): turn a list of domains into company name, emails, phones, social links and tech stack.
+- [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
+- [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+
+**Popular workflows**
+
+- **Hiring-signal leads:** scrape open roles with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper), enrich each hiring company's domain with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and append new rows daily with this Actor.
+- **Enterprise hiring tracker:** pull Workday jobs with [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper), add company contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and keep a live sheet with this Actor.
+- **Catalog or content extraction:** list every product or article URL with [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor), turn each page into JSON with [AI Extract](https://apify.com/swillz/ai-extract), and export with this Actor.
+- **Weekly AI-visibility report:** schedule [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker) weekly and append each run's share of voice to a sheet with this Actor.
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/google-sheets-import-export
