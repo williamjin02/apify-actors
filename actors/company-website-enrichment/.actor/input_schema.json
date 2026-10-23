@@ -7,7 +7,7 @@
       "title": "Websites or domains",
       "type": "array",
       "editor": "stringList",
-      "description": "Company websites or domains, one per line: stripe.com, https://www.hubspot.com, or even an email like info@acme.com (the domain is used). Duplicates are removed.",
+      "description": "Required. Array of strings, e.g. [\"stripe.com\",\"https://www.hubspot.com\"]. Domains or URLs; one row per company. Sites that fail get a free row with status and error instead of being dropped.",
       "prefill": [
         "stripe.com",
         "hubspot.com",
@@ -43,7 +43,7 @@
       "default": 20,
       "minimum": 5,
       "maximum": 120,
-      "description": "Per-page timeout."
+      "description": "Seconds to wait for each page before giving up (default 20). Raise it for slow sites."
     },
     "maxRetries": {
       "title": "Retries per page",
@@ -51,7 +51,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 5,
-      "description": "Retries on timeouts and 5xx/429 errors."
+      "description": "How many times to retry a failed page request (default 1)."
     },
     "proxyConfiguration": {
       "title": "Proxy",

@@ -11,6 +11,10 @@ Then it rolls everything up into a **share-of-voice leaderboard**: mention rate,
 
 No OpenAI key needed. **$0.04-0.05 per check** (one prompt asked once, depending on your Apify plan), or **$0.01 per check with your own OpenAI key**.
 
+**When to use:** you want to know whether ChatGPT mentions, ranks, cites and recommends a brand versus its competitors.
+**Input:** a brand and buyer questions, e.g. `{"brand":"Notion","prompts":["Best wiki tool for a startup?"],"competitors":["Coda | coda.io"]}`.
+**Output:** one row per prompt check with mentioned, rank, cited, sentiment and competitors mentioned, plus a share-of-voice summary. From $0.04 per check ($0.01 with your own OpenAI key).
+
 ## Use cases
 
 - **GEO / AI SEO**: measure your visibility in AI answers and track it weekly with an Apify schedule.
@@ -89,6 +93,32 @@ Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.
 1. Run it once with your brand, competitors and 10-30 buyer prompts, then **Save as task**.
 2. In **Schedules**, run the task weekly (same prompts every time, so the numbers are comparable).
 3. Send each run's `OUTPUT` summary to a Google Sheet, Slack or a webhook. You get a share-of-voice trend line per brand.
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/ai-brand-visibility-tracker"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/ai-brand-visibility-tracker` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/ai-brand-visibility-tracker`.
+
+Example prompts:
+
+- "Does ChatGPT recommend Notion for startup wikis, and who beats it?"
+- "Track our share of voice vs Coda and ClickUp weekly"
+- "Which sources does ChatGPT cite when it answers "best CRM for small business"?"
+
+Minimal input:
+
+```json
+{"brand": "Notion", "prompts": ["What is the best wiki tool for a small startup?"], "competitors": ["Coda | coda.io"]}
+```
+
+**Keep it fast:** Start with 3–5 prompts and `samplesPerPrompt` 1. If the user gave no prompts, write 3–5 realistic buyer questions for the brand's category. Skipped or capped checks are explained in a free status row.
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations and API
 

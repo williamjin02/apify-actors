@@ -1,14 +1,438 @@
 {
   "actorSpecification": 1,
-  "fields": {},
+  "fields": {
+    "type": "object",
+    "properties": {
+      "company": {
+        "title": "Company",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Company name from the career site",
+        "examples": [
+          "Nvidia"
+        ]
+      },
+      "hiringEntity": {
+        "title": "Hiring Entity",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Legal hiring entity, when Workday shows it",
+        "examples": [
+          "PL01 Nvidia Poland sp. z o.o."
+        ]
+      },
+      "title": {
+        "title": "Title",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job title",
+        "examples": [
+          "Senior Sales Account Manager, Government and Smart Spaces - North and East Europe"
+        ]
+      },
+      "jobId": {
+        "title": "Job ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Workday requisition ID",
+        "examples": [
+          "JR2024091"
+        ]
+      },
+      "location": {
+        "title": "Location",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Primary location",
+        "examples": [
+          "Poland, Remote"
+        ]
+      },
+      "allLocations": {
+        "title": "All Locations",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "All locations of the job",
+        "examples": [
+          [
+            "Poland, Remote",
+            "Poland, Warsaw"
+          ]
+        ]
+      },
+      "locationCount": {
+        "title": "Location Count",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of locations",
+        "examples": [
+          4
+        ]
+      },
+      "country": {
+        "title": "Country",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Country name",
+        "examples": [
+          "Poland"
+        ]
+      },
+      "countryCode": {
+        "title": "Country Code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO country code",
+        "examples": [
+          "PL"
+        ]
+      },
+      "remote": {
+        "title": "Remote",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if the job is remote",
+        "examples": [
+          true
+        ]
+      },
+      "remoteType": {
+        "title": "Remote Type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Remote/hybrid/on-site label from Workday"
+      },
+      "timeType": {
+        "title": "Time Type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Full time / Part time",
+        "examples": [
+          "Full time"
+        ]
+      },
+      "postedDate": {
+        "title": "Posted Date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Posting date (YYYY-MM-DD), derived from Workday's \"Posted N days ago\"",
+        "examples": [
+          "2026-10-09"
+        ]
+      },
+      "postedText": {
+        "title": "Posted Text",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Workday's original \"Posted …\" text",
+        "examples": [
+          "Posted 14 Days Ago"
+        ]
+      },
+      "postedDaysAgo": {
+        "title": "Posted Days Ago",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Days since posting",
+        "examples": [
+          14
+        ]
+      },
+      "postedDaysAgoIsMinimum": {
+        "title": "Posted Days Ago Is Minimum",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true when Workday says \"30+ days ago\" (date is the earliest bound)",
+        "examples": [
+          false
+        ]
+      },
+      "jobUrl": {
+        "title": "Job URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job page URL",
+        "examples": [
+          "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Poland-Remote/Senior-Sales-Account-Manager--Government-and-Smart-Spaces…"
+        ]
+      },
+      "applyUrl": {
+        "title": "Apply URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Apply URL",
+        "examples": [
+          "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Poland-Remote/Senior-Sales-Account-Manager--Government-and-Smart-Spaces…"
+        ]
+      },
+      "descriptionText": {
+        "title": "Description Text",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job description as plain text (with includeDetails)",
+        "examples": [
+          "NVIDIA has been transforming computer graphics, PC gaming, and accelerated computing for more than 25 years. It’s a unique legacy of inno…"
+        ]
+      },
+      "salaryText": {
+        "title": "Salary Text",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Pay range text found in the posting"
+      },
+      "salaryMin": {
+        "title": "Salary Min",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Minimum pay"
+      },
+      "salaryMax": {
+        "title": "Salary Max",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Maximum pay"
+      },
+      "salaryCurrency": {
+        "title": "Salary Currency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Pay currency, e.g. USD"
+      },
+      "salaryPeriod": {
+        "title": "Salary Period",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YEAR, HOUR or MONTH"
+      },
+      "ats": {
+        "title": "Ats",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Always \"workday\"",
+        "examples": [
+          "workday"
+        ]
+      },
+      "workdayTenant": {
+        "title": "Workday Tenant",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Workday tenant name",
+        "examples": [
+          "nvidia"
+        ]
+      },
+      "workdaySite": {
+        "title": "Workday Site",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Workday career site name",
+        "examples": [
+          "NVIDIAExternalCareerSite"
+        ]
+      },
+      "careerSiteUrl": {
+        "title": "Career Site URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The career site URL this job came from",
+        "examples": [
+          "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite"
+        ]
+      },
+      "scrapedAt": {
+        "title": "Scraped At",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the job was scraped (ISO 8601)",
+        "examples": [
+          "2026-10-23T19:31:59.012Z"
+        ]
+      },
+      "descriptionHtml": {
+        "title": "Description Html",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job description HTML (with includeDescriptionHtml)"
+      },
+      "jobsListed": {
+        "title": "Jobs Listed",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Status rows only: jobs the site listed before your filters"
+      },
+      "jobsMatched": {
+        "title": "Jobs Matched",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Status rows only: jobs left after your filters"
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Empty (or \"ok\") on normal rows. Free status rows (not charged) use no_results, not_found, error, skipped_* etc. and explain why in reason or error."
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The input value this row belongs to (as you entered it)."
+      },
+      "reason": {
+        "title": "Reason",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Only on free status rows: why this input returned nothing, e.g. \"120 open jobs found, 0 matched your filters (titleKeywords=[rust]). Loosen or remove filters.\""
+      }
+    },
+    "examples": [
+      {
+        "company": "Nvidia",
+        "hiringEntity": "PL01 Nvidia Poland sp. z o.o.",
+        "title": "Senior Sales Account Manager, Government and Smart Spaces - North and East Europe",
+        "jobId": "JR2024091",
+        "location": "Poland, Remote",
+        "allLocations": [
+          "Poland, Remote",
+          "Poland, Warsaw"
+        ],
+        "locationCount": 4,
+        "country": "Poland"
+      }
+    ]
+  },
   "views": {
     "overview": {
       "title": "Jobs",
-      "transformation": { "fields": ["company", "title", "location", "country", "remote", "timeType", "postedDate", "salaryText", "jobUrl"] },
-      "display": { "component": "table", "properties": {
-        "company": { "label": "Company" }, "title": { "label": "Title" }, "location": { "label": "Location" }, "country": { "label": "Country" },
-        "remote": { "label": "Remote", "format": "boolean" }, "timeType": { "label": "Time type" }, "postedDate": { "label": "Posted", "format": "date" },
-        "salaryText": { "label": "Pay range" }, "jobUrl": { "label": "Job URL", "format": "link" } } }
+      "transformation": {
+        "fields": [
+          "company",
+          "title",
+          "location",
+          "country",
+          "remote",
+          "timeType",
+          "postedDate",
+          "salaryText",
+          "jobUrl",
+          "status",
+          "reason"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "company": {
+            "label": "Company"
+          },
+          "title": {
+            "label": "Title"
+          },
+          "location": {
+            "label": "Location"
+          },
+          "country": {
+            "label": "Country"
+          },
+          "remote": {
+            "label": "Remote",
+            "format": "boolean"
+          },
+          "timeType": {
+            "label": "Time type"
+          },
+          "postedDate": {
+            "label": "Posted",
+            "format": "date"
+          },
+          "salaryText": {
+            "label": "Pay range"
+          },
+          "jobUrl": {
+            "label": "Job URL",
+            "format": "link"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "reason": {
+            "label": "Reason",
+            "format": "text"
+          }
+        }
+      }
     }
   }
 }

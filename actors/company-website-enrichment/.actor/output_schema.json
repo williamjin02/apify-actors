@@ -1,9 +1,19 @@
 {
   "actorOutputSchemaVersion": 1,
   "title": "Output of Company Website Enrichment",
-  "description": "One row per website in the default dataset; a run summary in the OUTPUT record of the default key-value store.",
+  "description": "One row per website in the default dataset (failed sites included as free rows with status and error); a run summary in the OUTPUT record.",
   "properties": {
-    "results": { "type": "string", "title": "Companies", "description": "Enriched company rows (one per website).", "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview" },
-    "summary": { "type": "string", "title": "Run summary", "description": "JSON summary: websites enriched, status counts, requests.", "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT" }
+    "results": {
+      "type": "string",
+      "title": "Companies",
+      "description": "One row per website. Example: {\"domain\":\"stripe.com\",\"companyName\":\"Stripe\",\"status\":\"ok\",\"emails\":[\"sales@stripe.com\"],\"phones\":[\"+1 888-926-2289\"],\"socials\":{\"linkedin\":\"https://www.linkedin.com/company/stripe\"},\"technologies\":[{\"name\":\"Next.js\",\"category\":\"JavaScript framework\"}]}. Failed: {\"input\":\"bad.example\",\"status\":\"unreachable\",\"error\":\"…\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: websitesRequested, enriched, byStatus counts, chargeLimitReached, zeroResultsReason and request stats.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
   }
 }

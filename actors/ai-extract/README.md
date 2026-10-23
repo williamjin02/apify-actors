@@ -2,6 +2,10 @@
 
 **The AI is included, so you don't need an API key.** Each page is cleaned into compact markdown, sent to a fast, accurate model with **strict schema-constrained output**, and checked against your schema. AI Extract **respects robots.txt** and costs **$8 per 1,000 pages extracted**, or **$2 per 1,000 if you bring your own AI key**. Pages that fail are free.
 
+**When to use:** you need structured JSON from web pages that no dedicated scraper covers (products, prices, events, listings, articles).
+**Input:** URLs plus what to extract, e.g. `{"startUrls":[{"url":"https://example.com/product/1"}],"instructions":"name, price, currency, inStock"}`.
+**Output:** one row per page with the extracted JSON in `data`. AI included, no API key needed. From $8 per 1,000 pages ($2 with your own AI key).
+
 ## What can AI Extract do?
 
 - 🧠 **Prompt or schema:** write "product name, price as a number, currency and stock status", give a JSON Schema, or both. A shorthand such as `{"title":"string","price":"number","tags":"string[]"}` also works.
@@ -92,6 +96,32 @@ A run summary is saved to the `OUTPUT` record in the key-value store. It include
 - **Content and RAG pipelines:** clean markdown plus structured metadata (title, date, summary) for every article.
 - **Directories and listings:** turn a listing page into `items: [...]` rows in one call.
 - **One-off data jobs:** when a site changes layout, your prompt still works and no selectors break.
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/ai-extract"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/ai-extract` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/ai-extract`.
+
+Example prompts:
+
+- "Get the price and stock status of these 5 product pages as JSON"
+- "Extract all events (name, date, venue) from this page"
+- "Turn this pricing page into a table of plans and prices"
+
+Minimal input:
+
+```json
+{"startUrls": [{"url": "https://example.com/product/1"}], "instructions": "product name, price, currency and whether it is in stock", "maxPages": 5}
+```
+
+**Keep it fast:** Keep `maxPages` at 10 or lower for answers within ~45 seconds; pass a `jsonSchema` when you need exact field names. The free plan processes up to 25 pages per run with the built-in AI, and says so in the run status.
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations and API
 

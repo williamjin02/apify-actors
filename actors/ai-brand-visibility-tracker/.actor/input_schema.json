@@ -3,19 +3,110 @@
   "type": "object",
   "schemaVersion": 1,
   "properties": {
-    "brand": { "title": "Your brand", "type": "string", "editor": "textfield", "description": "The brand or product to track, as people write it, e.g. <code>Notion</code>. Track companies and products, not private individuals.", "prefill": "Notion" },
-    "brandDomain": { "title": "Your website domain", "type": "string", "editor": "textfield", "description": "Used to detect when ChatGPT cites your site, e.g. <code>notion.com</code>. Optional.", "prefill": "notion.com" },
-    "brandAliases": { "title": "Other names for your brand", "type": "array", "editor": "stringList", "description": "Spellings or product names that also count as a mention, e.g. <code>Notion AI</code>." },
-    "competitors": { "title": "Competitors", "type": "array", "editor": "stringList", "description": "One per line. Add the domain after a bar to also track citations: <code>Coda | coda.io</code>. Up to 20.", "prefill": ["Coda | coda.io", "Confluence | atlassian.com", "ClickUp | clickup.com"] },
-    "prompts": { "title": "Prompts", "type": "array", "editor": "stringList", "description": "Questions your buyers ask ChatGPT, one per line, e.g. <code>What is the best wiki tool for a startup?</code> Each prompt x sample is one check.", "prefill": ["What is the best wiki tool for a small startup?", "Best alternatives to Confluence for documentation"] },
-    "samplesPerPrompt": { "title": "Samples per prompt", "type": "integer", "minimum": 1, "maximum": 5, "default": 1, "description": "AI answers vary. Ask each prompt this many times to get a steadier mention rate (each sample is one check).", "sectionCaption": "Options" },
-    "country": { "title": "Country", "type": "string", "editor": "textfield", "default": "US", "description": "2-letter country code for localized web search results, e.g. <code>US</code>, <code>GB</code>, <code>DE</code>. Leave empty for no location." },
-    "analyzeSentiment": { "title": "Judge sentiment and recommendation", "type": "boolean", "default": true, "description": "Adds positive/neutral/negative and \"recommended\" per mentioned brand, plus other brands the answer names. Included in the price." },
-    "includeAnswerText": { "title": "Include the full answer text", "type": "boolean", "default": true, "description": "Keep ChatGPT's answer (links are cleaned of tracking parameters) in each row." },
-    "maxChecks": { "title": "Max checks", "type": "integer", "minimum": 1, "maximum": 1000, "default": 50, "description": "Safety cap on checks per run (prompts x samples)." },
-    "maxConcurrency": { "title": "Parallel checks", "type": "integer", "minimum": 1, "maximum": 10, "default": 3, "description": "How many prompts to ask at the same time." },
-    "openaiApiKey": { "title": "Your OpenAI API key (optional)", "type": "string", "editor": "textfield", "isSecret": true, "description": "Use your own OpenAI key: checks cost $0.01 instead of $0.04 and OpenAI bills you for the AI usage (about $0.01-0.02 per check on the default model).", "sectionCaption": "Bring your own key" },
-    "model": { "title": "OpenAI model", "type": "string", "editor": "textfield", "description": "Defaults to <code>gpt-6-luna</code>. Any web-search-capable model works with your own key; the built-in key allows gpt-6-luna, gpt-5-nano, gpt-4o-mini and gpt-5.6-luna." }
+    "brand": {
+      "title": "Your brand",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Required. String: the brand or product to track, as people write it, e.g. \"Notion\". Track companies and products, not private individuals.",
+      "prefill": "Notion"
+    },
+    "brandDomain": {
+      "title": "Your website domain",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional string: your website domain, used to detect when ChatGPT cites your site, e.g. \"notion.com\".",
+      "prefill": "notion.com",
+      "default": ""
+    },
+    "brandAliases": {
+      "title": "Other names for your brand",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional array of strings: other spellings or product names that also count as a mention, e.g. [\"Notion AI\"]."
+    },
+    "competitors": {
+      "title": "Competitors",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional array of strings, up to 20. Add the domain after a bar to also track citations, e.g. [\"Coda | coda.io\",\"ClickUp | clickup.com\"].",
+      "prefill": [
+        "Coda | coda.io",
+        "Confluence | atlassian.com",
+        "ClickUp | clickup.com"
+      ],
+      "default": []
+    },
+    "prompts": {
+      "title": "Prompts",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required. Array of strings: questions your buyers ask ChatGPT, e.g. [\"What is the best wiki tool for a startup?\"]. Each prompt x sample is one paid check. Agents: if the user didn't give prompts, write 3–5 realistic buyer questions for the brand's category.",
+      "prefill": [
+        "What is the best wiki tool for a small startup?",
+        "Best alternatives to Confluence for documentation"
+      ]
+    },
+    "samplesPerPrompt": {
+      "title": "Samples per prompt",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "default": 1,
+      "description": "AI answers vary. Ask each prompt this many times to get a steadier mention rate (each sample is one check).",
+      "sectionCaption": "Options"
+    },
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "editor": "textfield",
+      "default": "US",
+      "description": "2-letter country code for localized web search results, e.g. \"US\", \"GB\", \"DE\". Leave empty for no location."
+    },
+    "analyzeSentiment": {
+      "title": "Judge sentiment and recommendation",
+      "type": "boolean",
+      "default": true,
+      "description": "Adds positive/neutral/negative and \"recommended\" per mentioned brand, plus other brands the answer names. Included in the price."
+    },
+    "includeAnswerText": {
+      "title": "Include the full answer text",
+      "type": "boolean",
+      "default": true,
+      "description": "Keep ChatGPT's answer (links are cleaned of tracking parameters) in each row."
+    },
+    "maxChecks": {
+      "title": "Max checks",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 50,
+      "description": "Safety cap on checks per run (prompts x samples, default 50). Checks over the cap are skipped and reported in a free status row."
+    },
+    "maxConcurrency": {
+      "title": "Parallel checks",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 3,
+      "description": "How many prompts to ask at the same time (default 3)."
+    },
+    "openaiApiKey": {
+      "title": "Your OpenAI API key (optional)",
+      "type": "string",
+      "editor": "textfield",
+      "isSecret": true,
+      "description": "Optional: your own OpenAI key. Checks then cost $0.01 each instead of $0.04–$0.05, and OpenAI bills you for the AI usage (about $0.01–0.02 per check on the default model). Stored encrypted.",
+      "sectionCaption": "Bring your own key"
+    },
+    "model": {
+      "title": "OpenAI model",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Defaults to \"gpt-6-luna\". Any web-search-capable model works with your own key; the built-in key allows gpt-6-luna, gpt-5-nano, gpt-4o-mini and gpt-5.6-luna."
+    }
   },
-  "required": ["brand", "prompts"]
+  "required": [
+    "brand",
+    "prompts"
+  ]
 }

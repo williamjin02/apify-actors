@@ -6,7 +6,7 @@
     "operation": {
       "title": "Operation",
       "type": "string",
-      "description": "<b>write</b>: export an Apify dataset (or JSON rows) to the sheet. <b>read</b>: import a sheet tab or range into this run's dataset.",
+      "description": "\"write\" (default): export an Apify dataset or JSON rows to the sheet. \"read\": import a sheet tab or range into this run's dataset as JSON rows. With no datasetId or rawData, the run reads the sheet instead.",
       "editor": "select",
       "enum": [
         "write",
@@ -21,7 +21,7 @@
     "spreadsheet": {
       "title": "Spreadsheet URL or ID",
       "type": "string",
-      "description": "Paste the Google Sheets URL (https://docs.google.com/spreadsheets/d/\u2026). <b>First share the spreadsheet with <code>sheets-tool@apify-tools-512508.iam.gserviceaccount.com</code> as Editor</b> (Share button \u2192 paste the email \u2192 Editor \u2192 untick \u201cNotify people\u201d \u2192 Share). Not needed if you provide your own service account key below.",
+      "description": "Required. Full Google Sheets URL, e.g. \"https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit\". The sheet must first be shared (Editor for write, Viewer for read) with sheets-tool@apify-tools-512508.iam.gserviceaccount.com (Share button, paste the email, untick \"Notify people\"). AI agents: ask the user to share it if you get a permission error. Not needed with your own service account key.",
       "editor": "textfield",
       "prefill": "https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit"
     },
@@ -34,7 +34,7 @@
     "datasetId": {
       "title": "Dataset ID (write)",
       "type": "string",
-      "description": "The Apify dataset to export, e.g. from a run's Storage tab. In an integration (run this actor after another actor finishes) use <code>{{resource.defaultDatasetId}}</code>.",
+      "description": "String: the Apify dataset ID to export, e.g. \"aBcD1234efGH5678\" from a run's Storage tab. In an integration (run this after another actor finishes) use {{resource.defaultDatasetId}}. Leave empty when you use rawData.",
       "editor": "textfield",
       "sectionCaption": "Write options (dataset \u2192 sheet)",
       "resourceType": "dataset",
@@ -45,7 +45,7 @@
     "writeMode": {
       "title": "Write mode",
       "type": "string",
-      "description": "<b>append</b>: add rows below the existing data (new columns are added to the header). <b>replace</b>: overwrite the tab's contents with the dataset; old rows are cleared only after the new data is written.",
+      "description": "\"append\" (default): add rows below the existing data; new columns are added to the header. \"replace\": overwrite the tab with the new data; old rows are cleared only after the new data is written.",
       "editor": "select",
       "enum": [
         "append",
@@ -60,13 +60,13 @@
     "deduplicateBy": {
       "title": "Deduplicate by columns",
       "type": "array",
-      "description": "Skip rows whose values in these columns already exist (in the sheet when appending, and within the data). E.g. <code>url</code> or <code>id</code>. Skipped rows are free. Works for read too.",
+      "description": "Array of column names, e.g. [\"url\"] or [\"id\"]. Skips rows whose values in these columns already exist (in the sheet when appending, and within the data). Skipped rows are free. Works for read too.",
       "editor": "stringList"
     },
     "columns": {
       "title": "Columns (optional)",
       "type": "array",
-      "description": "Only these columns, in this order. Nested fields use dots, e.g. <code>address.city</code>. Leave empty for all fields.",
+      "description": "Array of column names to keep, in this order, e.g. [\"name\",\"price\",\"address.city\"]. Nested fields use dots. Leave empty for all fields.",
       "editor": "stringList"
     },
     "arrayHandling": {
@@ -89,7 +89,7 @@
     "valueInputOption": {
       "title": "Cell values",
       "type": "string",
-      "description": "<b>RAW</b> stores text exactly as-is (safe: values starting with = are not run as formulas). <b>USER_ENTERED</b> lets Google parse numbers, dates and formulas like typing.",
+      "description": "\"RAW\" (default) stores text exactly as-is (safe: values starting with = are not run as formulas). \"USER_ENTERED\" lets Google parse numbers, dates and formulas as if typed.",
       "editor": "select",
       "enum": [
         "RAW",
@@ -100,20 +100,20 @@
     "rawData": {
       "title": "Raw data (write, instead of a dataset)",
       "type": "array",
-      "description": "Optional JSON array of objects to write instead of a dataset, e.g. [{\"name\":\"A\",\"price\":1}].",
+      "description": "Optional array of objects to write instead of a dataset, e.g. [{\"name\":\"A\",\"price\":1},{\"name\":\"B\",\"price\":2}].",
       "editor": "json"
     },
     "range": {
       "title": "Range (read)",
       "type": "string",
-      "description": "Optional A1 range within the tab, e.g. <code>A1:F500</code> or <code>B:D</code>. Leave empty for the whole tab.",
+      "description": "Optional A1 range within the tab, e.g. \"A1:F500\" or \"B:D\". Leave empty for the whole tab.",
       "editor": "textfield",
       "sectionCaption": "Read options (sheet \u2192 dataset)"
     },
     "valueRender": {
       "title": "Read values as",
       "type": "string",
-      "description": "<b>FORMATTED_VALUE</b>: what you see in the sheet (e.g. \"$1.50\"). <b>UNFORMATTED_VALUE</b>: raw numbers and booleans.",
+      "description": "Read only. \"FORMATTED_VALUE\" (default): what you see in the sheet, e.g. \"$1.50\". \"UNFORMATTED_VALUE\": raw numbers and booleans.",
       "editor": "select",
       "enum": [
         "FORMATTED_VALUE",
@@ -124,7 +124,7 @@
     "skipEmptyRows": {
       "title": "Skip empty rows",
       "type": "boolean",
-      "description": "Ignore fully empty rows when reading.",
+      "description": "Read only: ignore fully empty rows (default true).",
       "default": true
     },
     "headerRow": {
@@ -150,7 +150,6 @@
     }
   },
   "required": [
-    "operation",
     "spreadsheet"
   ]
 }

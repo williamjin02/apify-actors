@@ -9,6 +9,17 @@ class InputError extends Error {}
 const HOST_GAP = { 'api.lever.co': 1000, 'api.eu.lever.co': 1000 };
 const DEFAULT_GAP = 250;
 
+/** Overall job cap: maxJobs, or common aliases agents send (maxItems, limit, maxResults), and the run's max paid items option. */
+function resolveCap(maxJobs, input) {
+    const caps = [maxJobs, input.maxItems, input.limit, input.maxResults, process.env.ACTOR_MAX_PAID_DATASET_ITEMS]
+        .map(Number).filter((n) => Number.isFinite(n) && n > 0).map(Math.floor);
+    return caps.length ? Math.min(...caps) : Infinity;
+}
+const describeFilters = (f) => [
+    f.titleKeywords.length && `titleKeywords=${JSON.stringify(f.titleKeywords)}`, f.excludeTitleKeywords.length && `excludeTitleKeywords=${JSON.stringify(f.excludeTitleKeywords)}`,
+    f.locationKeywords.length && `locationKeywords=${JSON.stringify(f.locationKeywords)}`, f.departmentKeywords.length && `departmentKeywords=${JSON.stringify(f.departmentKeywords)}`,
+    f.remoteOnly && 'remoteOnly=true', f.since && `postedSince=${new Date(f.since).toISOString().slice(0, 10)}`].filter(Boolean).join(', ') || 'none';
+
 await Actor.init();
 try {
     const input = (await Actor.getInput()) ?? {};
@@ -17,7 +28,7 @@ try {
         titleKeywords = [], excludeTitleKeywords = [], locationKeywords = [], departmentKeywords = [],
         remoteOnly = false, postedSince = null,
         includeDescription = true, includeDescriptionHtml = false,
-        maxJobsPerCompany = 0, maxJobs = 0,
+        maxJobsPerCompany = 0, maxJobs = 0, emitStatusRows = true,
         proxyConfiguration = { useApifyProxy: false }, maxRetries = 3,
     } = input;
 
@@ -32,7 +43,8 @@ try {
     const arr = (v) => (Array.isArray(v) ? v : String(v ?? '').split(',')).map((x) => String(x).trim()).filter(Boolean);
     const filters = { titleKeywords: arr(titleKeywords), excludeTitleKeywords: arr(excludeTitleKeywords), locationKeywords: arr(locationKeywords), departmentKeywords: arr(departmentKeywords), remoteOnly: !!remoteOnly, since };
     const perCompany = Number(maxJobsPerCompany) > 0 ? Math.floor(Number(maxJobsPerCompany)) : Infinity;
-    const totalCap = Number(maxJobs) > 0 ? Math.floor(Number(maxJobs)) : Infinity;
+    const totalCap = resolveCap(maxJobs, input);
+    if (Number.isFinite(totalCap)) log.info(`Saving at most ${totalCap} jobs in this run.`);
 
     const proxy = proxyConfiguration?.useApifyProxy || proxyConfiguration?.proxyUrls?.length ? await Actor.createProxyConfiguration(proxyConfiguration) : null;
     const charging = Actor.getChargingManager();
@@ -93,7 +105,7 @@ try {
     const resolvedBoards = new Map(); // "ats|region|slug" -> first input, so "ramp" + "ashby:ramp" isn't scraped twice
 
     for (const t of targets) {
-        if (stop()) break;
+        if (stop()) { perCompanySummary.push({ input: t.input, slug: t.slug, ats: t.ats, status: chargeLimitHit ? 'skipped_charge_limit' : 'skipped_max_jobs', jobsFound: 0, jobsMatched: 0, jobsSaved: 0, error: null }); continue; }
         const row = { input: t.input, slug: t.slug, ats: t.ats, status: 'ok', jobsFound: 0, jobsMatched: 0, jobsSaved: 0, error: null };
         try {
             const res = await resolveAndFetch(t);
@@ -119,6 +131,7 @@ try {
                 if (out.length >= perCompany) break;
             }
             row.jobsMatched = out.length;
+            if (!out.length) row.reason = row.jobsFound ? `${row.jobsFound} open jobs found, 0 matched your filters (${describeFilters(filters)}). Loosen or remove filters.` : 'The board exists but has no open jobs right now.';
             row.jobsSaved = await push(out);
             log.info(`${companyName} (${res.ats}): ${row.jobsFound} open jobs, ${row.jobsSaved} saved`);
         } catch (e) {
@@ -128,15 +141,25 @@ try {
         perCompanySummary.push(row);
     }
 
+    // Never silent: one free (unbilled) status row per company that produced no jobs.
+    const empty = perCompanySummary.filter((r) => !r.jobsSaved && !String(r.status).startsWith('skipped') && r.status !== 'duplicate');
+    if (emitStatusRows !== false) {
+        for (const r of empty) {
+            await Actor.pushData({ status: r.status === 'ok' ? 'no_results' : r.status, input: r.input, companySlug: r.slug, ats: r.ats ?? null,
+                jobsFound: r.jobsFound, jobsMatched: r.jobsMatched, reason: r.reason ?? r.error ?? null, scrapedAt }); // no event name = not charged
+        }
+    }
+    const stoppedReason = chargeLimitHit ? 'Reached the maximum cost you set for this run.' : pushed >= totalCap ? `Reached the job limit (${totalCap}). Raise maxJobs (0 = no limit) for more.` : null;
     const summary = { companiesRequested: targets.length, companiesWithBoards: perCompanySummary.filter((r) => r.status === 'ok').length,
-        jobsSaved: pushed, chargeLimitReached: chargeLimitHit, formatErrors, networkErrors, stats, companies: perCompanySummary, finishedAt: new Date().toISOString() };
+        jobsSaved: pushed, maxJobs: Number.isFinite(totalCap) ? totalCap : 0, stoppedReason, zeroResultsReason: pushed ? null : (empty.map((r) => `${r.input}: ${r.reason ?? r.error ?? r.status}`).join(' | ') || null), chargeLimitReached: chargeLimitHit, formatErrors, networkErrors, stats, companies: perCompanySummary, finishedAt: new Date().toISOString() };
     await Actor.setValue('OUTPUT', summary);
     // Silent-failure guard: if the ATS APIs changed shape, fail loudly instead of returning an empty dataset.
     const okBoards = summary.companiesWithBoards;
     if (!okBoards && perCompanySummary.some((r) => r.status === 'format_error')) throw new Error('Job-board response format changed; no jobs could be parsed. The actor needs an update.');
     if (!okBoards && networkErrors && networkErrors === targets.length) throw new Error(`All ${targets.length} job boards failed to load (network errors). Try again or enable a proxy.`);
-    if (!okBoards) await Actor.exit(`No public job boards found for the companies you entered. Check the board names (see README: "How to find a company's board name").`);
-    else await Actor.exit(`Saved ${pushed} jobs from ${okBoards} of ${targets.length} companies.`);
+    if (!okBoards) await Actor.exit(`0 results: no public job boards found for the companies you entered. Check the board names (see README: "How to find a company's board name"), or pass a board URL.`);
+    else if (!pushed) await Actor.exit(`0 results: ${summary.zeroResultsReason}`);
+    else await Actor.exit(`Saved ${pushed} jobs from ${okBoards} of ${targets.length} companies.${stoppedReason ? ` Stopped: ${stoppedReason}` : ''}${empty.length ? ` ${empty.length} compan${empty.length === 1 ? 'y' : 'ies'} returned no jobs (see the status rows).` : ''}`);
 } catch (e) {
     if (e instanceof InputError) { log.error(e.message); await Actor.fail(`Input error: ${e.message}`); }
     else { log.exception(e, 'Run failed'); await Actor.fail(e.message); }

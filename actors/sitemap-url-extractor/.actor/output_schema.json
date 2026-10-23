@@ -1,18 +1,18 @@
 {
   "actorOutputSchemaVersion": 1,
-  "title": "Output of Sitemap URLs",
-  "description": "Extracted URLs are stored in the default dataset; a run summary is stored in the OUTPUT record of the default key-value store.",
+  "title": "Output of Sitemap URL Extractor",
+  "description": "One row per page URL in the default dataset; a run summary in the OUTPUT record. Sites that return nothing get a free status row with a reason.",
   "properties": {
     "results": {
       "type": "string",
       "title": "Extracted URLs",
-      "description": "Extracted URLs (one item per row) in the default dataset.",
+      "description": "One row per URL. Example: {\"url\":\"https://example.com/blog/post-1\",\"lastmod\":\"2026-09-30\",\"changefreq\":\"weekly\",\"priority\":0.8,\"sitemapUrl\":\"https://example.com/sitemap.xml\",\"site\":\"https://example.com\"}. Status rows: {\"status\":\"no_results\",\"site\":\"https://example.com\",\"reason\":\"No sitemap found…\"}.",
       "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
     },
     "summary": {
       "type": "string",
       "title": "Run summary",
-      "description": "JSON summary of the run (counts, errors, settings).",
+      "description": "JSON: totals (sites, sitemaps, urlsOutput, duplicates, filtered), per-site details, maxUrls, stoppedReason (e.g. \"Reached maxUrls (1000)…\") and zeroResultsReason.",
       "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
     }
   }

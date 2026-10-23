@@ -1,15 +1,427 @@
 {
   "actorSpecification": 1,
-  "fields": {},
+  "fields": {
+    "type": "object",
+    "properties": {
+      "engine": {
+        "title": "Engine",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "AI engine checked (chatgpt)",
+        "examples": [
+          "chatgpt"
+        ]
+      },
+      "model": {
+        "title": "Model",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Model that answered",
+        "examples": [
+          "gpt-6-luna"
+        ]
+      },
+      "prompt": {
+        "title": "Prompt",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The prompt asked",
+        "examples": [
+          "Best tool to scrape Google Maps"
+        ]
+      },
+      "sample": {
+        "title": "Sample",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Sample number for this prompt (1..samplesPerPrompt)",
+        "examples": [
+          1
+        ]
+      },
+      "country": {
+        "title": "Country",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Country used for localized web search"
+      },
+      "brand": {
+        "title": "Brand",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Your tracked brand",
+        "examples": [
+          "Apify"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Status",
+        "examples": [
+          "ok"
+        ]
+      },
+      "brandMentioned": {
+        "title": "Brand Mentioned",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if the answer mentions your brand",
+        "examples": [
+          false
+        ]
+      },
+      "brandRank": {
+        "title": "Brand Rank",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Order of your brand among all tracked brands mentioned (1 = first)"
+      },
+      "brandListPosition": {
+        "title": "Brand List Position",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position in a numbered/bulleted list, if the answer is a list"
+      },
+      "brandCited": {
+        "title": "Brand Cited",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if the answer cites your domain as a source",
+        "examples": [
+          false
+        ]
+      },
+      "brandSentiment": {
+        "title": "Brand Sentiment",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "positive, neutral or negative (with analyzeSentiment)"
+      },
+      "brandRecommended": {
+        "title": "Brand Recommended",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if the answer recommends your brand"
+      },
+      "competitorsMentioned": {
+        "title": "Competitors Mentioned",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Tracked competitors mentioned in the answer",
+        "examples": [
+          []
+        ]
+      },
+      "mentionedOrder": {
+        "title": "Mentioned Order",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Tracked brands in the order they were mentioned",
+        "examples": [
+          []
+        ]
+      },
+      "entities": {
+        "title": "Entities",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Per-brand details: mentioned, rank, cited, sentiment",
+        "examples": [
+          [
+            {
+              "name": "Apify",
+              "role": "brand",
+              "domain": "apify.com",
+              "mentioned": false,
+              "mentionCount": 0,
+              "listPosition": null,
+              "cited": false,
+              "citedUrls": []
+            },
+            {
+              "name": "Bright Data",
+              "role": "competitor",
+              "domain": "brightdata.com",
+              "mentioned": false,
+              "mentionCount": 0,
+              "listPosition": null,
+              "cited": false,
+              "citedUrls": []
+            }
+          ]
+        ]
+      },
+      "citations": {
+        "title": "Citations",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Sources the answer linked or cited",
+        "examples": [
+          [
+            {
+              "url": "https://developers.google.com/maps/documentation/places/web-service/policies",
+              "title": "Policies and attributions for Places API  |  Places API (New)  |  Google for Developers",
+              "domain": "developers.google.com",
+              "kind": "cited"
+            },
+            {
+              "url": "https://cloud.google.com/archive/maps-platform/terms-20250714",
+              "title": null,
+              "domain": "cloud.google.com",
+              "kind": "source"
+            }
+          ]
+        ]
+      },
+      "citedDomains": {
+        "title": "Cited Domains",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Domains cited as sources",
+        "examples": [
+          [
+            "developers.google.com"
+          ]
+        ]
+      },
+      "otherBrandsMentioned": {
+        "title": "Other Brands Mentioned",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Untracked brands the answer named",
+        "examples": [
+          [
+            "Google",
+            "Google Places API"
+          ]
+        ]
+      },
+      "searchQueries": {
+        "title": "Search Queries",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Web searches ChatGPT ran for this answer",
+        "examples": [
+          [
+            "Google Maps Platform Places API official policies scraping Google Maps terms",
+            "Google Maps Platform Places API official pricing place search"
+          ]
+        ]
+      },
+      "answer": {
+        "title": "Answer",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Full answer text (with includeAnswerText)",
+        "examples": [
+          "If you mean **collect business/place data**, the best compliant option is **Google Places API (New)**—not a browser-scraping tool. It sup…"
+        ]
+      },
+      "answerLength": {
+        "title": "Answer Length",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Answer length in characters",
+        "examples": [
+          824
+        ]
+      },
+      "aiCostUsd": {
+        "title": "Ai Cost Usd",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "AI cost of this check in USD (informational)",
+        "examples": [
+          0.0111
+        ]
+      },
+      "aiKey": {
+        "title": "Ai Key",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "built-in or own-key",
+        "examples": [
+          "built-in"
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked At",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the check ran (ISO 8601)",
+        "examples": [
+          "2026-10-23T19:12:17.040Z"
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Error or notice text on failed checks and free status rows"
+      },
+      "checksRequested": {
+        "title": "Checks Requested",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Status rows only: checks requested"
+      },
+      "checksRun": {
+        "title": "Checks Run",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Status rows only: checks that ran"
+      }
+    },
+    "examples": [
+      {
+        "engine": "chatgpt",
+        "model": "gpt-6-luna",
+        "prompt": "Best tool to scrape Google Maps",
+        "sample": 1,
+        "country": null,
+        "brand": "Apify",
+        "status": "ok",
+        "brandMentioned": false
+      }
+    ]
+  },
   "views": {
     "overview": {
       "title": "Checks",
-      "transformation": { "fields": ["prompt", "sample", "brandMentioned", "brandRank", "brandListPosition", "brandCited", "brandSentiment", "brandRecommended", "competitorsMentioned", "mentionedOrder", "citedDomains", "status", "checkedAt"] },
-      "display": { "component": "table", "properties": {
-        "prompt": { "label": "Prompt" }, "sample": { "label": "#", "format": "number" }, "brandMentioned": { "label": "Mentioned", "format": "boolean" },
-        "brandRank": { "label": "Rank", "format": "number" }, "brandListPosition": { "label": "List position", "format": "number" }, "brandCited": { "label": "Site cited", "format": "boolean" },
-        "brandSentiment": { "label": "Sentiment" }, "brandRecommended": { "label": "Recommended", "format": "boolean" }, "competitorsMentioned": { "label": "Competitors mentioned", "format": "array" },
-        "mentionedOrder": { "label": "Order mentioned", "format": "array" }, "citedDomains": { "label": "Cited domains", "format": "array" }, "status": { "label": "Status" }, "checkedAt": { "label": "Checked", "format": "date" } } }
+      "transformation": {
+        "fields": [
+          "prompt",
+          "sample",
+          "brandMentioned",
+          "brandRank",
+          "brandListPosition",
+          "brandCited",
+          "brandSentiment",
+          "brandRecommended",
+          "competitorsMentioned",
+          "mentionedOrder",
+          "citedDomains",
+          "status",
+          "checkedAt",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "prompt": {
+            "label": "Prompt"
+          },
+          "sample": {
+            "label": "#",
+            "format": "number"
+          },
+          "brandMentioned": {
+            "label": "Mentioned",
+            "format": "boolean"
+          },
+          "brandRank": {
+            "label": "Rank",
+            "format": "number"
+          },
+          "brandListPosition": {
+            "label": "List position",
+            "format": "number"
+          },
+          "brandCited": {
+            "label": "Site cited",
+            "format": "boolean"
+          },
+          "brandSentiment": {
+            "label": "Sentiment"
+          },
+          "brandRecommended": {
+            "label": "Recommended",
+            "format": "boolean"
+          },
+          "competitorsMentioned": {
+            "label": "Competitors mentioned",
+            "format": "array"
+          },
+          "mentionedOrder": {
+            "label": "Order mentioned",
+            "format": "array"
+          },
+          "citedDomains": {
+            "label": "Cited domains",
+            "format": "array"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "checkedAt": {
+            "label": "Checked",
+            "format": "date"
+          },
+          "error": {
+            "label": "Error",
+            "format": "text"
+          }
+        }
+      }
     }
   }
 }

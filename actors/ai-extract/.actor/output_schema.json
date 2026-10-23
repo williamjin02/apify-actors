@@ -1,18 +1,18 @@
 {
   "actorOutputSchemaVersion": 1,
   "title": "Output of AI Extract",
-  "description": "One row per page in the default dataset; a run summary in the OUTPUT record of the default key-value store.",
+  "description": "One row per page in the default dataset with the extracted JSON in \"data\"; a run summary in the OUTPUT record. Free-plan caps and early stops are explained in a free status row.",
   "properties": {
     "results": {
       "type": "string",
       "title": "Extracted pages",
-      "description": "One row per page with the extracted 'data'.",
+      "description": "Example: {\"url\":\"https://example.com/product/1\",\"status\":\"ok\",\"title\":\"Blue Mug\",\"data\":{\"name\":\"Blue Mug\",\"price\":12.5,\"currency\":\"USD\",\"inStock\":true}}. Failed pages are free rows with status (fetch_error, ai_error…) and error.",
       "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
     },
     "summary": {
       "type": "string",
       "title": "Run summary",
-      "description": "JSON summary: pages extracted, status counts, tokens, AI cost.",
+      "description": "JSON: pagesProcessed, extracted, charged, byStatus, truncated, freePlanLimited, notice, zeroResultsReason, stoppedBecause and token/AI-cost stats.",
       "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
     }
   }

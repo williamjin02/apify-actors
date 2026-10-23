@@ -130,7 +130,7 @@ try {
     }
 
     // ---------- queue ----------
-    const seen = new Set(); const queue = []; let enqueued = 0;
+    const seen = new Set(); const queue = []; let enqueued = 0; let capHit = false;
     const startHosts = new Set();
     const invalid = [];
     for (const r of rawUrls) {
@@ -141,7 +141,8 @@ try {
     }
     for (const r of invalid) { counts.invalid_url = (counts.invalid_url ?? 0) + 1; await Actor.pushData({ url: r, status: 'invalid_url', error: 'Not a valid http(s) URL', data: null, extractedAt: new Date().toISOString() }); }
     const wanted = (u, depth) => {
-        if (depth > depthCap || enqueued >= pageCap) return false;
+        if (depth > depthCap) return false;
+        if (enqueued >= pageCap) { capHit = true; return false; }
         let x; try { x = new URL(u); } catch { return false; }
         if (!/^https?:$/.test(x.protocol) || !isProbablyHtmlUrl(x.pathname)) return false;
         if (sameDomainOnly && !startHosts.has(x.hostname.replace(/^www\./, ''))) return false;
@@ -211,7 +212,11 @@ try {
         if (row.status !== 'ok') { await Actor.pushData(row); return; } // only successful extractions are charged
         if (charging) {
             const left = charging.calculateMaxEventChargeCountWithinLimit(EVENT);
-            if (Number.isFinite(left) && left < 1) { stop ??= 'Reached the maximum cost you set for this run'; counts.ok--; counts.skipped_max_cost = (counts.skipped_max_cost ?? 0) + 1; return; }
+            if (Number.isFinite(left) && left < 1) {
+                stop ??= 'Reached the maximum cost you set for this run'; counts.ok--; counts.skipped_max_cost = (counts.skipped_max_cost ?? 0) + 1;
+                await Actor.pushData({ url: row.url, depth: row.depth, status: 'skipped_max_cost', error: 'Not saved: the run reached the maximum cost you set.', data: null, extractedAt: row.extractedAt }); // free
+                return;
+            }
         }
         const r = await Actor.pushData(row, EVENT); charged++;
         if (r?.eventChargeLimitReached) stop ??= 'Reached the maximum cost you set for this run';
@@ -232,7 +237,15 @@ try {
     };
     await Promise.all(Array.from({ length: conc }, worker));
 
+    // Never silent about partial results: explain free-plan caps and early stops in a free notice row, OUTPUT and the status message.
+    const notProcessed = queue.length;
+    const freePlanNote = trial.limited && (capHit || requestedPages > pageCap && enqueued >= pageCap) ? `Free plan: processed up to ${pageCap} pages (you asked for ${requestedPages}). Add your own AI API key (llmApiKey), or use any paid Apify plan, to process more.` : null;
+    const notice = [fatal || stop ? `Stopped: ${fatal || stop}${notProcessed ? `; ${notProcessed} queued pages not processed (not charged)` : ''}.` : null,
+        freePlanNote, !trial.limited && capHit ? `Reached maxPages (${pageCap}); more links were found. Raise maxPages to crawl further.` : null].filter(Boolean).join(' ');
+    if (notice) await Actor.pushData({ url: null, status: fatal || stop ? 'stopped' : 'limited', error: notice, data: null, extractedAt: new Date().toISOString() }); // no event name = not charged
     const summary = { pagesProcessed: done, extracted: counts.ok ?? 0, charged, byStatus: counts, aiKey: ai.mode, provider: ai.provider, model: ai.model,
+        truncated: !!notice, maxPages: pageCap, freePlanLimited: !!freePlanNote, notice: notice || null,
+        zeroResultsReason: counts.ok ? null : (Object.entries(counts).map(([k, v]) => `${v} ${k}`).join(', ') || 'no pages processed') + '; see the status and error fields of each row.',
         stoppedBecause: fatal || stop || null, stats: { ...stats, aiCostUsd: Number(stats.aiCostUsd.toFixed(6)) }, finishedAt: new Date().toISOString() };
     await Actor.setValue('OUTPUT', summary);
     log.info(`Summary: ${JSON.stringify(summary)}`);
@@ -240,7 +253,7 @@ try {
     const fetchFails = (counts.fetch_error ?? 0);
     if (done >= 3 && !(counts.ok) && fetchFails === done) throw new Error(`None of the ${done} pages could be reached. This looks like a network problem; try again or enable a proxy.`);
     const other = Object.entries(counts).filter(([k]) => k !== 'ok').map(([k, v]) => `${v} ${k}`).join(', ');
-    await Actor.exit(`Extracted ${counts.ok ?? 0} of ${done + invalid.length} pages${other ? ` (${other}; not charged)` : ''}${fatal || stop ? `. Stopped: ${fatal || stop}` : ''}.`);
+    await Actor.exit(`${counts.ok ? '' : '0 results: '}Extracted ${counts.ok ?? 0} of ${done + invalid.length} pages${other ? ` (${other}; not charged)` : ''}${fatal || stop ? `. Stopped: ${fatal || stop}` : ''}.${freePlanNote ? ` ${freePlanNote}` : ''}`);
 } catch (e) {
     if (e instanceof InputError) { log.error(e.message); await Actor.fail(`Input error: ${e.message}`); }
     else { log.exception(e, 'Run failed'); await Actor.fail(e.message); }

@@ -1,18 +1,18 @@
 {
   "actorOutputSchemaVersion": 1,
   "title": "Output of Google Sheets Import & Export",
-  "description": "Read: sheet rows go to the default dataset. Write and read: a run summary (spreadsheet URL, rows written/read, duplicates skipped, columns) is in the OUTPUT record.",
+  "description": "Write: the OUTPUT record says what was written. Read: sheet rows go to the default dataset as JSON rows keyed by the header row.",
   "properties": {
     "summary": {
       "type": "string",
       "title": "Run summary",
-      "description": "Spreadsheet URL, tab, rows written or read, duplicates skipped and columns.",
+      "description": "JSON. Write example: {\"operation\":\"write\",\"spreadsheetUrl\":\"https://docs.google.com/spreadsheets/d/…\",\"sheetName\":\"Sheet1\",\"rowsWritten\":250,\"duplicatesSkipped\":3,\"columns\":[\"name\",\"price\"],\"zeroResultsReason\":null}. Read adds rowsRead and range. Errors: {\"error\":\"Can't open spreadsheet …: share the sheet with …\"}.",
       "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
     },
     "results": {
       "type": "string",
       "title": "Imported rows",
-      "description": "Rows read from the sheet (read operation).",
+      "description": "Read operation: one JSON row per sheet row, e.g. {\"Student Name\":\"Alexandra\",\"Home State\":\"CA\",\"Major\":\"English\"}. 0 rows read gives one free row {\"status\":\"no_results\",\"reason\":\"…\"}.",
       "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
     }
   }

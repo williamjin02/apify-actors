@@ -1,12 +1,43 @@
 {
   "actorSpecification": 1,
-  "fields": {},
+  "fields": {
+    "type": "object",
+    "additionalProperties": true,
+    "description": "Read mode: one row per sheet row, keyed by the header row (column names vary by sheet). A run that reads 0 rows adds one free row with status \"no_results\" and reason. Write mode leaves the dataset empty; see OUTPUT.",
+    "properties": {
+      "status": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Status",
+        "description": "Only on the free status row: \"no_results\"."
+      },
+      "reason": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Reason",
+        "description": "Only on the free status row: why nothing was read."
+      }
+    },
+    "examples": [
+      {
+        "Student Name": "Alexandra",
+        "Home State": "CA",
+        "Major": "English"
+      }
+    ]
+  },
   "views": {
     "overview": {
       "title": "Rows",
       "description": "Rows imported from the sheet (read). Columns match your sheet header.",
       "transformation": {},
-      "display": { "component": "table" }
+      "display": {
+        "component": "table"
+      }
     }
   }
 }

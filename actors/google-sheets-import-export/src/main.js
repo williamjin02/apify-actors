@@ -34,7 +34,14 @@ try {
     const id = parseSpreadsheetId(spreadsheet);
     if (!id) throw new InputError('Paste the spreadsheet URL (https://docs.google.com/spreadsheets/d/...) or its ID in "Spreadsheet".');
     const gid = parseGid(spreadsheet);
-    const op = String(operation).toLowerCase();
+    let op = String(operation).toLowerCase();
+    const hasWriteSource = !!(String(datasetIdIn || input?.payload?.resource?.defaultDatasetId || input?.resource?.defaultDatasetId || '').trim()
+        || (Array.isArray(rawData) && rawData.length));
+    if (op === 'write' && !hasWriteSource) {
+        // Agents often omit "operation" (default write) and only pass a spreadsheet: with nothing to write, reading is the only useful action.
+        op = 'read';
+        log.warning('Nothing to write (no datasetId or rawData), so reading the sheet instead. To export, pass a datasetId or rawData.');
+    }
     if (!['read', 'write'].includes(op)) throw new InputError('Operation must be "read" (sheet to dataset) or "write" (dataset to sheet).');
 
     // ---------- access + metadata ----------
@@ -42,7 +49,7 @@ try {
     try { file = await g.drive(`/files/${id}?fields=name,capabilities(canEdit)&supportsAllDrives=true`); }
     catch (e) { throw accessError(e, g.email, id, op); }
     const canEdit = !!file.capabilities?.canEdit;
-    if (op === 'write' && !canEdit) throw new InputError(`The service account can open "${file.name}" but cannot edit it. Share the spreadsheet with ${g.email} as Editor.`);
+    if (op === 'write' && !canEdit) throw new InputError(`The service account can open "${file.name}" but cannot edit it: share the sheet with ${g.email} as Editor (not Viewer), then run again.`);
     let meta;
     try { meta = await g.sheets(`/${id}?fields=spreadsheetUrl,properties(title),sheets(properties(sheetId,title,index,gridProperties))`); }
     catch (e) { throw accessError(e, g.email, id, op); }
@@ -69,15 +76,19 @@ try {
             rows = kept;
         }
         if (maxRows > 0) rows = rows.slice(0, maxRows);
+        const beforeLimit = rows.length;
         rows = rows.slice(0, chargeLimit(EV_READ, rows.length));
+        const cutByCost = beforeLimit - rows.length;
         for (const chunk of chunkRows(rows, { maxRows: 1000, maxBytes: 5_000_000 })) {
             await Actor.pushData(chunk);
             await Actor.charge({ eventName: EV_READ, count: chunk.length });
         }
-        Object.assign(summary, { sheetName: sheet.properties.title, range: res.range, columns: columns?.length ? columns : headers, rowsRead: rows.length, duplicatesSkipped: dupes });
+        const zeroResultsReason = rows.length ? null : (cutByCost ? 'Your maximum cost per run allows 0 rows.' : `The tab "${sheet.properties.title}"${range ? ` (range ${range})` : ''} has no data rows${headerRow ? ' below the header row' : ''}${dupes ? ` after removing ${dupes} duplicates` : ''}.`);
+        if (!rows.length) await Actor.pushData({ status: 'no_results', reason: zeroResultsReason, spreadsheetUrl: meta.spreadsheetUrl, sheetName: sheet.properties.title }); // free status row
+        Object.assign(summary, { sheetName: sheet.properties.title, range: res.range, columns: columns?.length ? columns : headers, rowsRead: rows.length, duplicatesSkipped: dupes, rowsSkippedByCostLimit: cutByCost, zeroResultsReason });
         log.info(`Read ${rows.length} rows from "${sheet.properties.title}" into the dataset.`);
         await Actor.setValue('OUTPUT', summary);
-        await Actor.setStatusMessage(`Read ${rows.length} rows from ${sheet.properties.title}`, { isStatusMessageTerminal: true });
+        await Actor.setStatusMessage(rows.length ? `Read ${rows.length} rows from ${sheet.properties.title}${cutByCost ? `; ${cutByCost} more rows skipped because of your maximum cost per run` : ''}` : `0 results: ${zeroResultsReason}`, { isStatusMessageTerminal: true });
     } else {
         // ---------- load data ----------
         const dsId = String(datasetIdIn || input?.payload?.resource?.defaultDatasetId || input?.resource?.defaultDatasetId || '').trim();
@@ -126,7 +137,9 @@ try {
             rowsOut = [];
             for (const r of flat) { const k = keyOf(r, deduplicateBy); if (seen.has(k)) { dupes++; continue; } seen.add(k); rowsOut.push(r); }
         }
+        const beforeLimit = rowsOut.length;
         rowsOut = rowsOut.slice(0, chargeLimit(EV_WRITE, rowsOut.length));
+        const cutByCost = beforeLimit - rowsOut.length;
 
         let truncated = 0;
         const matrix = rowsOut.map((r) => header.map((h) => { const [v, t] = cell(r[h]); if (t) truncated++; return v; }));
@@ -173,10 +186,11 @@ try {
             for (const chunk of chunkRows(matrix)) { await put(cursor, chunk); cursor += chunk.length; written += chunk.length; await Actor.charge({ eventName: EV_WRITE, count: chunk.length }); }
         }
         if (truncated) log.warning(`${truncated} cell(s) were longer than 50,000 characters (Google's per-cell limit) and were truncated.`);
-        Object.assign(summary, { sheetName: title, sheetCreated: created, writeMode: mode, datasetId: dsId || null, inputRows: items.length, rowsWritten: written, duplicatesSkipped: dupes, columns: header, truncatedCells: truncated, lastRow: cursor });
+        const zeroResultsReason = written ? null : (!items.length ? `The source ${dsId ? `dataset ${dsId}` : 'rawData'} has no rows.` : dupes === items.length ? `All ${dupes} rows already exist in the sheet (deduplicateBy: ${deduplicateBy.join(', ')}).` : cutByCost ? 'Your maximum cost per run allows 0 rows.' : 'Nothing to write.');
+        Object.assign(summary, { sheetName: title, sheetCreated: created, writeMode: mode, datasetId: dsId || null, inputRows: items.length, rowsWritten: written, duplicatesSkipped: dupes, rowsSkippedByCostLimit: cutByCost, columns: header, truncatedCells: truncated, lastRow: cursor, zeroResultsReason });
         log.info(`Wrote ${written} rows to "${title}" (${mode}); ${dupes} duplicates skipped.`);
         await Actor.setValue('OUTPUT', summary);
-        await Actor.setStatusMessage(`Wrote ${written} rows to ${title} (${mode})${dupes ? `, ${dupes} duplicates skipped` : ''}`, { isStatusMessageTerminal: true });
+        await Actor.setStatusMessage(written ? `Wrote ${written} rows to ${title} (${mode})${dupes ? `, ${dupes} duplicates skipped` : ''}${cutByCost ? `; ${cutByCost} rows not written because of your maximum cost per run` : ''}` : `0 rows written: ${zeroResultsReason}`, { isStatusMessageTerminal: true });
     }
     await Actor.exit();
 } catch (e) {
@@ -194,7 +208,7 @@ function pickSheet(sheets, name, gid) {
 
 function accessError(e, email, id, op) {
     if (e.status === 404 || e.status === 403) {
-        return new InputError(`Can't open spreadsheet ${id}. Share it with ${email} as ${op === 'write' ? 'Editor' : 'Editor (or Viewer for read-only)'} (Share button in Google Sheets, untick "Notify people"), and check the URL/ID.`);
+        return new InputError(`Can't open spreadsheet ${id}: share the sheet with ${email} as ${op === 'write' ? 'Editor' : 'Editor (or Viewer for read-only)'} (Share button in Google Sheets, paste the email, untick "Notify people"), and check the URL/ID. AI agents: ask the user to share the sheet with ${email}, then run again.`);
     }
     return e;
 }

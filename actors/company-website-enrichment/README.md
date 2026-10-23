@@ -2,6 +2,10 @@
 
 Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$2-3 per 1,000 enriched websites**. Websites that can't be reached are free.
 
+**When to use:** you have a list of company domains and need firmographic and contact data for each one.
+**Input:** a list of domains, e.g. `{"websites":["stripe.com","hubspot.com"]}`.
+**Output:** one row per company with name, description, logo, generic emails, phones, address, social links, key pages and 130+ detected technologies. From $2 per 1,000 websites.
+
 ## What can Company Website Enrichment do?
 
 - 🏢 **Firmographics from the source:** company name, legal name, description, logo, language, founding date and address from the site's own schema.org data.
@@ -106,6 +110,32 @@ A run summary (enriched count, status counts, requests) is saved to the `OUTPUT`
 - **Sales intelligence:** spot companies that are hiring (careers page and ATS detected), then pull their jobs with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper).
 - **Agencies:** audit prospects' marketing stack (pixels, consent, chat, A/B testing) before outreach.
 - **Data cleaning:** check which domains still resolve and where they redirect.
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/company-website-enrichment"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/company-website-enrichment` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/company-website-enrichment`.
+
+Example prompts:
+
+- "What tech stack does linear.app use?"
+- "Find contact emails and LinkedIn pages for these 20 companies"
+- "Which of these SaaS sites use HubSpot?"
+
+Minimal input:
+
+```json
+{"websites": ["linear.app"]}
+```
+
+**Keep it fast:** Keep `maxPagesPerSite` at 4 or lower; 20–50 domains finish in well under a minute. Unreachable sites come back as free rows with `status` and `error`.
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations and API
 

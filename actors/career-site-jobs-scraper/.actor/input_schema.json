@@ -6,7 +6,7 @@
     "companies": {
       "title": "Companies",
       "type": "array",
-      "description": "Job-board URLs (e.g. https://jobs.lever.co/spotify, https://job-boards.greenhouse.io/stripe, https://jobs.ashbyhq.com/ramp, https://apply.workable.com/huggingface, https://bunq.recruitee.com) or just the board name (e.g. stripe). With a bare name the actor checks Greenhouse, Lever, Ashby, Workable and Recruitee and uses the board with the most open jobs (the same name can belong to different organisations on different ATSs). To choose the ATS yourself, use a board URL or a prefix like 'ashby:ramp' or 'lever:spotify'.",
+      "description": "Required. Array of strings: board names or URLs, e.g. [\"stripe\",\"https://jobs.lever.co/spotify\",\"https://jobs.ashbyhq.com/ramp\"]. Supports Greenhouse, Lever, Ashby, Workable, Recruitee. A bare name is tried on each platform. Tip: the board name is the last part of the careers URL (boards.greenhouse.io/stripe = stripe).",
       "editor": "stringList",
       "prefill": [
         "stripe",
@@ -67,14 +67,14 @@
     "maxJobsPerCompany": {
       "title": "Max jobs per company",
       "type": "integer",
-      "description": "Stop after this many matching jobs per company. 0 = all open jobs.",
+      "description": "Stop after this many jobs from each company (0 = no limit).",
       "minimum": 0,
       "default": 0
     },
     "maxJobs": {
       "title": "Max jobs in total",
       "type": "integer",
-      "description": "Optional overall cap across all companies. 0 = no cap.",
+      "description": "Stop after this many jobs in total (0 = no limit, the default, for complete exports). AI agents: set 50–200 for fast answers. Aliases maxItems/limit/maxResults also work.",
       "minimum": 0,
       "default": 0
     },
@@ -95,6 +95,12 @@
       "minimum": 0,
       "maximum": 10,
       "default": 3
+    },
+    "emitStatusRows": {
+      "title": "Add status rows for empty companies",
+      "type": "boolean",
+      "default": true,
+      "description": "Add one free row (status \"no_results\", \"not_found\" or \"error\" plus a reason) for each company that returned no jobs, e.g. \"N open jobs found, 0 matched your filters\". Not charged. Turn off for jobs only."
     }
   },
   "required": [

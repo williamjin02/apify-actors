@@ -1,8 +1,19 @@
 {
   "actorOutputSchemaVersion": 1,
-  "title": "Output",
+  "title": "Output of AI Brand Visibility Tracker",
+  "description": "One row per check (prompt x sample) in the default dataset; the share-of-voice summary in the OUTPUT record. Skipped or capped checks are explained in a free status row.",
   "properties": {
-    "checks": { "type": "string", "title": "Checks (one row per prompt x sample)", "template": "{{links.apiDefaultDatasetUrl}}/items" },
-    "summary": { "type": "string", "title": "Share-of-voice summary", "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT" }
+    "checks": {
+      "type": "string",
+      "title": "Checks (one row per prompt x sample)",
+      "description": "Example: {\"prompt\":\"Best wiki tool for a startup?\",\"sample\":1,\"brandMentioned\":true,\"brandRank\":2,\"brandCited\":false,\"brandSentiment\":\"positive\",\"competitorsMentioned\":[\"Coda\",\"Confluence\"],\"citedDomains\":[\"zapier.com\"],\"status\":\"ok\"}. Status row: {\"status\":\"stopped\",\"error\":\"Stopped: Reached your maximum cost per run…\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Share-of-voice summary",
+      "description": "JSON: brandMentionRate, leaderboard (mentions, citations, sentiment per brand), checksRequested, checksRun, charged, truncated, freePlanLimited, notice and stoppedReason.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
   }
 }

@@ -14,7 +14,7 @@ try {
         startUrls = [], searchText = '', titleKeywords = [], excludeTitleKeywords = [], locationKeywords = [],
         postedWithinDays = null, remoteOnly = false,
         includeDetails = true, includeDescription = true, includeDescriptionHtml = false,
-        maxJobsPerSite = 0, maxJobs = 0, splitLargeSites = true,
+        maxJobsPerSite = 0, maxJobs = 0, splitLargeSites = true, emitStatusRows = true,
         proxyConfiguration = { useApifyProxy: false }, maxRetries = 3, detailConcurrency = 4,
     } = input;
 
@@ -26,7 +26,9 @@ try {
     const maxDays = postedWithinDays === null || postedWithinDays === '' || postedWithinDays === undefined ? null : Number(postedWithinDays);
     if (maxDays !== null && (!Number.isFinite(maxDays) || maxDays < 0)) throw new InputError('"Posted within (days)" must be a number of days, e.g. 7');
     const perSite = Number(maxJobsPerSite) > 0 ? Math.floor(Number(maxJobsPerSite)) : Infinity;
-    const totalCap = Number(maxJobs) > 0 ? Math.floor(Number(maxJobs)) : Infinity;
+    // Overall cap: maxJobs, or aliases agents often send (maxItems, limit, maxResults), and the run's max paid items option.
+    const caps = [maxJobs, input.maxItems, input.limit, input.maxResults, process.env.ACTOR_MAX_PAID_DATASET_ITEMS].map(Number).filter((n) => Number.isFinite(n) && n > 0).map(Math.floor);
+    const totalCap = caps.length ? Math.min(...caps) : Infinity;
     const needDetails = !!includeDetails || locs.length > 0 || !!remoteOnly;
 
     const targets = []; const bad = []; const seen = new Set();
@@ -169,6 +171,11 @@ try {
             };
             await Promise.all(Array.from({ length: Math.max(1, Math.min(8, Number(detailConcurrency) || 4)) }, worker));
             row.jobsMatched = out.length;
+            if (!out.length) {
+                const f = [searchText && `searchText="${searchText}"`, inc.length && `titleKeywords=${JSON.stringify(inc)}`, exc.length && `excludeTitleKeywords=${JSON.stringify(exc)}`,
+                    locs.length && `locationKeywords=${JSON.stringify(locs)}`, maxDays !== null && `postedWithinDays=${maxDays}`, remoteOnly && 'remoteOnly=true'].filter(Boolean).join(', ');
+                row.reason = row.jobsListed ? `${row.jobsListed} jobs listed, 0 matched your filters (${f || 'none'}). Loosen or remove filters.` : `The career site has no open jobs${f ? ` for ${f}` : ''} right now.`;
+            }
             for (let i = 0; i < out.length && !stop(); i += 200) row.jobsSaved += await push(out.slice(i, i + 200));
             log.info(`${t.tenant}/${t.site}: ${row.jobsReported} jobs reported, ${row.jobsListed} listed, ${row.jobsSaved} saved`);
         } catch (e) {
@@ -179,12 +186,21 @@ try {
     }
 
     const okSites = summaryRows.filter((r) => r.status === 'ok').length;
-    const summary = { sitesRequested: raw.length, sitesOk: okSites, jobsSaved: pushed, chargeLimitReached: chargeLimitHit, formatErrors, networkErrors, stats, sites: summaryRows, finishedAt: new Date().toISOString() };
+    // Never silent: one free (unbilled) status row per site that produced no jobs.
+    const empty = summaryRows.filter((r) => !r.jobsSaved && !String(r.status).startsWith('skipped'));
+    if (emitStatusRows !== false) {
+        for (const r of empty) await Actor.pushData({ status: r.status === 'ok' ? 'no_results' : r.status, input: r.input, careerSiteUrl: r.careerSiteUrl ?? null,
+            jobsListed: r.jobsListed ?? 0, jobsMatched: r.jobsMatched ?? 0, reason: r.reason ?? r.error ?? null, scrapedAt }); // no event name = not charged
+    }
+    const stoppedReason = chargeLimitHit ? 'Reached the maximum cost you set for this run.' : pushed >= totalCap ? `Reached the job limit (${totalCap}). Raise maxJobs (0 = no limit) for more.` : null;
+    const zeroResultsReason = pushed ? null : (empty.map((r) => `${r.input}: ${r.reason ?? r.error ?? r.status}`).join(' | ') || null);
+    const summary = { sitesRequested: raw.length, sitesOk: okSites, jobsSaved: pushed, maxJobs: Number.isFinite(totalCap) ? totalCap : 0, stoppedReason, zeroResultsReason, chargeLimitReached: chargeLimitHit, formatErrors, networkErrors, stats, sites: summaryRows, finishedAt: new Date().toISOString() };
     await Actor.setValue('OUTPUT', summary);
     if (!okSites && summaryRows.some((r) => r.status === 'format_error')) throw new Error('Workday response format changed; no jobs could be parsed. The actor needs an update.');
     if (!okSites && targets.length && summaryRows.filter((r) => r.status === 'error').length === targets.length) throw new Error(`All ${targets.length} career sites failed to load (network errors). Try again or enable a proxy.`);
-    if (!okSites) await Actor.exit('No Workday career sites found for the URLs you entered. See the README: "How to find a company\'s Workday URL".');
-    else await Actor.exit(`Saved ${pushed} jobs from ${okSites} of ${raw.length} career sites.`);
+    if (!okSites) await Actor.exit('0 results: no Workday career sites found for the URLs you entered. Copy the URL of the company\'s myworkdayjobs.com jobs page (see the README: "How to find a company\'s Workday URL").');
+    else if (!pushed) await Actor.exit(`0 results: ${zeroResultsReason}`);
+    else await Actor.exit(`Saved ${pushed} jobs from ${okSites} of ${raw.length} career sites.${stoppedReason ? ` Stopped: ${stoppedReason}` : ''}${empty.length ? ` ${empty.length} site(s) returned no jobs (see the status rows).` : ''}`);
 } catch (e) {
     if (e instanceof InputError) { log.error(e.message); await Actor.fail(`Input error: ${e.message}`); }
     else { log.exception(e, 'Run failed'); await Actor.fail(e.message); }

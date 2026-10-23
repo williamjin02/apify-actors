@@ -4,43 +4,80 @@
     "type": "object",
     "properties": {
       "url": {
-        "type": "string",
-        "description": "Requested URL"
-      },
-      "loadedUrl": {
+        "title": "Url",
         "type": [
           "string",
           "null"
         ],
-        "description": "Final URL after redirects"
+        "description": "Requested URL",
+        "examples": [
+          "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
+        ]
+      },
+      "loadedUrl": {
+        "title": "Loaded URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Final URL after redirects",
+        "examples": [
+          "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
+        ]
       },
       "depth": {
+        "title": "Depth",
         "type": [
           "integer",
           "null"
         ],
-        "description": "Crawl depth (0 = start URL)"
+        "description": "Crawl depth (0 = start URL)",
+        "examples": [
+          0
+        ]
       },
       "status": {
-        "type": "string",
-        "description": "ok, http_error, fetch_error, blocked_by_robots_txt, not_html, empty_page, ai_error, invalid_output, skipped_cost_cap, invalid_url or error. Only 'ok' rows are charged."
-      },
-      "title": {
+        "title": "Status",
         "type": [
           "string",
           "null"
         ],
-        "description": "Page title"
+        "description": "ok, http_error, fetch_error, blocked_by_robots_txt, not_html, empty_page, ai_error, invalid_output, skipped_cost_cap, invalid_url or error. Only 'ok' rows are charged.",
+        "examples": [
+          "ok"
+        ]
+      },
+      "title": {
+        "title": "Title",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Page title",
+        "examples": [
+          "A Light in the Attic | Books to Scrape - Sandbox"
+        ]
       },
       "data": {
+        "title": "Data",
         "type": [
           "object",
           "array",
           "null"
         ],
-        "description": "Extracted data (matches your schema)"
+        "description": "Extracted data (matches your schema)",
+        "examples": [
+          {
+            "title": "A Light in the Attic",
+            "price": 51.77,
+            "currency": "GBP",
+            "inStock": true,
+            "description": "It's hard to imagine a world without A Light in the Attic. This now-classic collection of poetry and drawings from Shel Silverstein celeb…"
+          }
+        ]
       },
       "error": {
+        "title": "Error",
         "type": [
           "string",
           "null"
@@ -48,41 +85,62 @@
         "description": "Why the page failed"
       },
       "truncated": {
+        "title": "Truncated",
         "type": [
           "boolean",
           "null"
         ],
-        "description": "Page was trimmed to the input token limit"
+        "description": "Page was trimmed to the input token limit",
+        "examples": [
+          false
+        ]
       },
       "inputTokens": {
+        "title": "Input Tokens",
         "type": [
           "integer",
           "null"
         ],
-        "description": "AI input tokens"
+        "description": "AI input tokens",
+        "examples": [
+          820
+        ]
       },
       "outputTokens": {
+        "title": "Output Tokens",
         "type": [
           "integer",
           "null"
         ],
-        "description": "AI output tokens"
+        "description": "AI output tokens",
+        "examples": [
+          259
+        ]
       },
       "model": {
+        "title": "Model",
         "type": [
           "string",
           "null"
         ],
-        "description": "AI model used"
+        "description": "AI model used",
+        "examples": [
+          "gpt-6-luna"
+        ]
       },
       "aiKey": {
+        "title": "Ai Key",
         "type": [
           "string",
           "null"
         ],
-        "description": "built-in or own-key"
+        "description": "built-in or own-key",
+        "examples": [
+          "built-in"
+        ]
       },
       "markdown": {
+        "title": "Markdown",
         "type": [
           "string",
           "null"
@@ -90,13 +148,35 @@
         "description": "Cleaned page markdown (if enabled)"
       },
       "extractedAt": {
+        "title": "Extracted At",
         "type": [
           "string",
           "null"
         ],
-        "description": "ISO timestamp"
+        "description": "ISO timestamp",
+        "examples": [
+          "2026-10-23T19:07:08.725Z"
+        ]
       }
-    }
+    },
+    "examples": [
+      {
+        "url": "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
+        "loadedUrl": "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
+        "depth": 0,
+        "status": "ok",
+        "title": "A Light in the Attic | Books to Scrape - Sandbox",
+        "data": {
+          "title": "A Light in the Attic",
+          "price": 51.77,
+          "currency": "GBP",
+          "inStock": true,
+          "description": "It's hard to imagine a world without A Light in the Attic. This now-classic collection of poetry and drawings from Shel Silverstein celeb…"
+        },
+        "error": null,
+        "truncated": false
+      }
+    ]
   },
   "views": {
     "overview": {

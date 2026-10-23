@@ -2,6 +2,10 @@
 
 Try it free: Apify's free plan ($5/month credit) covers **hundreds of thousands of rows a month**.
 
+**When to use:** an AI agent or pipeline needs to put rows into a Google Sheet, or read a sheet as JSON. No OAuth.
+**Input:** a sheet URL plus a dataset ID or JSON rows, e.g. `{"spreadsheet":"https://docs.google.com/spreadsheets/d/<ID>/edit","rawData":[{"name":"A"}]}`.
+**Output:** rows written to the sheet (summary in OUTPUT), or one JSON row per sheet row when `operation` is `"read"`. $0.01 per 1,000 rows.
+
 ## What can Google Sheets Import & Export do?
 
 - 📤 **Export a dataset to Google Sheets.** Send the output of any actor run (Google Maps, Amazon, jobs, sitemaps…) to a sheet. Nested fields are flattened (`address.city`) and arrays are joined, stored as JSON or expanded.
@@ -91,6 +95,32 @@ Every run also stores a summary in the key-value store record `OUTPUT`:
 - **Inputs from a sheet:** keep keywords, URLs or ASINs in a sheet that non-technical teammates edit, and read them at the start of a workflow.
 - **Reporting:** keep Looker Studio dashboards and pivot tables fed from scraped data.
 - **Backups:** copy a sheet into a dataset on a schedule (versioned JSON/CSV exports).
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/google-sheets-import-export"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/google-sheets-import-export` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/google-sheets-import-export`.
+
+Example prompts:
+
+- "Run the Workday scraper for NVIDIA and put the jobs in my Google Sheet"
+- "Read my leads sheet and enrich each domain"
+- "Append these 50 rows to the "Leads" tab and skip duplicate emails"
+
+Minimal input:
+
+```json
+{"spreadsheet": "https://docs.google.com/spreadsheets/d/<ID>/edit", "datasetId": "<datasetId from the previous run>"}
+```
+
+**Keep it fast:** `operation` defaults to `"write"`. The sheet must be shared with `sheets-tool@apify-tools-512508.iam.gserviceaccount.com` first: if you get a permission error, ask the user to share the sheet with that email, then run again.
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations & API
 
