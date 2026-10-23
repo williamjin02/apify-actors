@@ -1,0 +1,11 @@
+{
+  "name": "sitemap-url-extractor",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Extract every URL from any website's XML sitemaps (robots.txt discovery, sitemap indexes, .gz, text and RSS sitemaps) with lastmod filters, new-URL detection and optional HTTP status checks.",
+  "main": "src/main.js",
+  "scripts": { "start": "node src/main.js", "test": "node test/local.test.js" },
+  "dependencies": { "apify": "^3.4.0", "got-scraping": "^4.1.1" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}

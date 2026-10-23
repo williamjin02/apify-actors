@@ -1,0 +1,167 @@
+{
+    "title": "Sitemap URL Extractor input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "startUrls": {
+            "title": "Websites or sitemap URLs",
+            "type": "array",
+            "description": "Website home pages (e.g. https://example.com) \u2014 sitemaps are discovered from robots.txt and common paths \u2014 or direct sitemap URLs (sitemap.xml, sitemap index, .xml.gz, .txt or RSS/Atom feed).",
+            "editor": "requestListSources",
+            "prefill": [
+                {
+                    "url": "https://docs.apify.com"
+                }
+            ]
+        },
+        "maxUrls": {
+            "title": "Max URLs (total)",
+            "type": "integer",
+            "description": "Stop after this many URLs across all sites. 0 = no limit. Big sites can list hundreds of thousands of URLs (apify.com lists ~790,000), so set a cap to control cost.",
+            "default": 0,
+            "minimum": 0,
+            "prefill": 1000
+        },
+        "maxUrlsPerSite": {
+            "title": "Max URLs per site",
+            "type": "integer",
+            "description": "Limit per input website. 0 = no limit.",
+            "default": 0,
+            "minimum": 0
+        },
+        "includeUrlPatterns": {
+            "title": "Include URL patterns",
+            "type": "array",
+            "description": "Only output URLs matching at least one pattern. Use a glob (e.g. */blog/*) or a regular expression (e.g. /products/\\d+). Case-insensitive.",
+            "editor": "stringList",
+            "default": []
+        },
+        "excludeUrlPatterns": {
+            "title": "Exclude URL patterns",
+            "type": "array",
+            "description": "Drop URLs matching any of these globs or regular expressions (e.g. */tag/*).",
+            "editor": "stringList",
+            "default": []
+        },
+        "lastmodFrom": {
+            "title": "Modified after",
+            "type": "string",
+            "description": "Only URLs whose <lastmod> is on/after this date. Absolute (2026-01-31) or relative (7 days, 24 hours, 2 weeks). URLs without lastmod are excluded when a date filter is set.",
+            "editor": "textfield"
+        },
+        "lastmodTo": {
+            "title": "Modified before",
+            "type": "string",
+            "description": "Only URLs whose <lastmod> is on/before this date. Absolute or relative.",
+            "editor": "textfield"
+        },
+        "onlyNewUrls": {
+            "title": "Only new URLs since the last run (monitoring)",
+            "type": "boolean",
+            "description": "Remembers URLs between runs (in a named key-value store) and outputs only URLs not seen before. The first run outputs everything and saves the baseline. Ideal with a schedule to get alerts on new pages, products or articles.",
+            "default": false
+        },
+        "stateKey": {
+            "title": "Monitoring state key",
+            "type": "string",
+            "description": "Optional name for the remembered URL set. Defaults to a hash of the start URLs. Use different keys for independent monitors.",
+            "editor": "textfield"
+        },
+        "checkUrlStatus": {
+            "title": "Check HTTP status of every URL",
+            "type": "boolean",
+            "description": "Sends a HEAD request (GET fallback) to each output URL and adds httpStatus and finalUrl (redirect target). Finds broken (404) and redirected sitemap entries. Slower; charged as an extra event per URL.",
+            "default": false
+        },
+        "statusCheckConcurrency": {
+            "title": "Status check concurrency",
+            "type": "integer",
+            "description": "Parallel status requests.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 50
+        },
+        "includeImages": {
+            "title": "Include image URLs",
+            "type": "boolean",
+            "description": "Add the list of <image:loc> URLs for each page (image sitemaps).",
+            "default": false
+        },
+        "includeAlternates": {
+            "title": "Include hreflang alternates",
+            "type": "boolean",
+            "description": "Add <xhtml:link hreflang> language alternates for each page.",
+            "default": false
+        },
+        "restrictToStartPath": {
+            "title": "Restrict to start URL path",
+            "type": "boolean",
+            "description": "When a start URL has a path (e.g. https://example.com/blog/), output only URLs under that path and try that path's own sitemap first.",
+            "default": true
+        },
+        "discoverFromRobotsTxt": {
+            "title": "Discover sitemaps from robots.txt",
+            "type": "boolean",
+            "description": "Read Sitemap: lines from /robots.txt when a website (not a sitemap) is given.",
+            "default": true,
+            "sectionCaption": "Advanced"
+        },
+        "tryCommonSitemapPaths": {
+            "title": "Try common sitemap paths",
+            "type": "boolean",
+            "description": "If robots.txt lists no sitemap, try /sitemap.xml, /sitemap_index.xml, /wp-sitemap.xml, /sitemap.txt and similar.",
+            "default": true
+        },
+        "maxSitemapDepth": {
+            "title": "Max sitemap index depth",
+            "type": "integer",
+            "description": "How deep to follow nested sitemap indexes.",
+            "default": 5,
+            "minimum": 0,
+            "maximum": 20
+        },
+        "maxSitemaps": {
+            "title": "Max sitemap files",
+            "type": "integer",
+            "description": "Safety limit on the number of sitemap files fetched per run.",
+            "default": 1000,
+            "minimum": 1
+        },
+        "sitemapConcurrency": {
+            "title": "Sitemap download concurrency",
+            "type": "integer",
+            "description": "Sitemap files fetched in parallel per site.",
+            "default": 5,
+            "minimum": 1,
+            "maximum": 20
+        },
+        "requestTimeoutSecs": {
+            "title": "Request timeout (seconds)",
+            "type": "integer",
+            "default": 30,
+            "minimum": 5,
+            "maximum": 180,
+            "description": "Timeout for each sitemap or status-check HTTP request, in seconds."
+        },
+        "maxRetries": {
+            "title": "Max retries per request",
+            "type": "integer",
+            "description": "Retries on network errors, 403, 429 and 5xx with exponential backoff (honours Retry-After).",
+            "default": 3,
+            "minimum": 0,
+            "maximum": 10
+        },
+        "proxyConfiguration": {
+            "title": "Proxy",
+            "type": "object",
+            "description": "Usually not needed \u2014 sitemaps are meant for bots. Enable Apify Proxy only for sites that block datacenter traffic.",
+            "editor": "proxy",
+            "default": {
+                "useApifyProxy": false
+            }
+        }
+    },
+    "required": [
+        "startUrls"
+    ]
+}

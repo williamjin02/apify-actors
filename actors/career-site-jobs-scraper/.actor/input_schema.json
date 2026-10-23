@@ -1,0 +1,103 @@
+{
+  "title": "Career Site Jobs Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "companies": {
+      "title": "Companies",
+      "type": "array",
+      "description": "Job-board URLs (e.g. https://jobs.lever.co/spotify, https://job-boards.greenhouse.io/stripe, https://jobs.ashbyhq.com/ramp, https://apply.workable.com/huggingface, https://bunq.recruitee.com) or just the board name (e.g. stripe). With a bare name the actor checks Greenhouse, Lever, Ashby, Workable and Recruitee automatically. You can also force one ATS with 'lever:spotify'.",
+      "editor": "stringList",
+      "prefill": [
+        "stripe",
+        "https://jobs.lever.co/spotify",
+        "https://jobs.ashbyhq.com/ramp"
+      ]
+    },
+    "titleKeywords": {
+      "title": "Job title contains",
+      "type": "array",
+      "description": "Only keep jobs whose title contains ANY of these words (case-insensitive), e.g. engineer, sales, data. Leave empty for all jobs.",
+      "editor": "stringList",
+      "sectionCaption": "Filters"
+    },
+    "excludeTitleKeywords": {
+      "title": "Job title does NOT contain",
+      "type": "array",
+      "description": "Drop jobs whose title contains any of these words, e.g. intern, senior.",
+      "editor": "stringList"
+    },
+    "locationKeywords": {
+      "title": "Location contains",
+      "type": "array",
+      "description": "Only keep jobs whose location contains ANY of these, e.g. London, Germany, Remote, US.",
+      "editor": "stringList"
+    },
+    "departmentKeywords": {
+      "title": "Department contains",
+      "type": "array",
+      "description": "Only keep jobs whose department or team contains ANY of these, e.g. Engineering, Sales.",
+      "editor": "stringList"
+    },
+    "remoteOnly": {
+      "title": "Remote jobs only",
+      "type": "boolean",
+      "description": "Only keep jobs the company marks as remote (or whose location says Remote).",
+      "default": false
+    },
+    "postedSince": {
+      "title": "Posted since",
+      "type": "string",
+      "description": "Only jobs posted after this date. A date (2026-10-01) or a relative period such as '1 day', '7 days', '2 weeks'. Great for daily monitoring of new openings.",
+      "editor": "textfield"
+    },
+    "includeDescription": {
+      "title": "Include job description (text)",
+      "type": "boolean",
+      "description": "Include the full plain-text job description. Turn off for smaller, faster exports.",
+      "default": true,
+      "sectionCaption": "Output"
+    },
+    "includeDescriptionHtml": {
+      "title": "Include job description (HTML)",
+      "type": "boolean",
+      "description": "Also include the original HTML description.",
+      "default": false
+    },
+    "maxJobsPerCompany": {
+      "title": "Max jobs per company",
+      "type": "integer",
+      "description": "Stop after this many matching jobs per company. 0 = all open jobs.",
+      "minimum": 0,
+      "default": 0
+    },
+    "maxJobs": {
+      "title": "Max jobs in total",
+      "type": "integer",
+      "description": "Optional overall cap across all companies. 0 = no cap.",
+      "minimum": 0,
+      "default": 0
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Not needed: the job-board APIs are public. Only turn on if you see repeated HTTP 429 errors.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": false
+      },
+      "sectionCaption": "Advanced"
+    },
+    "maxRetries": {
+      "title": "Max retries per request",
+      "type": "integer",
+      "description": "Retries with exponential backoff on network errors and HTTP 429/5xx.",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 3
+    }
+  },
+  "required": [
+    "companies"
+  ]
+}

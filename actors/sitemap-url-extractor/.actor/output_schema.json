@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Sitemap URLs",
+  "description": "Extracted URLs are stored in the default dataset; a run summary is stored in the OUTPUT record of the default key-value store.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Extracted URLs",
+      "description": "Extracted URLs (one item per row) in the default dataset.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON summary of the run (counts, errors, settings).",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

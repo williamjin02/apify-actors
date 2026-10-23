@@ -1,0 +1,11 @@
+{
+  "name": "career-site-jobs-scraper",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Scrape open jobs from company career sites on Greenhouse, Lever, Ashby, Workable and Recruitee via their official public job-board APIs.",
+  "main": "src/main.js",
+  "scripts": { "start": "node src/main.js", "test": "node test/local.test.js" },
+  "dependencies": { "apify": "^3.4.0", "got-scraping": "^4.1.1" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}

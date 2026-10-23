@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Apify local runs and CLI state
+storage/
+apify_storage/
+.apify/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Logs, coverage, and build output
+*.log
+npm-debug.log*
+coverage/
+.nyc_output/
+dist/
+build/
+*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db

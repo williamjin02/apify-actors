@@ -1,0 +1,56 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": { "type": "string", "description": "Page URL from the sitemap" },
+      "lastmod": { "type": ["string", "null"], "description": "Last modification (ISO 8601)" },
+      "changefreq": { "type": ["string", "null"] },
+      "priority": { "type": ["number", "null"] },
+      "imageCount": { "type": "integer" },
+      "images": { "type": "array" },
+      "alternates": { "type": "array" },
+      "newsPublicationDate": { "type": ["string", "null"] },
+      "isNew": { "type": ["boolean", "null"], "description": "True if not seen in previous runs (monitoring mode)" },
+      "httpStatus": { "type": ["integer", "null"] },
+      "finalUrl": { "type": ["string", "null"] },
+      "statusError": { "type": ["string", "null"] },
+      "sitemapUrl": { "type": "string", "description": "Sitemap file the URL came from" },
+      "site": { "type": "string", "description": "Website origin" },
+      "extractedAt": { "type": "string" }
+    },
+    "required": ["url", "sitemapUrl", "site"]
+  },
+  "views": {
+    "overview": {
+      "title": "URLs",
+      "transformation": { "fields": ["url", "lastmod", "changefreq", "priority", "isNew", "sitemapUrl", "site"] },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": { "label": "URL", "format": "link" },
+          "lastmod": { "label": "Last modified", "format": "date" },
+          "changefreq": { "label": "Change freq", "format": "text" },
+          "priority": { "label": "Priority", "format": "number" },
+          "isNew": { "label": "New?", "format": "boolean" },
+          "sitemapUrl": { "label": "Sitemap", "format": "link" },
+          "site": { "label": "Site", "format": "text" }
+        }
+      }
+    },
+    "status": {
+      "title": "HTTP status",
+      "transformation": { "fields": ["url", "httpStatus", "finalUrl", "statusError", "lastmod"] },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": { "label": "URL", "format": "link" },
+          "httpStatus": { "label": "Status", "format": "number" },
+          "finalUrl": { "label": "Redirects to", "format": "link" },
+          "statusError": { "label": "Error", "format": "text" },
+          "lastmod": { "label": "Last modified", "format": "date" }
+        }
+      }
+    }
+  }
+}

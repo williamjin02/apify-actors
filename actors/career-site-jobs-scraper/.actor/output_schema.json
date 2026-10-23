@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Career Site Jobs Scraper",
+  "description": "Jobs are stored in the default dataset; a per-company run summary is stored in the OUTPUT record of the default key-value store.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Jobs",
+      "description": "Job postings (one per row) in the default dataset.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON summary: which ATS each company uses, jobs found and saved, errors.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

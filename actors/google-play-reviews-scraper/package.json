@@ -1,0 +1,11 @@
+{
+  "name": "google-play-reviews-scraper",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Scrape Google Play app reviews: rating, text, date, thumbs-up, app version and developer replies, for any app, country and language.",
+  "main": "src/main.js",
+  "scripts": { "start": "node src/main.js", "test": "node test/local.test.js" },
+  "dependencies": { "apify": "^3.4.0", "got-scraping": "^4.1.1" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
