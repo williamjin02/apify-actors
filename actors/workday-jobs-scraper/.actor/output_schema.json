@@ -1,0 +1,8 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Workday jobs",
+  "properties": {
+    "jobs": { "type": "string", "title": "Jobs", "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview" },
+    "summary": { "type": "string", "title": "Run summary (per site)", "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT" }
+  }
+}

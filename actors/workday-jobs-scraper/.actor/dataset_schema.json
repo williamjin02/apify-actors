@@ -1,0 +1,14 @@
+{
+  "actorSpecification": 1,
+  "fields": {},
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": { "fields": ["company", "title", "location", "country", "remote", "timeType", "postedDate", "salaryText", "jobUrl"] },
+      "display": { "component": "table", "properties": {
+        "company": { "label": "Company" }, "title": { "label": "Title" }, "location": { "label": "Location" }, "country": { "label": "Country" },
+        "remote": { "label": "Remote", "format": "boolean" }, "timeType": { "label": "Time type" }, "postedDate": { "label": "Posted", "format": "date" },
+        "salaryText": { "label": "Pay range" }, "jobUrl": { "label": "Job URL", "format": "link" } } }
+    }
+  }
+}

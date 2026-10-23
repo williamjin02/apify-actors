@@ -18,6 +18,7 @@ jobs:
           - company-website-enrichment
           - google-sheets-import-export
           - ai-extract
+          - workday-jobs-scraper
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "workday-jobs-scraper",
+  "title": "Workday Jobs Scraper: All Jobs from Any myworkdayjobs.com Site",
+  "description": "Scrape every open job from any company's Workday career site (myworkdayjobs.com): title, all locations, country, remote, pay range, posted date, full description and apply URL. Gets past Workday's 2,000-job limit. No login, no proxy, $1.50 per 1,000 jobs.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": { "templateId": "js-empty" },
+  "input": "./input_schema.json",
+  "storages": { "dataset": "./dataset_schema.json" },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 128,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 256
+}
