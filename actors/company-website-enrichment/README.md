@@ -3,7 +3,7 @@
 Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$2-3 per 1,000 enriched websites**. Websites that can't be reached are free.
 
 **When to use:** you have a list of company domains and need firmographic and contact data for each one.
-**Input:** a list of domains, e.g. `{"websites":["stripe.com","hubspot.com"]}`.
+**Input:** a list of domains, e.g. `{"websites":["stripe.com","hubspot.com"]}`, or the `datasetId` of another Actor run (Google Maps, lead lists, directories) to enrich its `website` column.
 **Output:** one row per company with name, description, logo, generic emails, phones, address, social links, key pages and 130+ detected technologies. From $2 per 1,000 websites.
 
 ## What can Company Website Enrichment do?
@@ -110,6 +110,19 @@ A run summary (enriched count, status counts, requests) is saved to the `OUTPUT`
 - **Sales intelligence:** spot companies that are hiring (careers page and ATS detected), then pull their jobs with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper).
 - **Agencies:** audit prospects' marketing stack (pixels, consent, chat, A/B testing) before outreach.
 - **Data cleaning:** check which domains still resolve and where they redirect.
+
+## Enrich Google Maps or other scraper results (chain Actors)
+
+Already scraped businesses with another Actor? Pass its dataset and this Actor reads the website column for you, removes duplicates and adds emails, social profiles and tech stack:
+
+```json
+{"datasetId": "YOUR_DATASET_ID", "websiteField": "website", "datasetMaxItems": 500}
+```
+
+- **Field auto-detect:** leave `websiteField` empty and it tries `website`, `websiteUrl`, `companyWebsite`, `companyUrl`, `companyDomain`, `domain`, `homepage`, `url` and `loc`. This covers Google Maps scrapers (`website`) and the [Sitemap URL Extractor](https://apify.com/swillz/sitemap-url-extractor) (`loc`). Dot paths like `company.url` work too.
+- **Run it automatically:** in the source Actor or Task, open the *Integrations* tab → *Add integration*, pick Company Website Enrichment, trigger it when the run succeeds and set `datasetId` to `{{resource.defaultDatasetId}}`. Each new run's results are enriched automatically.
+- **Then export:** send the enriched rows to a spreadsheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export) the same way. The run's `OUTPUT` record lists the exact input under `nextSteps`.
+- **Predictable cost:** `datasetMaxItems` (default 1,000) caps how many websites are read. Sites that can't be reached are not charged.
 
 ## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
 

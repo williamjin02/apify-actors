@@ -119,6 +119,10 @@ Minimal input:
 
 **Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
+## Send results to Google Sheets automatically
+
+Every run saves the exact next step in its `OUTPUT` record (`nextSteps`). To make it automatic, open your saved Task → *Integrations* tab → *Add integration*, pick [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export), set your `spreadsheet` URL, set `datasetId` to `{{resource.defaultDatasetId}}` and trigger it when the run succeeds. The new jobs land in your sheet after every scheduled run, for $0.01 per 1,000 rows.
+
 ## Integrations and API
 
 - **Make, n8n and Zapier:** use the official Apify app or node, choose *Run Actor* and pick `swillz/workday-jobs-scraper`.

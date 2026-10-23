@@ -69,7 +69,8 @@
       "type": "integer",
       "description": "Stop after this many jobs from each company (0 = no limit).",
       "minimum": 0,
-      "default": 0
+      "default": 0,
+      "prefill": 50
     },
     "maxJobs": {
       "title": "Max jobs in total",

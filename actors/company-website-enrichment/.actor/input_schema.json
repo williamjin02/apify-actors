@@ -7,12 +7,37 @@
       "title": "Websites or domains",
       "type": "array",
       "editor": "stringList",
-      "description": "Required. Array of strings, e.g. [\"stripe.com\",\"https://www.hubspot.com\"]. Domains or URLs; one row per company. Sites that fail get a free row with status and error instead of being dropped.",
+      "description": "Array of strings, e.g. [\"stripe.com\",\"https://www.hubspot.com\"]. Domains or URLs; one row per company. Required unless you pass datasetId. Sites that fail get a free row with status and error instead of being dropped.",
       "prefill": [
         "stripe.com",
         "hubspot.com",
         "zapier.com"
       ]
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Enrich the websites in another run's dataset, e.g. Google Maps, job or lead scraper results. Example: \"aBcD1234efGH5678\". Duplicates are removed. In an integration (run this after another Actor finishes) use {{resource.defaultDatasetId}}.",
+      "sectionCaption": "Chain from another Actor",
+      "resourceType": "dataset",
+      "resourcePermissions": [
+        "READ"
+      ]
+    },
+    "websiteField": {
+      "title": "Website field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the URL or domain, e.g. \"website\" (dot paths like \"company.url\" work). Leave empty to auto-detect: website, websiteUrl, companyWebsite, companyUrl, companyDomain, domain, homepage, url, loc."
+    },
+    "datasetMaxItems": {
+      "title": "Max websites from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many websites from the dataset (default 1000), to keep costs predictable.",
+      "default": 1000,
+      "minimum": 1
     },
     "maxPagesPerSite": {
       "title": "Max pages per website",
@@ -62,8 +87,5 @@
         "useApifyProxy": false
       }
     }
-  },
-  "required": [
-    "websites"
-  ]
+  }
 }

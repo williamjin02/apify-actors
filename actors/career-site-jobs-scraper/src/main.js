@@ -152,6 +152,7 @@ try {
     const stoppedReason = chargeLimitHit ? 'Reached the maximum cost you set for this run.' : pushed >= totalCap ? `Reached the job limit (${totalCap}). Raise maxJobs (0 = no limit) for more.` : null;
     const summary = { companiesRequested: targets.length, companiesWithBoards: perCompanySummary.filter((r) => r.status === 'ok').length,
         jobsSaved: pushed, maxJobs: Number.isFinite(totalCap) ? totalCap : 0, stoppedReason, zeroResultsReason: pushed ? null : (empty.map((r) => `${r.input}: ${r.reason ?? r.error ?? r.status}`).join(' | ') || null), chargeLimitReached: chargeLimitHit, formatErrors, networkErrors, stats, companies: perCompanySummary, finishedAt: new Date().toISOString() };
+    if (pushed) summary.nextSteps = [`Export to Google Sheets: run swillz/google-sheets-import-export with {"spreadsheet": "<your sheet URL>", "datasetId": "${Actor.getEnv().defaultDatasetId}"}`, 'Get only new jobs every day: save this input as a Task with postedSince: "1 day" and add a daily schedule.'];
     await Actor.setValue('OUTPUT', summary);
     // Silent-failure guard: if the ATS APIs changed shape, fail loudly instead of returning an empty dataset.
     const okBoards = summary.companiesWithBoards;

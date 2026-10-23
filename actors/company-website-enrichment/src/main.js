@@ -1,4 +1,5 @@
 import { Actor, log } from 'apify';
+import { websitesFromDataset, WEBSITE_FIELDS } from './dataset.js';
 import { gotScraping } from 'got-scraping';
 import robotsParser from 'robots-parser';
 import { extractPage, companyNameFrom, normalizeWebsite, domainOf } from './extract.js';
@@ -12,6 +13,7 @@ const slim = (html) => html.replace(/<script\b(?![^>]*ld\+json)([^>]*)>[\s\S]*?<
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 class InputError extends Error {}
 
+
 await Actor.init();
 try {
     const input = (await Actor.getInput()) ?? {};
@@ -22,7 +24,16 @@ try {
     } = input;
     const raw = (Array.isArray(websites) ? websites : String(websites).split(/[\n,]/))
         .map((w) => (typeof w === 'object' && w ? w.url : w)).map((w) => String(w ?? '').trim()).filter(Boolean);
-    if (!raw.length) throw new InputError('Add at least one website or domain, e.g. "stripe.com" or "https://www.hubspot.com".');
+    // Chain from another Actor: read websites from a dataset (datasetId, or the dataset passed by an Apify integration).
+    const dsId = String(input.datasetId || input?.payload?.resource?.defaultDatasetId || input?.resource?.defaultDatasetId || '').trim();
+    let fromDataset = null;
+    if (dsId) {
+        fromDataset = await websitesFromDataset(Actor.newClient(), dsId, String(input.websiteField || '').trim(), Math.max(1, Math.floor(Number(input.datasetMaxItems) || 1000)));
+        raw.push(...fromDataset.websites);
+        log.info(`Read ${fromDataset.websites.length} websites from dataset ${dsId} (field "${fromDataset.field ?? 'none found'}", ${fromDataset.itemsScanned} items scanned).`);
+        if (!fromDataset.websites.length && !raw.length) throw new InputError(`Dataset ${dsId} has no website values${fromDataset.field ? ` in field "${fromDataset.field}"` : ''}. Set "websiteField" to the field that holds the URL or domain (tried: ${WEBSITE_FIELDS.join(', ')}).`);
+    }
+    if (!raw.length) throw new InputError('Add at least one website or domain, e.g. "stripe.com" or "https://www.hubspot.com", or pass a datasetId from another Actor run.');
     const seen = new Set(); const targets = [];
     for (const r of raw) {
         const n = normalizeWebsite(r);
@@ -184,14 +195,15 @@ try {
     for (const t of targets.slice(idx)) skipped.push(t.input);
     for (const inp of skipped) await Actor.pushData({ input: inp, domain: null, status: 'skipped_charge_limit', error: 'Not processed: the run reached the maximum cost you set. Raise the limit and run these again.', scrapedAt: new Date().toISOString() });
     if (skipped.length) counts.skipped_charge_limit = skipped.length;
-    const summary = { websitesRequested: targets.length, enriched: counts.ok ?? 0, byStatus: counts, chargeLimitReached: chargeLimitHit,
+    const summary = { websitesRequested: targets.length, enriched: counts.ok ?? 0, byStatus: counts, chargeLimitReached: chargeLimitHit, sourceDatasetId: dsId || null,
         zeroResultsReason: counts.ok ? null : `No website could be enriched: ${Object.entries(counts).map(([k, v]) => `${v} ${k}`).join(', ')}. See the error field of each row.`, stats, finishedAt: new Date().toISOString() };
+    if (counts.ok) summary.nextSteps = [`Export to Google Sheets: run swillz/google-sheets-import-export with {"spreadsheet": "<your sheet URL>", "datasetId": "${Actor.getEnv().defaultDatasetId}"}`];
     await Actor.setValue('OUTPUT', summary);
     const valid = targets.filter((t) => t.n).length;
     // Silent-failure guard: many valid sites and none reachable means our network is broken, not the sites.
     if (valid >= 3 && !(counts.ok) && (counts.unreachable ?? 0) === valid) throw new Error(`None of the ${valid} websites could be reached. This looks like a network problem; try again or enable a proxy.`);
     await Actor.exit(`${counts.ok ? '' : '0 results: '}Enriched ${counts.ok ?? 0} of ${targets.length} websites${counts.ok === targets.length ? '' : ` (${Object.entries(counts).filter(([k]) => k !== 'ok').map(([k, v]) => `${v} ${k}`).join(', ')}; not charged)`}.`);
 } catch (e) {
-    if (e instanceof InputError) { log.error(e.message); await Actor.fail(`Input error: ${e.message}`); }
+    if (e instanceof InputError || e?.isInputError) { log.error(e.message); await Actor.fail(`Input error: ${e.message}`); }
     else { log.exception(e, 'Run failed'); await Actor.fail(e.message); }
 }
