@@ -21,9 +21,9 @@
     "spreadsheet": {
       "title": "Spreadsheet URL or ID",
       "type": "string",
-      "description": "Required. Full Google Sheets URL, e.g. \"https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit\". The sheet must first be shared (Editor for write, Viewer for read) with sheets-tool@apify-tools-512508.iam.gserviceaccount.com (Share button, paste the email, untick \"Notify people\"). AI agents: ask the user to share it if you get a permission error. Not needed with your own service account key.",
+      "description": "Required. Full Google Sheets URL, e.g. \"https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit\". The sheet must first be shared (Editor for write, Viewer for read) with sheets-tool@apify-tools-512508.iam.gserviceaccount.com (Share button, paste the email, untick \"Notify people\"). AI agents: ask the user to share it if you get a permission error. Not needed with your own service account key. The prefilled URL is Google's public sample sheet, so a first run with no other input reads it into a dataset; replace it with your own sheet.",
       "editor": "textfield",
-      "prefill": "https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit"
+      "prefill": "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit"
     },
     "sheetName": {
       "title": "Sheet tab name",

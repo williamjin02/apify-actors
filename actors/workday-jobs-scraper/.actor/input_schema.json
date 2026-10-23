@@ -81,7 +81,8 @@
       "default": 0,
       "minimum": 0,
       "editor": "number",
-      "sectionCaption": "Limits"
+      "sectionCaption": "Limits",
+      "prefill": 50
     },
     "maxJobs": {
       "title": "Max jobs in total",

@@ -370,6 +370,7 @@ try {
     summary.maxUrls = maxUrls;
     summary.stoppedReason = chargeLimitHit ? 'Reached the maximum cost you set for this run.' : (maxUrls > 0 && accepted >= maxUrls ? `Reached maxUrls (${maxUrls}). Set maxUrls higher, or 0 for no limit.` : null);
     summary.zeroResultsReason = pushed ? null : (summary.sites.map((s) => s.reason).filter(Boolean).join(' | ') || (onlyNewUrls && previouslySeen ? 'No new URLs since the last run.' : null));
+    if (pushed) summary.nextSteps = [`Export to Google Sheets: run swillz/google-sheets-import-export with {"spreadsheet": "<your sheet URL>", "datasetId": "${Actor.getEnv().defaultDatasetId}"}`, ...(checkUrlStatus ? [] : ['Find broken URLs: run again with checkUrlStatus: true (adds HTTP status and final URL per row).'])];
     await Actor.setValue('OUTPUT', summary);
     const msg = !pushed && summary.zeroResultsReason ? `0 results: ${summary.zeroResultsReason}` : `Done: ${pushed} URLs from ${sitesWithSitemaps}/${starts.length} sites (${summary.sites.reduce((a, s) => a + s.sitemapsFound.length, 0)} sitemaps).`
         + (maxUrls > 0 && accepted >= maxUrls ? ` Stopped at maxUrls (${maxUrls}); set it higher or 0 for all URLs.` : '')

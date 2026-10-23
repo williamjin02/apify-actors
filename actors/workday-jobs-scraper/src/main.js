@@ -112,13 +112,18 @@ try {
                 const b = r.body; if (!b || !Array.isArray(b.jobPostings)) throw new FormatError('Unexpected job list format');
                 return b;
             };
-            const enough = () => postings.size >= perSite * 3 && maxDays === null && !inc.length && !exc.length && !locs.length && !remoteOnly;
+            // Stop listing early when the run only needs a few jobs (maxJobsPerSite or the overall maxJobs cap) and no filters are set.
+            const siteCap = Math.min(perSite, totalCap - pushed);
+            const noFilters = maxDays === null && !inc.length && !exc.length && !locs.length && !remoteOnly;
+            const enough = () => noFilters && postings.size >= siteCap * 3;
+            // Splitting a 2,000+ site by facet lists every job (minutes). Skip it when the first 2,000 already hold enough.
+            const skipSplit = noFilters && siteCap * 3 < OFFSET_CAP;
             const crawl = async (facets, depth) => {
                 const first = await listPage(facets, 0);
                 if (!first) return false;
                 const total = Number(first.total) || 0;
                 if (depth === 0) row.jobsReported = total;
-                if (total >= OFFSET_CAP && splitLargeSites && depth < 3) {
+                if (total >= OFFSET_CAP && splitLargeSites && !skipSplit && depth < 3) {
                     const f = pickSplitFacet(first.facets, facets, total);
                     if (f) {
                         row.splitBy.push(f.param); log.info(`${t.tenant}/${t.site}: ${total}+ jobs, over Workday's 2,000 page limit; splitting by "${f.param}" (${f.values.length} groups)`);
@@ -139,7 +144,7 @@ try {
             const found = await crawl({ ...t.facets }, 0);
             if (!found) { row.status = 'not_found'; row.error = `No Workday career site at ${siteUrl(t)}. Copy the URL from the company's jobs page address bar.`; log.warning(row.error); summaryRows.push(row); continue; }
             row.jobsListed = postings.size;
-            if (row.jobsReported >= OFFSET_CAP && !row.splitBy.length) log.warning(`${t.tenant}/${t.site}: Workday only pages through 2,000 jobs and no filter was available to split by; saved the first 2,000. Add filters (e.g. a location) to get the rest.`);
+            if (row.jobsReported >= OFFSET_CAP && !row.splitBy.length && !skipSplit) log.warning(`${t.tenant}/${t.site}: Workday only pages through 2,000 jobs and no filter was available to split by; saved the first 2,000. Add filters (e.g. a location) to get the rest.`);
 
             // List-level filters first (cheap), then details.
             const cands = [];
@@ -195,6 +200,7 @@ try {
     const stoppedReason = chargeLimitHit ? 'Reached the maximum cost you set for this run.' : pushed >= totalCap ? `Reached the job limit (${totalCap}). Raise maxJobs (0 = no limit) for more.` : null;
     const zeroResultsReason = pushed ? null : (empty.map((r) => `${r.input}: ${r.reason ?? r.error ?? r.status}`).join(' | ') || null);
     const summary = { sitesRequested: raw.length, sitesOk: okSites, jobsSaved: pushed, maxJobs: Number.isFinite(totalCap) ? totalCap : 0, stoppedReason, zeroResultsReason, chargeLimitReached: chargeLimitHit, formatErrors, networkErrors, stats, sites: summaryRows, finishedAt: new Date().toISOString() };
+    if (pushed) summary.nextSteps = [`Export to Google Sheets: run swillz/google-sheets-import-export with {"spreadsheet": "<your sheet URL>", "datasetId": "${Actor.getEnv().defaultDatasetId}"}`, 'Also covers Greenhouse, Lever and Ashby boards: swillz/career-site-jobs-scraper.'];
     await Actor.setValue('OUTPUT', summary);
     if (!okSites && summaryRows.some((r) => r.status === 'format_error')) throw new Error('Workday response format changed; no jobs could be parsed. The actor needs an update.');
     if (!okSites && targets.length && summaryRows.filter((r) => r.status === 'error').length === targets.length) throw new Error(`All ${targets.length} career sites failed to load (network errors). Try again or enable a proxy.`);
