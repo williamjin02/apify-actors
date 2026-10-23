@@ -1,0 +1,100 @@
+{
+  "title": "Email Provider Detector input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "domains": {
+      "title": "Domains, websites or emails",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Company domains (\"stripe.com\"), website URLs (\"https://www.hubspot.com/pricing\") or work emails (\"jane@acme.com\"). Emails are reduced to their domain; the part before @ is never stored or output. Duplicates are removed.",
+      "prefill": [
+        "apify.com",
+        "hubspot.com",
+        "cloudflare.com"
+      ],
+      "example": [
+        "apify.com",
+        "hubspot.com",
+        "cloudflare.com"
+      ]
+    },
+    "maxDomains": {
+      "title": "Max domains",
+      "type": "integer",
+      "editor": "number",
+      "description": "Check at most this many unique domains per run (default 1000), to keep costs predictable. Aliases: maxItems, limit, maxResults.",
+      "default": 1000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Check the domains in another run's dataset, e.g. Google Maps, lead or company scraper results. Example: \"aBcD1234efGH5678\". In an integration (run this after another Actor finishes) use {{resource.defaultDatasetId}}.",
+      "sectionCaption": "Chain from another Actor",
+      "resourceType": "dataset",
+      "resourcePermissions": [
+        "READ"
+      ]
+    },
+    "domainField": {
+      "title": "Domain field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the domain, website or email, e.g. \"website\" (dot paths like \"company.domain\" work). Leave empty to auto-detect: domain, companyDomain, website, websiteUrl, companyWebsite, companyUrl, homepage, email, emails, companyEmail, workEmail, url, loc."
+    },
+    "datasetMaxItems": {
+      "title": "Max values from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many values from the dataset (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "checkDkim": {
+      "title": "Probe common DKIM selectors",
+      "type": "boolean",
+      "description": "Look up google, selector1, selector2, k1, s1 and default DKIM selectors. Helps find the real mailbox behind a gateway. Adds 12 DNS queries per domain.",
+      "default": true,
+      "sectionCaption": "Checks"
+    },
+    "countSpfLookups": {
+      "title": "Count SPF DNS lookups",
+      "type": "boolean",
+      "description": "Follow SPF includes recursively and flag records over the 10-lookup limit (SPF permerror).",
+      "default": true
+    },
+    "detectSaas": {
+      "title": "Detect SaaS from TXT verification records",
+      "type": "boolean",
+      "description": "List tools the company verified its domain with (Microsoft 365, Atlassian, OpenAI, Slack, Zoom, DocuSign and 40 more).",
+      "default": true
+    },
+    "includeRawRecords": {
+      "title": "Include raw DNS records",
+      "type": "boolean",
+      "description": "Add the raw MX, SPF, DMARC and TXT records to each row (larger output).",
+      "default": false
+    },
+    "concurrency": {
+      "title": "Concurrency",
+      "type": "integer",
+      "editor": "number",
+      "description": "Domains checked in parallel (1-50).",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 50,
+      "sectionCaption": "Advanced"
+    },
+    "dnsTimeoutSecs": {
+      "title": "DNS timeout (seconds)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Per-query timeout before falling back to DNS-over-HTTPS (Cloudflare, then Google).",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 30
+    }
+  }
+}
