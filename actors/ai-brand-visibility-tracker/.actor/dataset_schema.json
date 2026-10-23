@@ -1,0 +1,15 @@
+{
+  "actorSpecification": 1,
+  "fields": {},
+  "views": {
+    "overview": {
+      "title": "Checks",
+      "transformation": { "fields": ["prompt", "sample", "brandMentioned", "brandRank", "brandListPosition", "brandCited", "brandSentiment", "brandRecommended", "competitorsMentioned", "mentionedOrder", "citedDomains", "status", "checkedAt"] },
+      "display": { "component": "table", "properties": {
+        "prompt": { "label": "Prompt" }, "sample": { "label": "#", "format": "number" }, "brandMentioned": { "label": "Mentioned", "format": "boolean" },
+        "brandRank": { "label": "Rank", "format": "number" }, "brandListPosition": { "label": "List position", "format": "number" }, "brandCited": { "label": "Site cited", "format": "boolean" },
+        "brandSentiment": { "label": "Sentiment" }, "brandRecommended": { "label": "Recommended", "format": "boolean" }, "competitorsMentioned": { "label": "Competitors mentioned", "format": "array" },
+        "mentionedOrder": { "label": "Order mentioned", "format": "array" }, "citedDomains": { "label": "Cited domains", "format": "array" }, "status": { "label": "Status" }, "checkedAt": { "label": "Checked", "format": "date" } } }
+    }
+  }
+}

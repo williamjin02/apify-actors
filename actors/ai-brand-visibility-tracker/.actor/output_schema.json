@@ -1,0 +1,8 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output",
+  "properties": {
+    "checks": { "type": "string", "title": "Checks (one row per prompt x sample)", "template": "{{links.apiDefaultDatasetUrl}}/items" },
+    "summary": { "type": "string", "title": "Share-of-voice summary", "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT" }
+  }
+}

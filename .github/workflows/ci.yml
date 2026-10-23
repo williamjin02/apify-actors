@@ -19,6 +19,7 @@ jobs:
           - google-sheets-import-export
           - ai-extract
           - workday-jobs-scraper
+          - ai-brand-visibility-tracker
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}
