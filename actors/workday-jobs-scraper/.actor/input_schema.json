@@ -1,0 +1,132 @@
+{
+  "title": "Workday Jobs Scraper",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startUrls": {
+      "title": "Workday career-site URLs",
+      "type": "array",
+      "description": "One URL per company: the address of its Workday jobs page, e.g. <code>https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite</code>. A filtered search URL (with <code>?q=</code> or location filters) keeps its filters.",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite"
+        },
+        {
+          "url": "https://adobe.wd5.myworkdayjobs.com/external_experienced"
+        }
+      ]
+    },
+    "searchText": {
+      "title": "Search keywords",
+      "type": "string",
+      "description": "Same as the search box on the career site, e.g. <code>data engineer</code>. Leave empty for all jobs.",
+      "editor": "textfield",
+      "sectionCaption": "Filters"
+    },
+    "titleKeywords": {
+      "title": "Title must contain (any)",
+      "type": "array",
+      "description": "Keep jobs whose title contains any of these words (case-insensitive).",
+      "editor": "stringList"
+    },
+    "excludeTitleKeywords": {
+      "title": "Title must not contain",
+      "type": "array",
+      "description": "Drop jobs whose title contains any of these, e.g. <code>intern</code>, <code>senior</code>.",
+      "editor": "stringList"
+    },
+    "locationKeywords": {
+      "title": "Location contains (any)",
+      "type": "array",
+      "description": "Keep jobs where any location or the country contains one of these, e.g. <code>Remote</code>, <code>Germany</code>, <code>CA</code>.",
+      "editor": "stringList"
+    },
+    "postedWithinDays": {
+      "title": "Posted within (days)",
+      "type": "integer",
+      "description": "Only jobs posted in the last N days. Leave empty for all.",
+      "minimum": 0,
+      "editor": "number"
+    },
+    "remoteOnly": {
+      "title": "Remote only",
+      "type": "boolean",
+      "description": "Only jobs marked remote (by Workday's remote type, or 'Remote' in a location).",
+      "default": false
+    },
+    "includeDetails": {
+      "title": "Include full details",
+      "type": "boolean",
+      "description": "Fetch each job's page for the description, all locations, country, ISO posted date, time type and pay range. Turn off for a fast title/location/link list.",
+      "default": true,
+      "sectionCaption": "Output"
+    },
+    "includeDescription": {
+      "title": "Include description text",
+      "type": "boolean",
+      "description": "Plain-text job description (needs full details).",
+      "default": true
+    },
+    "includeDescriptionHtml": {
+      "title": "Include description HTML",
+      "type": "boolean",
+      "description": "Original HTML description as well.",
+      "default": false
+    },
+    "maxJobsPerSite": {
+      "title": "Max jobs per site",
+      "type": "integer",
+      "description": "0 = no limit.",
+      "default": 0,
+      "minimum": 0,
+      "editor": "number",
+      "sectionCaption": "Limits"
+    },
+    "maxJobs": {
+      "title": "Max jobs in total",
+      "type": "integer",
+      "description": "0 = no limit. You can also cap cost with the run's maximum cost setting.",
+      "default": 0,
+      "minimum": 0,
+      "editor": "number"
+    },
+    "splitLargeSites": {
+      "title": "Get past Workday's 2,000-job limit",
+      "type": "boolean",
+      "description": "Workday only pages through 2,000 jobs per search. When a site has more, split the search by category/location so every job is collected.",
+      "default": true
+    },
+    "detailConcurrency": {
+      "title": "Parallel detail requests",
+      "type": "integer",
+      "description": "Per site. Requests to each Workday host are also paced (about 8 per second).",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 8,
+      "editor": "number",
+      "sectionCaption": "Advanced"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Not needed for most sites. Enable only if a site blocks requests.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": false
+      }
+    },
+    "maxRetries": {
+      "title": "Max retries per request",
+      "type": "integer",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 6,
+      "editor": "number",
+      "description": "How many times to retry a failed request (network error, 429 or 5xx) before giving up on it."
+    }
+  },
+  "required": [
+    "startUrls"
+  ]
+}

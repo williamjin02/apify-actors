@@ -1,0 +1,19 @@
+{
+  "name": "workday-jobs-scraper",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Scrape every open job from any company's public Workday career site (myworkdayjobs.com) via the site's own public JSON endpoints.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node test/local.test.js"
+  },
+  "dependencies": {
+    "apify": "^3.4.0",
+    "got-scraping": "^4.1.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
