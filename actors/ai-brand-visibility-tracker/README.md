@@ -9,7 +9,7 @@
 
 Then it rolls everything up into a **share-of-voice leaderboard**: mention rate, average rank, first-place count, citation rate and sentiment per brand, per-prompt results, and the most-cited domains (the sites you need to be on).
 
-No OpenAI key needed. **$0.04 per check** (one prompt asked once), or **$0.01 per check with your own OpenAI key**.
+No OpenAI key needed. **$0.04-0.05 per check** (one prompt asked once, depending on your Apify plan), or **$0.01 per check with your own OpenAI key**.
 
 ## Use cases
 
@@ -64,12 +64,16 @@ No OpenAI key needed. **$0.04 per check** (one prompt asked once), or **$0.01 pe
 
 ## Pricing
 
-| | Price |
-|---|---|
-| Check with the built-in AI (web search included) | **$0.04** |
-| Check with your own OpenAI key | **$0.01** (+ your OpenAI usage, about $0.01-0.02 per check on the default model) |
+| Apify plan | Check with the built-in AI (web search included) | Check with your own OpenAI key |
+|---|---|---|
+| Free | **$0.05** | **$0.01** (+ your OpenAI usage, about $0.01-0.02 per check on the default model) |
+| Starter | **$0.05** | **$0.01** |
+| Scale | **$0.045** | **$0.01** |
+| Business and up | **$0.04** | **$0.01** |
 
-Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.20. Set *Max checks* or the run's maximum cost to cap spend. On the Apify free plan, the built-in AI runs up to 10 checks per run; add your own OpenAI key, or use any paid Apify plan, for bigger runs.
+Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
+
+Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.50 on Starter ($1.20 on Business). Set *Max checks* or the run's maximum cost to cap spend. On the Apify free plan, the built-in AI runs up to 10 checks per run; add your own OpenAI key, or use any paid Apify plan, for bigger runs.
 
 ## How it works and limitations
 
@@ -97,7 +101,7 @@ Failed checks are not charged. Example: 10 prompts x 3 samples = 30 checks = $1.
 
 | | This Actor | GEO SaaS dashboards | Asking ChatGPT by hand |
 |---|---|---|---|
-| Price | $0.04 per check, no subscription | Typically a monthly subscription | Your time |
+| Price | $0.04-0.05 per check, no subscription | Typically a monthly subscription | Your time |
 | Raw data (answers, citations, ranks) | ✅ JSON / CSV / Sheets | Varies | ❌ |
 | Competitor share of voice | ✅ up to 20 competitors | ✅ | ❌ |
 | Scheduling and API | ✅ Apify schedules, API, MCP | Varies | ❌ |

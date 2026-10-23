@@ -1,6 +1,6 @@
 **Company Website Enrichment** turns a list of company domains into **ready-to-use B2B lead data**. For every website you get the **company name, description, logo, generic contact emails (info@, sales@, support@), phone numbers, postal address, LinkedIn company page and other social profiles**, the contact, about and careers pages, the **job board the company uses** and its **tech stack (130+ technologies)**. Export to **CSV, JSON or Excel**, or push straight into your CRM.
 
-Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$2 per 1,000 enriched websites**. Websites that can't be reached are free.
+Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$2-3 per 1,000 enriched websites**. Websites that can't be reached are free.
 
 ## What can Company Website Enrichment do?
 
@@ -37,15 +37,18 @@ Paste domains, click Start. The actor reads the homepage plus up to 3 key pages 
 
 ## How much does it cost?
 
-This actor uses **pay-per-result pricing**: **$2.00 per 1,000 websites enriched**, plus a tiny $0.00005 per run start. Websites that are unreachable, blocked or invalid are returned with a status but **not charged**. No monthly fee, no compute or proxy charges on top.
+This actor uses **pay-per-result pricing**: **$2.00-3.00 per 1,000 websites enriched** (by Apify plan), plus a tiny $0.00005 per run start. Websites that are unreachable, blocked or invalid are returned with a status but **not charged**. No monthly fee, no compute or proxy charges on top.
 
-| Websites | Price |
-|---|---|
-| 1,000 | $2 |
-| 10,000 | $20 |
-| 100,000 | $200 |
+| Apify plan | Per 1,000 websites | 10,000 websites |
+|---|---|---|
+| Free | $3 | $30 |
+| Starter | $3 | $30 |
+| Scale | $2.50 | $25 |
+| Business and up | $2 | $20 |
 
-Apify's **free plan includes $5 of monthly credit**, enough for about **2,500 websites a month for free**. You can set a maximum cost per run and the actor stops cleanly when it's reached.
+Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
+
+Apify's **free plan includes $5 of monthly credit**, enough for about **1,600 websites a month for free**. You can set a maximum cost per run and the actor stops cleanly when it's reached.
 
 ## Input example
 
@@ -114,7 +117,7 @@ A run summary (enriched count, status counts, requests) is saved to the `OUTPUT`
 
 | | This actor | Contact scrapers (per page) | Paid enrichment APIs |
 |---|---|---|---|
-| Price | $2 per 1,000 websites | ~$2 per 1,000 pages (+ extras) | $50+/month |
+| Price | $2-3 per 1,000 websites by plan | ~$2 per 1,000 pages (+ extras) | $50+/month |
 | Tech stack | ✅ 130+ technologies | ❌ | Sometimes |
 | Social profiles + address | ✅ | ✅ | ✅ |
 | Job board / hiring signal | ✅ | ❌ | Rarely |

@@ -39,15 +39,18 @@ Just paste company names or job-board URLs. The actor reads each ATS's **officia
 
 ## How much does it cost?
 
-This actor uses **pay-per-result pricing**: **$3.00 per 1,000 jobs** saved, plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
+This actor uses **pay-per-result pricing**: **$3.50-6.00 per 1,000 jobs** saved (by Apify plan), plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
 
-| Jobs | Price |
-|---|---|
-| 1,000 | $3 |
-| 10,000 | $30 |
-| 50,000 | $150 |
+| Apify plan | Per 1,000 jobs | 10,000 jobs |
+|---|---|---|
+| Free | $6 | $60 |
+| Starter | $6 | $60 |
+| Scale | $4.50 | $45 |
+| Business and up | $3.50 | $35 |
 
-Apify's **free plan includes $5 of monthly credit**, which covers about **1,600 jobs a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it reaches it.
+Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
+
+Apify's **free plan includes $5 of monthly credit**, which covers about **800 jobs a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it reaches it.
 
 ## Input example
 
@@ -122,7 +125,7 @@ A run summary (which ATS each company uses, jobs found vs saved, any errors) is 
 | Login / cookies needed | ❌ none | Often | ❌ |
 | Breaks on layout changes | ❌ official APIs | Often | – |
 | Multi-ATS auto-detection | ✅ | – | ❌ |
-| Price | $3 per 1,000 jobs | Varies | Your time |
+| Price | $3.50-6 per 1,000 jobs by plan | Varies | Your time |
 
 ## FAQ
 
