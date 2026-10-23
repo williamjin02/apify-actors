@@ -143,5 +143,6 @@ Open an issue on the **Issues** tab. Bug reports and feature requests are welcom
 
 ## Related tools
 
-- **[Google Play Reviews Scraper](https://apify.com/swillz/google-play-reviews-scraper):** export Android app reviews, ratings and developer replies by country and language.
 - **Website Content Crawler:** turn the extracted URLs into clean text for LLMs and RAG.
+
+Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/sitemap-url-extractor

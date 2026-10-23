@@ -46,13 +46,13 @@
         "lastmodFrom": {
             "title": "Modified after",
             "type": "string",
-            "description": "Only URLs whose <lastmod> is on/after this date. Absolute (2026-01-31) or relative (7 days, 24 hours, 2 weeks). URLs without lastmod are excluded when a date filter is set.",
+            "description": "Only URLs whose lastmod date is on/after this date. Absolute (2026-01-31) or relative (7 days, 24 hours, 2 weeks). URLs without lastmod are excluded when a date filter is set.",
             "editor": "textfield"
         },
         "lastmodTo": {
             "title": "Modified before",
             "type": "string",
-            "description": "Only URLs whose <lastmod> is on/before this date. Absolute or relative.",
+            "description": "Only URLs whose lastmod date is on/before this date. Absolute or relative.",
             "editor": "textfield"
         },
         "onlyNewUrls": {

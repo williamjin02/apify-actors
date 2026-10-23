@@ -15,6 +15,9 @@ jobs:
           - sitemap-url-extractor
           - google-play-reviews-scraper
           - career-site-jobs-scraper
+          - company-website-enrichment
+          - google-sheets-import-export
+          - ai-extract
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

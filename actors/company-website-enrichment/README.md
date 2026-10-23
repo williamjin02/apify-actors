@@ -1,0 +1,146 @@
+**Company Website Enrichment** turns a list of company domains into **ready-to-use B2B lead data**. For every website you get the **company name, description, logo, generic contact emails (info@, sales@, support@), phone numbers, postal address, LinkedIn company page and other social profiles**, the contact, about and careers pages, the **job board the company uses** and its **tech stack (130+ technologies)**. Export to **CSV, JSON or Excel**, or push straight into your CRM.
+
+Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$2 per 1,000 enriched websites**. Websites that can't be reached are free.
+
+## What can Company Website Enrichment do?
+
+- 🏢 **Firmographics from the source:** company name, legal name, description, logo, language, founding date and address from the site's own schema.org data.
+- ✉️ **Company contact details:** generic, role-based emails on the company's own domain (info@, hello@, sales@, support@, press@…) and phone numbers. Personal emails like `jane.doe@` are never collected.
+- 🔗 **Social profiles:** LinkedIn company page, X/Twitter, Facebook, Instagram, YouTube, TikTok, GitHub and Pinterest.
+- 🧰 **Tech stack detection:** 130+ technologies across CMS, ecommerce, analytics, marketing automation (HubSpot, Marketo, Pardot), ad pixels, live chat, JavaScript frameworks, CDN and hosting, payments, cookie consent and monitoring.
+- 💼 **Hiring signals:** finds the careers page and detects the ATS (Greenhouse, Lever, Ashby, Workable, Recruitee, Workday, SmartRecruiters, BambooHR, Personio, Teamtailor).
+- ⚡ **Fast and cheap:** about 10 websites in parallel, no proxy needed for most sites, failed sites are not charged.
+- ✅ **Polite by design:** reads robots.txt and honors crawl-delay; never logs in.
+
+## What data can you extract?
+
+| Field | Example |
+|---|---|
+| `domain`, `url`, `companyName`, `legalName` | zapier.com · https://zapier.com/ · Zapier |
+| `description`, `language`, `logoUrl` | "Automate without limits…" · en · logo URL |
+| `emails` | `["support@acme.com", "sales@acme.com"]` (role-based only) |
+| `phones` | `["+1 888 482 7768"]` |
+| `address` | `{street: "548 Market St. #62411", city: "San Francisco", region: "CA", postalCode: "94104", country: "US"}` |
+| `socials` | `{linkedin: "https://www.linkedin.com/company/zapier", twitter: "https://x.com/zapier", …}` |
+| `contactPageUrl`, `aboutPageUrl`, `careersPageUrl`, `legalPageUrl` | Direct links |
+| `jobBoard` | `{ats: "ashby", slug: "zapier", url: "https://jobs.ashbyhq.com/zapier/…"}` |
+| `technologies` | `[{name: "HubSpot", category: "Marketing automation"}, {name: "Next.js", category: "JavaScript framework"}, …]` |
+| `foundingDate`, `numberOfEmployees` | When the site publishes them |
+| `status`, `error`, `pagesFetched`, `scrapedAt` | `ok`, or why a site wasn't enriched |
+
+## How to enrich a list of company websites (step by step)
+
+1. Click **Try for free** and sign in to Apify (free plan, no card needed).
+2. Paste your domains into **Websites or domains**, one per line (`stripe.com`, `https://www.hubspot.com`, or `info@acme.com`).
+3. Optional: change **Max pages per website** (more pages find more contacts) or turn off tech-stack detection.
+4. Click **Start**, then download the results as CSV, Excel or JSON, or open the **Overview** table.
+
+## How much does it cost?
+
+This actor uses **pay-per-result pricing**: **$2.00 per 1,000 websites enriched**, plus a tiny $0.00005 per run start. Websites that are unreachable, blocked or invalid are returned with a status but **not charged**. No monthly fee, no compute or proxy charges on top.
+
+| Websites | Price |
+|---|---|
+| 1,000 | $2 |
+| 10,000 | $20 |
+| 100,000 | $200 |
+
+Apify's **free plan includes $5 of monthly credit**, enough for about **2,500 websites a month for free**. You can set a maximum cost per run and the actor stops cleanly when it's reached.
+
+## Input example
+
+```json
+{
+  "websites": ["stripe.com", "hubspot.com", "zapier.com"],
+  "maxPagesPerSite": 4,
+  "includeTechStack": true
+}
+```
+
+## Output example
+
+```json
+{
+  "input": "zapier.com",
+  "domain": "zapier.com",
+  "url": "https://zapier.com/",
+  "status": "ok",
+  "companyName": "Zapier",
+  "description": "Build and scale AI workflows and agents across 8,000+ apps…",
+  "language": "en",
+  "emails": ["recruiting@zapier.com"],
+  "phones": [],
+  "address": { "street": "548 Market St. #62411", "city": "San Francisco", "region": "CA", "postalCode": "94104", "country": "US" },
+  "socials": {
+    "linkedin": "https://www.linkedin.com/company/zapier",
+    "twitter": "https://x.com/zapier",
+    "facebook": "https://www.facebook.com/ZapierApp",
+    "youtube": "https://www.youtube.com/user/ZapierApp/videos",
+    "github": "https://github.com/zapier"
+  },
+  "contactPageUrl": "https://zapier.com/l/contact-sales",
+  "careersPageUrl": "https://zapier.com/jobs",
+  "jobBoard": { "ats": "ashby", "slug": "zapier", "url": "https://jobs.ashbyhq.com/zapier/…" },
+  "technologies": [
+    { "name": "Contentful", "category": "CMS" },
+    { "name": "Google Tag Manager", "category": "Tag manager" },
+    { "name": "Optimizely", "category": "A/B testing" },
+    { "name": "Next.js", "category": "JavaScript framework" },
+    { "name": "Vercel", "category": "Hosting" },
+    { "name": "OneTrust", "category": "Cookie consent" }
+  ],
+  "pagesFetched": ["https://zapier.com/", "https://zapier.com/l/contact-sales", "https://zapier.com/legal", "https://zapier.com/jobs"],
+  "scrapedAt": "2026-10-23T09:05:12.000Z"
+}
+```
+
+A run summary (enriched count, status counts, requests) is saved to the `OUTPUT` record in the key-value store.
+
+## Use cases
+
+- **Lead enrichment:** fill in company name, LinkedIn page, phone and address for a domain list from your CRM, a trade-show list or a directory.
+- **Lead qualification by tech stack:** find sites on Shopify, WordPress, HubSpot or a competitor's tool, or sites *without* analytics or chat.
+- **Sales intelligence:** spot companies that are hiring (careers page and ATS detected), then pull their jobs with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper).
+- **Agencies:** audit prospects' marketing stack (pixels, consent, chat, A/B testing) before outreach.
+- **Data cleaning:** check which domains still resolve and where they redirect.
+
+## Integrations and API
+
+- **Make, n8n and Zapier:** use the official Apify app or node, choose *Run Actor* and pick `swillz/company-website-enrichment`.
+- **API:** `POST https://api.apify.com/v2/acts/swillz~company-website-enrichment/run-sync-get-dataset-items?token=YOUR_TOKEN` with the input JSON returns the rows directly. JavaScript and Python clients are available.
+- **AI agents (MCP):** connect `https://mcp.apify.com?tools=swillz/company-website-enrichment` to Claude, Cursor or any MCP client and ask, for example, "what tech stack and LinkedIn page does acme.com have?".
+
+## Company Website Enrichment vs alternatives
+
+| | This actor | Contact scrapers (per page) | Paid enrichment APIs |
+|---|---|---|---|
+| Price | $2 per 1,000 websites | ~$2 per 1,000 pages (+ extras) | $50+/month |
+| Tech stack | ✅ 130+ technologies | ❌ | Sometimes |
+| Social profiles + address | ✅ | ✅ | ✅ |
+| Job board / hiring signal | ✅ | ❌ | Rarely |
+| Personal emails | ❌ never (GDPR-friendly) | Often | Often |
+| Failed sites charged | ❌ free | Varies | Yes |
+
+## FAQ
+
+**Is it legal to scrape company websites?**
+The actor reads only public pages on a company's own website, respects robots.txt, and never logs in. It deliberately collects **company** data only: role-based mailboxes like info@ and sales@, company phones and company social pages. Personal email addresses and personal LinkedIn profiles are filtered out. Make sure your use of the data (for example, cold email) complies with laws like GDPR, CAN-SPAM and the site's terms.
+
+**Why are some emails or phones missing?**
+Many large companies don't publish a generic email on their website, and some sites hide contacts behind forms. Raising *Max pages per website* helps on smaller business sites.
+
+**What do the statuses mean?**
+`ok` = enriched (charged). `unreachable` = DNS or connection failure. `http_error` = the homepage returned an error, often 403 bot protection (try enabling a proxy). `blocked_by_robots_txt` = the site disallows automated access. `not_html` or `invalid_input` = nothing to enrich. Only `ok` rows are charged.
+
+**How accurate is tech-stack detection?**
+It matches known script, HTML and HTTP-header signatures on the homepage. Tools loaded only after a click or consent, or only on other pages, may be missed.
+
+**Found a bug or need a field?**
+Open an issue on the **Issues** tab. We usually reply within 24 hours.
+
+## Related tools
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): open jobs from Greenhouse, Lever, Ashby, Workable and Recruitee career sites.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): extract every URL from any website's sitemap.
+
+Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/company-website-enrichment

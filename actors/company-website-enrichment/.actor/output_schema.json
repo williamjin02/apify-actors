@@ -1,0 +1,9 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Company Website Enrichment",
+  "description": "One row per website in the default dataset; a run summary in the OUTPUT record of the default key-value store.",
+  "properties": {
+    "results": { "type": "string", "title": "Companies", "description": "Enriched company rows (one per website).", "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview" },
+    "summary": { "type": "string", "title": "Run summary", "description": "JSON summary: websites enriched, status counts, requests.", "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT" }
+  }
+}

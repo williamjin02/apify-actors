@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of AI Extract",
+  "description": "One row per page in the default dataset; a run summary in the OUTPUT record of the default key-value store.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Extracted pages",
+      "description": "One row per page with the extracted 'data'.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON summary: pages extracted, status counts, tokens, AI cost.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 **Career Site Jobs Scraper** extracts **open job postings directly from company career sites** hosted on **Greenhouse, Lever, Ashby, Workable and Recruitee**, and exports them to **CSV, JSON or Excel**. For every job you get the title, department, team, location, remote/hybrid flag, **salary range** (when published), posted date, full description and the apply link.
 
-Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $2**. No login, no browser, no proxy.
+Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $3**. No login, no browser, no proxy.
 
 ## What can Career Site Jobs Scraper do?
 
@@ -35,17 +35,19 @@ Just paste company names or job-board URLs. The actor reads each ATS's **officia
 
 **How to find a company's board name:** open the company's careers page and click a job. If the link goes to `job-boards.greenhouse.io/NAME`, `jobs.lever.co/NAME`, `jobs.ashbyhq.com/NAME`, `apply.workable.com/NAME` or `NAME.recruitee.com`, then `NAME` is the board name. Or paste that link directly.
 
+**Same name on two ATSs?** Board names are only unique within one ATS. For example, `ramp` on Greenhouse is a different organisation with a single posting, while Ramp's real board is on Ashby. With a bare name, the actor checks all five ATSs and uses the board with the most open jobs. It logs a warning and lists the other matches in the run summary (`alsoFoundOn`). To choose a board yourself, paste its URL or pin the ATS with a prefix: `ashby:ramp`, `greenhouse:stripe`, `lever:spotify`, `workable:huggingface` or `recruitee:bunq`.
+
 ## How much does it cost?
 
-This actor uses **pay-per-result pricing**: **$2.00 per 1,000 jobs** saved, plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
+This actor uses **pay-per-result pricing**: **$3.00 per 1,000 jobs** saved, plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
 
 | Jobs | Price |
 |---|---|
-| 1,000 | $2 |
-| 10,000 | $20 |
-| 50,000 | $100 |
+| 1,000 | $3 |
+| 10,000 | $30 |
+| 50,000 | $150 |
 
-Apify's **free plan includes $5 of monthly credit**, which covers about **2,500 jobs a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it reaches it.
+Apify's **free plan includes $5 of monthly credit**, which covers about **1,600 jobs a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it reaches it.
 
 ## Input example
 
@@ -64,7 +66,7 @@ Apify's **free plan includes $5 of monthly credit**, which covers about **2,500 
 {
   "ats": "ashby",
   "companySlug": "ramp",
-  "companyName": "ramp",
+  "companyName": "Ramp",
   "jobId": "34413f8d-26bf-4bbc-8ade-eb309a0e2245",
   "title": "Security Engineer, Cloud",
   "department": "Engineering",
@@ -120,7 +122,7 @@ A run summary (which ATS each company uses, jobs found vs saved, any errors) is 
 | Login / cookies needed | ❌ none | Often | ❌ |
 | Breaks on layout changes | ❌ official APIs | Often | – |
 | Multi-ATS auto-detection | ✅ | – | ❌ |
-| Price | $2 per 1,000 jobs | Varies | Your time |
+| Price | $3 per 1,000 jobs | Varies | Your time |
 
 ## FAQ
 
@@ -145,3 +147,5 @@ Open an issue on the **Issues** tab. We usually reply within 24 hours.
 ## Related tools
 
 - [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): extract every URL from any website's sitemap.
+
+Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/career-site-jobs-scraper

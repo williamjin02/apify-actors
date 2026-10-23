@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { parseCompany, extractRaw, mapJob, extractSalary, htmlToText, matches, parseDateInput } from '../src/ats.js';
+import { parseCompany, pickBoard, resolveBoard, endpoint, extractRaw, mapJob, extractSalary, htmlToText, matches, parseDateInput } from '../src/ats.js';
 let n = 0; const t = (name, fn) => { fn(); n++; };
 t('urls', () => {
     assert.deepEqual(parseCompany('https://boards.greenhouse.io/stripe'), { ats: 'greenhouse', slug: 'stripe', region: null });
@@ -36,4 +36,51 @@ for (const [ats, f] of [['greenhouse', '/tmp/gh.json'], ['lever', '/tmp/lv.json'
         assert.ok(!matches(jobs[0], { titleKeywords: ['zzzqqq'] }));
     });
 }
+
+// Board-name collisions: a bare name can exist on several ATSs as different organisations.
+t('pickBoard', () => {
+    const gh = { ats: 'greenhouse', jobs: [1] }; const ab = { ats: 'ashby', jobs: new Array(171).fill(0) }; const wk = { ats: 'workable', jobs: [] };
+    const p = pickBoard([gh, null, ab, wk, null]);
+    assert.equal(p.best.ats, 'ashby'); assert.deepEqual(p.others.map((o) => o.ats), ['greenhouse']);
+    assert.equal(pickBoard([null, wk, null]).best.ats, 'workable'); // only empty boards: still "found", with 0 jobs
+    assert.equal(pickBoard([{ ats: 'greenhouse', jobs: [1] }, { ats: 'lever', jobs: [1] }]).best.ats, 'greenhouse'); // tie keeps ATS_LIST order
+    assert.equal(pickBoard([null, null]), null);
+});
+// Mock of the live responses seen 2026-10-23 for "ramp": Greenhouse = other org with 1 job, Ashby = Ramp with 171, Workable = empty board.
+const rampFetch = (calls) => async (url) => {
+    calls?.push(url);
+    if (url.startsWith(endpoint('greenhouse', 'ramp'))) return { body: { jobs: [{ id: 1, title: 'Copy of Chief Legal Officer', company_name: 'RAMP' }] } };
+    if (url.startsWith(endpoint('ashby', 'ramp'))) return { body: { jobs: Array.from({ length: 171 }, (_, i) => ({ id: String(i), title: 'Job', isListed: true })) } };
+    if (url.startsWith(endpoint('workable', 'ramp'))) return { body: { name: 'RAMP', jobs: [] } };
+    return { notFound: true };
+};
+const asyncTests = [];
+const ta = (name, fn) => asyncTests.push([name, fn]);
+ta('bare "ramp" resolves to ashby', async () => {
+    const r = await resolveBoard(parseCompany('ramp'), rampFetch());
+    assert.equal(r.ats, 'ashby'); assert.equal(r.jobs.length, 171);
+    assert.deepEqual(r.alsoFoundOn, [{ ats: 'greenhouse', jobs: 1 }]); // empty Workable board isn't reported as a collision
+});
+ta('pinned "greenhouse:ramp" and URLs query one ATS only', async () => {
+    const calls = [];
+    const r = await resolveBoard(parseCompany('greenhouse:ramp'), rampFetch(calls));
+    assert.equal(r.ats, 'greenhouse'); assert.equal(r.jobs.length, 1); assert.equal(calls.length, 1);
+    assert.equal((await resolveBoard(parseCompany('ashby:ramp'), rampFetch())).ats, 'ashby');
+    assert.equal((await resolveBoard(parseCompany('https://jobs.ashbyhq.com/ramp'), rampFetch())).jobs.length, 171);
+    assert.equal(await resolveBoard(parseCompany('lever:ramp'), rampFetch()), null);
+});
+ta('one failing ATS does not hide a real board; all failing throws', async () => {
+    const flaky = async (url) => { if (url.includes('lever')) throw new Error('ECONNRESET'); return rampFetch()(url); };
+    assert.equal((await resolveBoard(parseCompany('ramp'), flaky)).ats, 'ashby');
+    await assert.rejects(() => resolveBoard(parseCompany('ramp'), async () => { throw new Error('down'); }), /down/);
+    assert.equal(await resolveBoard(parseCompany('nonexistentxyz'), async () => ({ notFound: true })), null);
+});
+// Optional live check against the real APIs: LIVE=1 npm test
+if (process.env.LIVE) ta('LIVE: bare "ramp" resolves to ashby', async () => {
+    const live = async (url) => { const r = await fetch(url, { headers: { accept: 'application/json' } }); return r.status === 404 || !r.ok ? { notFound: true } : { body: await r.json() }; };
+    const r = await resolveBoard(parseCompany('ramp'), live);
+    console.log('live ramp ->', r.ats, r.jobs.length, 'jobs; also on', JSON.stringify(r.alsoFoundOn));
+    assert.equal(r.ats, 'ashby'); assert.ok(r.jobs.length > 20);
+});
+for (const [name, fn] of asyncTests) { await fn(); n++; console.log('ok', name); }
 console.log(`${n} tests passed`);

@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Google Sheets Import & Export",
+  "description": "Read: sheet rows go to the default dataset. Write and read: a run summary (spreadsheet URL, rows written/read, duplicates skipped, columns) is in the OUTPUT record.",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "Spreadsheet URL, tab, rows written or read, duplicates skipped and columns.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    },
+    "results": {
+      "type": "string",
+      "title": "Imported rows",
+      "description": "Rows read from the sheet (read operation).",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    }
+  }
+}

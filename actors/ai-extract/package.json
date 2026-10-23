@@ -1,0 +1,11 @@
+{
+  "name": "ai-extract",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Extract structured JSON from any public web page with a plain-English prompt and/or a JSON schema.",
+  "main": "src/main.js",
+  "scripts": { "start": "node src/main.js", "test": "node test/local.test.js" },
+  "dependencies": { "apify": "^3.4.0", "got-scraping": "^4.1.1", "cheerio": "1.0.0-rc.12", "robots-parser": "^3.0.1", "turndown": "^7.2.0", "turndown-plugin-gfm": "^1.0.2", "ajv": "^8.17.1" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}

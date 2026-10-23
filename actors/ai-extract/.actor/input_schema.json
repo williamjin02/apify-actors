@@ -1,0 +1,207 @@
+{
+  "title": "AI Extract input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "editor": "requestListSources",
+      "description": "Pages to extract from. With crawl depth 0 (default) only these pages are processed; with depth 1+ links on them are followed too.",
+      "prefill": [
+        {
+          "url": "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
+        }
+      ]
+    },
+    "instructions": {
+      "title": "Instructions (what to extract)",
+      "type": "string",
+      "editor": "textarea",
+      "description": "Describe in plain English what you want from each page, e.g. \"Product name, price as a number, currency, availability and star rating\". Optional if you give a JSON schema.",
+      "prefill": "Extract the book title, price as a number, currency code, whether it is in stock, star rating (1-5) and the product description."
+    },
+    "jsonSchema": {
+      "title": "JSON schema (output shape)",
+      "type": "object",
+      "editor": "json",
+      "description": "Optional. A JSON Schema for the 'data' field of each row, or a shorthand like {\"title\":\"string\",\"price\":\"number\",\"tags\":\"string[]\"}. Output is validated against it; pages that don't match are retried, then returned as invalid_output and not charged.",
+      "prefill": {
+        "title": "string",
+        "price": "number",
+        "currency": "string",
+        "inStock": "boolean",
+        "rating": "integer",
+        "description": "string"
+      }
+    },
+    "maxCrawlDepth": {
+      "title": "Crawl depth",
+      "type": "integer",
+      "description": "0 = only the start URLs. 1 = also pages linked from them, and so on.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 10,
+      "sectionCaption": "Crawling"
+    },
+    "maxPages": {
+      "title": "Max pages",
+      "type": "integer",
+      "description": "Hard limit on pages processed in this run (start URLs + crawled).",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "sameDomainOnly": {
+      "title": "Stay on the same website",
+      "type": "boolean",
+      "description": "Only follow links to the start URLs' domains.",
+      "default": true
+    },
+    "includeUrlPatterns": {
+      "title": "Only follow URLs matching",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Regular expressions; when set, crawled links must match at least one (e.g. /catalogue/). Start URLs are always processed.",
+      "default": []
+    },
+    "excludeUrlPatterns": {
+      "title": "Never follow URLs matching",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Regular expressions for links to skip (e.g. /login|/cart).",
+      "default": []
+    },
+    "contentSelector": {
+      "title": "Content CSS selector",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Send only this part of the page to the AI (e.g. main, #content, .product). Saves tokens and improves accuracy.",
+      "sectionCaption": "Page content"
+    },
+    "removeSelectors": {
+      "title": "Remove CSS selectors",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional comma-separated selectors to strip before extraction (e.g. .reviews, .related-products). Navigation, footers, scripts, cookie banners and ads are removed automatically."
+    },
+    "keepHeaderFooter": {
+      "title": "Keep header, nav and footer",
+      "type": "boolean",
+      "description": "Turn on if the data you need lives in the header or footer (e.g. company address).",
+      "default": false
+    },
+    "includeMarkdown": {
+      "title": "Include page markdown in output",
+      "type": "boolean",
+      "description": "Add the cleaned markdown sent to the AI to each row (useful for RAG or debugging).",
+      "default": false
+    },
+    "maxInputTokensPerPage": {
+      "title": "Max input tokens per page",
+      "type": "integer",
+      "description": "Longer pages are trimmed to this size (\u22484 characters per token). Built-in AI: up to 16,000.",
+      "default": 8000,
+      "minimum": 500,
+      "maximum": 400000,
+      "sectionCaption": "AI settings"
+    },
+    "maxOutputTokensPerPage": {
+      "title": "Max output tokens per page",
+      "type": "integer",
+      "description": "Upper limit on the AI answer per page. Raise for pages with long lists. Built-in AI: up to 4,000.",
+      "default": 1500,
+      "minimum": 64,
+      "maximum": 64000
+    },
+    "llmApiKey": {
+      "title": "Your AI API key (optional)",
+      "type": "string",
+      "editor": "textfield",
+      "isSecret": true,
+      "description": "Leave empty to use the built-in AI (included in the price). Add your own OpenAI, Anthropic, Gemini, DeepSeek, Groq, OpenRouter or Together key to pay the provider directly and get the lower own-key price. Stored encrypted."
+    },
+    "llmProvider": {
+      "title": "AI provider (own key)",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "openai",
+        "anthropic",
+        "gemini",
+        "deepseek",
+        "groq",
+        "openrouter",
+        "together",
+        "openai-compatible"
+      ],
+      "enumTitles": [
+        "OpenAI",
+        "Anthropic (Claude)",
+        "Google Gemini",
+        "DeepSeek",
+        "Groq",
+        "OpenRouter",
+        "Together AI",
+        "Other OpenAI-compatible API"
+      ],
+      "description": "Which provider your key is for.",
+      "default": "openai"
+    },
+    "llmModel": {
+      "title": "AI model (own key)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Defaults: OpenAI gpt-6-luna, Anthropic claude-haiku-5-5, Gemini gemini-3.1-flash-lite, DeepSeek deepseek-flash, Groq openai/gpt-oss-20b."
+    },
+    "llmBaseUrl": {
+      "title": "AI API base URL (own key)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Only for 'Other OpenAI-compatible API', e.g. https://api.example.com/v1"
+    },
+    "maxAiCostUsd": {
+      "title": "Max AI spend on your key (USD)",
+      "type": "number",
+      "description": "Optional. Stops the run once the estimated cost on your own key reaches this amount.",
+      "minimum": 0
+    },
+    "maxConcurrency": {
+      "title": "Parallel pages",
+      "type": "integer",
+      "description": "Pages processed at the same time. Requests to one website are spaced out politely regardless.",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 25,
+      "sectionCaption": "Advanced"
+    },
+    "maxRetries": {
+      "title": "Retries",
+      "type": "integer",
+      "description": "Retries for failed page loads and AI calls.",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 5
+    },
+    "requestTimeoutSecs": {
+      "title": "Page timeout (seconds)",
+      "type": "integer",
+      "default": 30,
+      "minimum": 5,
+      "maximum": 120,
+      "description": "Timeout for loading one page."
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "editor": "proxy",
+      "description": "Optional. Use Apify Proxy if a site blocks datacenter requests.",
+      "default": {
+        "useApifyProxy": false
+      }
+    }
+  },
+  "required": [
+    "startUrls"
+  ]
+}

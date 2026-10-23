@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "ai-extract",
+  "title": "AI Extract: Structured Data from Any Web Page",
+  "description": "Extract structured JSON from any public web page with a plain-English prompt or a JSON schema. Paste URLs (or crawl a site), get clean rows: products, prices, articles, events, listings. AI included, no API key needed. Respects robots.txt.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 4096,
+  "defaultMemoryMbytes": 512
+}

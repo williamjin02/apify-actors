@@ -1,0 +1,12 @@
+{
+  "actorSpecification": 1,
+  "fields": {},
+  "views": {
+    "overview": {
+      "title": "Rows",
+      "description": "Rows imported from the sheet (read). Columns match your sheet header.",
+      "transformation": {},
+      "display": { "component": "table" }
+    }
+  }
+}
