@@ -40,16 +40,18 @@ Supported formats: XML urlset, sitemap indexes nested to any depth, gzip `.xml.g
 
 You pay only for results, through **pay-per-event** pricing:
 
-- **$0.40 per 1,000 URLs extracted.** You're charged only for URLs written to your dataset, after filters and deduplication.
+- **$0.10-0.40 per 1,000 URLs extracted**, depending on your Apify plan: Free $0.40, Starter $0.28, Scale $0.18, Business and up $0.10. You're charged only for URLs written to your dataset, after filters and deduplication.
 - **$1.00 per 1,000 HTTP status checks**, and only if you enable the status check.
 - A negligible start fee per run.
 
-| Job | Approximate cost |
-|---|---|
-| Blog with 500 URLs | $0.20 |
-| Store with 10,000 product URLs | $4.00 |
-| 10,000 URLs + status check | $14.00 |
-| Daily new-page monitor (≈20 new URLs/day) | ≈ $0.25 / month |
+| Job | Free plan | Starter | Business and up |
+|---|---|---|---|
+| Blog with 500 URLs | $0.20 | $0.14 | $0.05 |
+| Store with 10,000 product URLs | $4.00 | $2.80 | $1.00 |
+| 10,000 URLs + status check | $14.00 | $12.80 | $11.00 |
+| Daily new-page monitor (≈20 new URLs/day) | ≈ $0.25 / month | ≈ $0.17 / month | ≈ $0.06 / month |
+
+Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
 
 Set a **maximum cost per run** in the run options and the actor stops cleanly when that limit is reached. Higher Apify plans may get volume discounts (see the Pricing tab).
 
@@ -119,7 +121,7 @@ A run summary is saved to the `OUTPUT` record. For each site it shows how the si
 | Export CSV, Excel and JSON plus API | ✅ | CSV only | Copy and paste |
 | HTTP status check | ✅ | ❌ | ❌ |
 | Scheduled new-page monitoring | ✅ | ❌ | ❌ |
-| Price | $0.40 / 1,000 URLs | Free with limits | Free |
+| Price | $0.10-0.40 / 1,000 URLs by plan | Free with limits | Free |
 
 ## FAQ
 

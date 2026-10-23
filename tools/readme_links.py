@@ -48,8 +48,11 @@ def apply(me, allowed):
     p = ROOT / me / 'README.md'; s = p.read_text()
     b = block(me, allowed)
     m = re.search(r'^## Related tools\n.*?(?=^Source( code)?:|\Z)', s, re.M | re.S)
-    if b is None: return False
-    if m: new = s[:m.start()] + b + '\n' + s[m.end():]
+    if b is None:
+        # no linkable siblings: drop any existing Related tools section
+        if not m: return False
+        new = s[:m.start()] + s[m.end():]
+    elif m: new = s[:m.start()] + b + '\n' + s[m.end():]
     else:
         m2 = re.search(r'^Source( code)?:', s, re.M)
         new = (s[:m2.start()] + b + '\n' + s[m2.start():]) if m2 else s.rstrip('\n') + '\n\n' + b

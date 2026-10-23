@@ -39,11 +39,14 @@ Each row has `url`, `status`, `title`, `data` (your fields), `error`, `truncated
 
 AI Extract uses **pay-per-result pricing**. You pay only for pages where data was successfully extracted and validated, plus a tiny $0.00005 per run start. The AI cost is included.
 
-| Pages extracted | Built-in AI | Your own AI key |
+| Apify plan | Built-in AI, per 1,000 pages | Your own AI key, per 1,000 pages |
 |---|---|---|
-| 1,000 | $8 | $2 (+ your provider's tokens) |
-| 10,000 | $80 | $20 |
-| 100,000 | $800 | $200 |
+| Free | $12 | $2 (+ your provider's tokens) |
+| Starter | $12 | $2 |
+| Scale | $10 | $2 |
+| Business and up | $8 | $2 |
+
+Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold). Example: 10,000 pages with the built-in AI cost $120 on Starter, $100 on Scale or $80 on Business.
 
 Pages that fail to load, are blocked by robots.txt, are empty, fail AI extraction or don't match your schema are returned with a status and **not charged**. Apify's **free plan includes $5 of monthly credit**. On the free plan the built-in AI processes up to **25 pages per run** (add your own AI key, or use any paid Apify plan, for bigger runs). You can set a maximum cost per run, and the actor stops cleanly when it's reached.
 
@@ -100,7 +103,7 @@ A run summary is saved to the `OUTPUT` record in the key-value store. It include
 
 | | AI Extract | Typical AI scraper actors | Hand-written scrapers |
 |---|---|---|---|
-| Price per 1,000 pages | $8 (AI included), $2 with your key | ~$25 | Your dev time |
+| Price per 1,000 pages | $8-12 by plan (AI included), $2 with your key | $20-30 by plan | Your dev time |
 | Schema-validated JSON | ✅ with automatic retry | Varies | ✅ |
 | Works when layout changes | ✅ | ✅ | ❌ selectors break |
 | Bring your own AI key | ✅ 8 providers | Rarely | n/a |
@@ -109,7 +112,7 @@ A run summary is saved to the `OUTPUT` record in the key-value store. It include
 ## FAQ
 
 **Do I need an OpenAI or other AI API key?**
-No. The built-in AI is included in the $8 per 1,000 pages price. Add your own key only if you want the lower $2 per 1,000 price or a specific model.
+No. The built-in AI is included in the $8-12 per 1,000 pages price (lower on bigger Apify plans). Add your own key only if you want the lower $2 per 1,000 price or a specific model.
 
 **How accurate is it?**
 On clean product, article and event pages it is very accurate, because the model sees only the page's main content and answers are schema-constrained and validated. Fields that aren't on the page come back as `null`; the AI is instructed never to invent values. Pages longer than **Max input tokens per page** are trimmed (`truncated: true`), so use a **Content CSS selector** for very long pages.

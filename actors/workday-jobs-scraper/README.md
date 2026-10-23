@@ -2,7 +2,7 @@
 
 Get **every job** from any company's Workday career site (`*.myworkdayjobs.com` / `myworkdaysite.com`): title, locations, remote type, full-time/part-time, posted date, requisition ID, salary range (when it's in the posting), full description and the apply link. You get clean JSON, CSV or Excel. No login, no browser, no cookies.
 
-**$1.50 per 1,000 jobs.** You pay only for jobs saved after your filters.
+**$1.00-1.50 per 1,000 jobs**, depending on your Apify plan. You pay only for jobs saved after your filters.
 
 ## Why this one
 
@@ -103,11 +103,20 @@ Open the company's careers page and click through to the job search. If the addr
 | Salary, all locations, absolute posted date | ✅ | Partial | 😐 |
 | Login, cookies or browser | ❌ none | Often a browser | – |
 | Many companies per run | ✅ | Varies | ❌ |
-| Price | $1.50 per 1,000 jobs, filtered-out jobs free | Varies | Your time |
+| Price | $1.00-1.50 per 1,000 jobs by plan, filtered-out jobs free | Varies | Your time |
 
 ## Pricing
 
-Pay per event: **$0.0015 per job saved** ($1.50 per 1,000). Jobs you filter out are free. Set a max cost per run in Apify and the run stops when it's reached.
+Pay per event, per 1,000 jobs saved:
+
+| Apify plan | Per 1,000 jobs |
+|---|---|
+| Free | $1.50 |
+| Starter | $1.50 |
+| Scale | $1.10 |
+| Business and up | $1.00 |
+
+Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold). Jobs you filter out are free. Set a max cost per run in Apify and the run stops when it's reached.
 
 ## FAQ
 
