@@ -16,6 +16,7 @@ These Actors are published, or on the way to the Store, under the Apify account 
 | [ai-extract](actors/ai-extract) | Extract structured JSON from public web pages using a plain-English prompt or a JSON schema. | Coming soon |
 | [workday-jobs-scraper](actors/workday-jobs-scraper) | Scrape every open job from any company's public Workday career site, including location, remote status, salary, posted date, and apply links. | Coming soon |
 | [ai-brand-visibility-tracker](actors/ai-brand-visibility-tracker) | Track how often ChatGPT (with live web search) mentions, ranks, and cites your brand versus competitors, with share of voice, sentiment, and cited domains. | Coming soon |
+| [email-provider-detector](actors/email-provider-detector) | Detect whether a domain uses Google Workspace, Microsoft 365 or another mailbox provider, including the provider behind secure email gateways like Proofpoint and Mimecast, with SPF, DMARC and DKIM checks. DNS only. | Coming soon |
 
 ## Run an Actor
 

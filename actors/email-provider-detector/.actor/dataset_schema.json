@@ -1,0 +1,400 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "title": "Domain",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Domain checked (lowercase, www removed). Emails are reduced to their domain.",
+        "examples": [
+          "hubspot.com"
+        ]
+      },
+      "inputType": {
+        "title": "Input type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "domain, url, email or invalid",
+        "examples": [
+          "domain"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ok, no_mail (domain exists but accepts no email), nxdomain, error, invalid_input or skipped_charge_limit. Only ok and no_mail rows are charged.",
+        "examples": [
+          "ok"
+        ]
+      },
+      "espMatch": {
+        "title": "ESP match",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Sender pool to use for ESP matching: google, microsoft, other (another known provider), unknown (accepts mail but the provider is hidden, e.g. behind a gateway with no SPF/DKIM hint) or none (no mail).",
+        "examples": [
+          "google"
+        ]
+      },
+      "mailboxProvider": {
+        "title": "Mailbox provider",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Where the company's mailboxes live, even behind a security gateway or on-prem relay (from SPF/DKIM). null when it cannot be determined.",
+        "examples": [
+          "Google Workspace"
+        ]
+      },
+      "mailboxProviderId": {
+        "title": "Mailbox provider ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Stable ID, e.g. google_workspace, microsoft_365, zoho, self_hosted.",
+        "examples": [
+          "google_workspace"
+        ]
+      },
+      "mailboxProviderType": {
+        "title": "Provider type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "hosted_mailbox, forwarding or self_hosted",
+        "examples": [
+          "hosted_mailbox"
+        ]
+      },
+      "secureEmailGateway": {
+        "title": "Secure email gateway",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Security gateway in front of the mailbox (Proofpoint, Mimecast, Barracuda, Cisco...). Cold email is filtered harder here.",
+        "examples": [
+          "Proofpoint"
+        ]
+      },
+      "providerDetectedVia": {
+        "title": "Detected via",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "mx, spf_dkim_behind_gateway or spf_dkim_txt",
+        "examples": [
+          "mx"
+        ]
+      },
+      "mxHosts": {
+        "title": "MX hosts",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "MX hosts by priority (max 10)",
+        "examples": [
+          [
+            "aspmx.l.google.com"
+          ]
+        ]
+      },
+      "acceptsMail": {
+        "title": "Accepts mail",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "false for no MX and no A record, or a null MX (RFC 7505)",
+        "examples": [
+          true
+        ]
+      },
+      "isConsumerDomain": {
+        "title": "Consumer domain",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true for gmail.com, outlook.com, yahoo.com and similar free mailbox domains",
+        "examples": [
+          false
+        ]
+      },
+      "spf": {
+        "title": "SPF",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "present, multipleRecords, allQualifier, includes, redirect, dnsLookupCount, tooManyLookups",
+        "examples": [
+          {
+            "present": true,
+            "allQualifier": "~all",
+            "includes": [
+              "_spf.google.com"
+            ],
+            "dnsLookupCount": 7,
+            "tooManyLookups": false
+          }
+        ]
+      },
+      "dmarc": {
+        "title": "DMARC",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "present, policy (none/quarantine/reject), subdomainPolicy, pct, reportingEnabled, reportingVendors",
+        "examples": [
+          {
+            "present": true,
+            "policy": "reject",
+            "pct": 100,
+            "reportingEnabled": true,
+            "reportingVendors": [
+              "dmarcian"
+            ]
+          }
+        ]
+      },
+      "dkimSelectorsFound": {
+        "title": "DKIM selectors found",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Common DKIM selectors that exist (google, selector1, selector2, k1, s1, default)",
+        "examples": [
+          [
+            "google"
+          ]
+        ]
+      },
+      "mtaSts": {
+        "title": "MTA-STS",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "_mta-sts TXT record present",
+        "examples": [
+          false
+        ]
+      },
+      "bimi": {
+        "title": "BIMI",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "default._bimi record present",
+        "examples": [
+          false
+        ]
+      },
+      "bimiVmc": {
+        "title": "BIMI certificate",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "BIMI record points to a VMC certificate",
+        "examples": [
+          false
+        ]
+      },
+      "emailSecurityScore": {
+        "title": "Email security score",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "0-100: SPF, DMARC policy, DKIM, MTA-STS, BIMI. See issues for each deduction.",
+        "examples": [
+          80
+        ]
+      },
+      "emailSecurityGrade": {
+        "title": "Grade",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "A-F from the score",
+        "examples": [
+          "B"
+        ]
+      },
+      "issues": {
+        "title": "Issues",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Plain-English email authentication problems",
+        "examples": [
+          [
+            "DMARC policy is p=none (monitor only): spoofed mail is still delivered."
+          ]
+        ]
+      },
+      "sendingServices": {
+        "title": "Sending services",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Services allowed to send as the domain, from SPF (SendGrid, HubSpot, Salesforce, Zendesk...)",
+        "examples": [
+          [
+            "Google Workspace",
+            "HubSpot"
+          ]
+        ]
+      },
+      "saasVerifications": {
+        "title": "SaaS verified",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Tools the domain verified ownership with in DNS TXT",
+        "examples": [
+          [
+            "Atlassian",
+            "Slack"
+          ]
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a row was not checked",
+        "examples": [
+          null
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp",
+        "examples": [
+          "2026-10-23T18:00:00.000Z"
+        ]
+      },
+      "implicitMx": {
+        "title": "Implicit MX",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "No MX record, but an A record means mail is delivered to the domain's host (RFC 5321).",
+        "examples": [
+          false
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "domain",
+          "status",
+          "espMatch",
+          "mailboxProvider",
+          "secureEmailGateway",
+          "emailSecurityGrade",
+          "emailSecurityScore",
+          "spf",
+          "dmarc",
+          "dkimSelectorsFound",
+          "sendingServices",
+          "saasVerifications",
+          "issues",
+          "mxHosts"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "domain": {
+            "label": "Domain"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "espMatch": {
+            "label": "ESP match"
+          },
+          "mailboxProvider": {
+            "label": "Mailbox provider"
+          },
+          "secureEmailGateway": {
+            "label": "Secure email gateway"
+          },
+          "emailSecurityGrade": {
+            "label": "Grade"
+          },
+          "emailSecurityScore": {
+            "label": "Email security score",
+            "format": "number"
+          },
+          "spf": {
+            "label": "SPF",
+            "format": "object"
+          },
+          "dmarc": {
+            "label": "DMARC",
+            "format": "object"
+          },
+          "dkimSelectorsFound": {
+            "label": "DKIM selectors found",
+            "format": "array"
+          },
+          "sendingServices": {
+            "label": "Sending services",
+            "format": "array"
+          },
+          "saasVerifications": {
+            "label": "SaaS verified",
+            "format": "array"
+          },
+          "issues": {
+            "label": "Issues",
+            "format": "array"
+          },
+          "mxHosts": {
+            "label": "MX hosts",
+            "format": "array"
+          }
+        }
+      }
+    }
+  }
+}

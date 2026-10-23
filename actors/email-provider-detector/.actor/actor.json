@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "email-provider-detector",
+  "title": "Email Provider Detector: Google vs Microsoft 365, SPF, DMARC",
+  "description": "Bulk email provider lookup by domain for ESP matching: Google Workspace, Microsoft 365 or other, plus secure email gateways (Proofpoint, Mimecast) and the real mailbox behind them, SPF lookup count, DMARC, DKIM, MTA-STS, BIMI and SaaS senders. DNS only, no personal data.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 4096,
+  "defaultMemoryMbytes": 512
+}

@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Email Provider Detector",
+  "description": "One row per domain in the default dataset (invalid, nonexistent and failed domains included as free rows with status and error); a run summary in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Domains",
+      "description": "One row per domain. Example: {\"domain\":\"hubspot.com\",\"status\":\"ok\",\"espMatch\":\"google\",\"mailboxProvider\":\"Google Workspace\",\"secureEmailGateway\":null,\"emailSecurityGrade\":\"A\",\"sendingServices\":[\"Google Workspace\",\"HubSpot\"]}. Failed: {\"domain\":\"nope.invalid\",\"status\":\"nxdomain\",\"error\":\"\u2026\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: domainsRequested, domainsChecked, byStatus, byEspMatch (google/microsoft/other/none counts), chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}
