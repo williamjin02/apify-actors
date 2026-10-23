@@ -15,6 +15,7 @@ These Actors are published, or on the way to the Store, under the Apify account 
 | [google-sheets-import-export](actors/google-sheets-import-export) | Import a Google Sheet into an Apify dataset, or export a dataset to a Google Sheet with append, replace, and deduplication. | Coming soon |
 | [ai-extract](actors/ai-extract) | Extract structured JSON from public web pages using a plain-English prompt or a JSON schema. | Coming soon |
 | [workday-jobs-scraper](actors/workday-jobs-scraper) | Scrape every open job from any company's public Workday career site, including location, remote status, salary, posted date, and apply links. | Coming soon |
+| [ai-brand-visibility-tracker](actors/ai-brand-visibility-tracker) | Track how often ChatGPT (with live web search) mentions, ranks, and cites your brand versus competitors, with share of voice, sentiment, and cited domains. | Coming soon |
 
 ## Run an Actor
 

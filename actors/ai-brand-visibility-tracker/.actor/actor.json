@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "ai-brand-visibility-tracker",
+  "title": "AI Brand Visibility Tracker: ChatGPT Mentions, Rank & Citations",
+  "description": "See whether ChatGPT recommends your brand. Ask your buyers' prompts with live web search and get mention rate, rank, share of voice vs competitors, sentiment and cited URLs. Official OpenAI API, no key needed, $0.04 per check.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": { "templateId": "js-empty" },
+  "input": "./input_schema.json",
+  "storages": { "dataset": "./dataset_schema.json" },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 128,
+  "maxMemoryMbytes": 1024,
+  "defaultMemoryMbytes": 256
+}
