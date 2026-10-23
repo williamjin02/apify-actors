@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "google-sheets-import-export",
+  "title": "Google Sheets Import & Export: Dataset to Sheet, Sheet to JSON",
+  "description": "Export any Apify dataset to Google Sheets (append or replace, header merge, dedup) or import a Google Sheet tab/range into a dataset as JSON, CSV or Excel. No OAuth popups: just share your sheet with our service account, or bring your own key.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": { "templateId": "js-empty" },
+  "input": "./input_schema.json",
+  "storages": { "dataset": "./dataset_schema.json" },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 128,
+  "maxMemoryMbytes": 4096,
+  "defaultMemoryMbytes": 256
+}

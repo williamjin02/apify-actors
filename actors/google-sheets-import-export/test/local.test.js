@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import { flatten, cell, headerFor, keyOf, rowsToObjects, rangeStartCol, chunkRows } from '../src/transform.js';
+import { parseSpreadsheetId, parseGid, colLetter, q, parseServiceAccount } from '../src/google.js';
+
+assert.deepEqual(flatten({ a: 1, b: { c: 2, d: { e: 'x' } }, t: ['a', 'b'], o: [{ x: 1 }] }), { a: 1, 'b.c': 2, 'b.d.e': 'x', t: 'a, b', o: '[{"x":1}]' });
+assert.deepEqual(flatten({ t: [{ x: 1 }, { x: 2 }] }, { arrays: 'expand' }), { 't/0.x': 1, 't/1.x': 2 });
+assert.deepEqual(flatten({ t: [1, 2] }, { arrays: 'json' }), { t: '[1,2]' });
+assert.deepEqual(cell(null), ['', false]); assert.deepEqual(cell(3), [3, false]); assert.equal(cell('x'.repeat(60000))[1], true);
+assert.deepEqual(headerFor([{ a: 1 }, { b: 1, a: 2 }]), ['a', 'b']); assert.deepEqual(headerFor([{ a: 1 }], ['z']), ['z']);
+assert.equal(keyOf({ a: ' 1 ', b: 2 }, ['a', 'b']), keyOf({ a: '1', b: '2' }, ['a', 'b']));
+const r = rowsToObjects([['id', '', 'id'], ['1', 'x', 'y'], [], ['2']]);
+assert.deepEqual(r.headers, ['id', 'B', 'id_2']); assert.equal(r.rows.length, 2); assert.deepEqual(r.rows[1], { id: '2', B: '', id_2: '' });
+assert.deepEqual(rowsToObjects([['a', 'b']], { header: false, startCol: 2 }).headers, ['C', 'D']);
+assert.equal(rangeStartCol('B2:F'), 1); assert.equal(rangeStartCol("'My tab'!AA1"), 26); assert.equal(rangeStartCol(''), 0);
+assert.equal(chunkRows(Array.from({ length: 12001 }, () => [1])).length, 3);
+assert.equal(parseSpreadsheetId('https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0'), '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms');
+assert.equal(parseSpreadsheetId('nope'), null); assert.equal(parseGid('.../edit#gid=123'), 123);
+assert.equal(colLetter(0), 'A'); assert.equal(colLetter(25), 'Z'); assert.equal(colLetter(26), 'AA'); assert.equal(colLetter(701), 'ZZ');
+assert.equal(q("O'Brien"), "'O''Brien'");
+assert.throws(() => parseServiceAccount('{bad'), /not valid JSON/); assert.throws(() => parseServiceAccount('{"type":"user"}'), /service-account/);
+console.log('all tests passed');

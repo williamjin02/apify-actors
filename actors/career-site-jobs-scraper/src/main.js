@@ -1,6 +1,6 @@
 import { Actor, log } from 'apify';
 import { gotScraping } from 'got-scraping';
-import { ATS_LIST, parseCompany, endpoint, boardUrl, extractRaw, mapJob, parseDateInput, matches, FormatError } from './ats.js';
+import { ATS_LIST, parseCompany, boardUrl, resolveBoard, mapJob, parseDateInput, matches, FormatError } from './ats.js';
 
 const JOB_EVENT = 'job';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -88,18 +88,9 @@ try {
     const scrapedAt = new Date().toISOString();
     let formatErrors = 0; let networkErrors = 0;
 
-    async function resolveAndFetch(t) {
-        const tryList = t.ats ? [t.ats] : ATS_LIST;
-        let firstEmpty = null;
-        for (const ats of tryList) {
-            const r = await fetchJson(endpoint(ats, t.slug, t.region));
-            if (r.notFound) continue;
-            const raw = extractRaw(ats, r.body);
-            if (raw.jobs.length || t.ats) return { ats, ...raw };
-            firstEmpty ??= { ats, ...raw };
-        }
-        return firstEmpty;
-    }
+    // Pinned targets (URL or "ats:slug") query one ATS; bare names query all and keep the biggest board.
+    const resolveAndFetch = (t) => resolveBoard(t, fetchJson);
+    const resolvedBoards = new Map(); // "ats|region|slug" -> first input, so "ramp" + "ashby:ramp" isn't scraped twice
 
     for (const t of targets) {
         if (stop()) break;
@@ -107,8 +98,15 @@ try {
         try {
             const res = await resolveAndFetch(t);
             if (!res) { row.status = 'not_found'; row.error = t.ats ? `No ${t.ats} job board named "${t.slug}"` : `No public job board named "${t.slug}" on ${ATS_LIST.join(', ')}`; log.warning(row.error); perCompanySummary.push(row); continue; }
+            const resolvedKey = `${res.ats}|${t.region ?? ''}|${t.slug.toLowerCase()}`;
+            if (resolvedBoards.has(resolvedKey)) { row.ats = res.ats; row.status = 'duplicate'; row.error = `Same board as "${resolvedBoards.get(resolvedKey)}"; skipped so jobs aren't saved (or charged) twice`; log.info(`${t.input}: ${row.error}`); perCompanySummary.push(row); continue; }
+            resolvedBoards.set(resolvedKey, t.input);
             row.ats = res.ats; row.jobsFound = res.jobs.length; row.boardUrl = boardUrl(res.ats, t.slug, t.region);
-            const companyName = res.companyName || t.slug;
+            if (res.alsoFoundOn.length) {
+                row.alsoFoundOn = res.alsoFoundOn;
+                log.warning(`"${t.slug}" matches boards on several ATSs: ${res.ats} (${res.jobs.length} jobs), ${res.alsoFoundOn.map((o) => `${o.ats} (${o.jobs} job${o.jobs === 1 ? '' : 's'})`).join(', ')}. Using ${res.ats}, the one with the most jobs. To pick another, enter e.g. "${res.alsoFoundOn[0].ats}:${t.slug}" or the board URL.`);
+            }
+            const companyName = res.companyName || t.slug.split(/[-_]+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
             const out = [];
             for (const j of res.jobs) {
                 let job;

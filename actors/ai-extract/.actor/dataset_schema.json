@@ -1,0 +1,196 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "Requested URL"
+      },
+      "loadedUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Final URL after redirects"
+      },
+      "depth": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Crawl depth (0 = start URL)"
+      },
+      "status": {
+        "type": "string",
+        "description": "ok, http_error, fetch_error, blocked_by_robots_txt, not_html, empty_page, ai_error, invalid_output, skipped_cost_cap, invalid_url or error. Only 'ok' rows are charged."
+      },
+      "title": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Page title"
+      },
+      "data": {
+        "type": [
+          "object",
+          "array",
+          "null"
+        ],
+        "description": "Extracted data (matches your schema)"
+      },
+      "error": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why the page failed"
+      },
+      "truncated": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Page was trimmed to the input token limit"
+      },
+      "inputTokens": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "AI input tokens"
+      },
+      "outputTokens": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "AI output tokens"
+      },
+      "model": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "AI model used"
+      },
+      "aiKey": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "built-in or own-key"
+      },
+      "markdown": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Cleaned page markdown (if enabled)"
+      },
+      "extractedAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "url",
+          "status",
+          "title",
+          "data",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "title": {
+            "label": "Title"
+          },
+          "data": {
+            "label": "Extracted data",
+            "format": "object"
+          },
+          "error": {
+            "label": "Error"
+          }
+        }
+      }
+    },
+    "details": {
+      "title": "Details",
+      "transformation": {
+        "fields": [
+          "url",
+          "loadedUrl",
+          "depth",
+          "status",
+          "truncated",
+          "inputTokens",
+          "outputTokens",
+          "model",
+          "aiKey",
+          "extractedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "loadedUrl": {
+            "label": "Loaded URL",
+            "format": "link"
+          },
+          "depth": {
+            "label": "Depth",
+            "format": "number"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "truncated": {
+            "label": "Trimmed",
+            "format": "boolean"
+          },
+          "inputTokens": {
+            "label": "In tokens",
+            "format": "number"
+          },
+          "outputTokens": {
+            "label": "Out tokens",
+            "format": "number"
+          },
+          "model": {
+            "label": "Model"
+          },
+          "aiKey": {
+            "label": "Key"
+          },
+          "extractedAt": {
+            "label": "Extracted at",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

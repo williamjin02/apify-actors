@@ -123,6 +123,47 @@ function finish(o, includeHtml) {
 
 /** Returns { companyName, jobs: raw[] } or throws FormatError. */
 export class FormatError extends Error {}
+/**
+ * Picks the board to use for a bare name that was probed on several ATSs.
+ * Board names are only unique within one ATS (e.g. "ramp" on Greenhouse is a different
+ * organisation with 1 job; Ramp itself is on Ashby), so keep the board with the most jobs.
+ * candidates: [{ ats, jobs: [], ... }] in ATS_LIST order. Ties keep the earlier ATS.
+ * Returns { best, others } where others are the other boards that have jobs, or null if none found.
+ */
+export function pickBoard(candidates) {
+    const found = candidates.filter(Boolean);
+    if (!found.length) return null;
+    let best = found[0];
+    for (const c of found) if (c.jobs.length > best.jobs.length) best = c;
+    return { best, others: found.filter((c) => c !== best && c.jobs.length > 0) };
+}
+
+/**
+ * Resolves one target to a board. Pinned targets (URL or "ats:slug") query only that ATS.
+ * Bare names query every ATS and keep the board with the most jobs.
+ * fetchJson(url) must return { notFound: true } or { body }; it may throw.
+ * Returns { ats, companyName, jobs, alsoFoundOn: [{ ats, jobs }] } or null.
+ */
+export async function resolveBoard(t, fetchJson, atsList = ATS_LIST) {
+    if (t.ats) {
+        const r = await fetchJson(endpoint(t.ats, t.slug, t.region));
+        if (r.notFound) return null;
+        return { ats: t.ats, ...extractRaw(t.ats, r.body), alsoFoundOn: [] };
+    }
+    const errors = [];
+    const candidates = await Promise.all(atsList.map(async (ats) => {
+        try {
+            const r = await fetchJson(endpoint(ats, t.slug, t.region));
+            return r.notFound ? null : { ats, ...extractRaw(ats, r.body) };
+        } catch (e) { errors.push(e); return null; }
+    }));
+    const pick = pickBoard(candidates);
+    // Only fail the target when nothing usable was found; one flaky ATS shouldn't hide a real board.
+    if ((!pick || !pick.best.jobs.length) && errors.length) throw errors.find((e) => e instanceof FormatError) ?? errors[0];
+    if (!pick) return null;
+    return { ...pick.best, alsoFoundOn: pick.others.map((c) => ({ ats: c.ats, jobs: c.jobs.length })) };
+}
+
 export function extractRaw(ats, body) {
     switch (ats) {
         case 'greenhouse': if (!Array.isArray(body?.jobs)) throw new FormatError('greenhouse: no jobs array'); return { companyName: body.jobs[0]?.company_name ?? null, jobs: body.jobs };

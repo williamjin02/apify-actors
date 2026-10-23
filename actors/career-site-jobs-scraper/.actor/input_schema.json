@@ -6,7 +6,7 @@
     "companies": {
       "title": "Companies",
       "type": "array",
-      "description": "Job-board URLs (e.g. https://jobs.lever.co/spotify, https://job-boards.greenhouse.io/stripe, https://jobs.ashbyhq.com/ramp, https://apply.workable.com/huggingface, https://bunq.recruitee.com) or just the board name (e.g. stripe). With a bare name the actor checks Greenhouse, Lever, Ashby, Workable and Recruitee automatically. You can also force one ATS with 'lever:spotify'.",
+      "description": "Job-board URLs (e.g. https://jobs.lever.co/spotify, https://job-boards.greenhouse.io/stripe, https://jobs.ashbyhq.com/ramp, https://apply.workable.com/huggingface, https://bunq.recruitee.com) or just the board name (e.g. stripe). With a bare name the actor checks Greenhouse, Lever, Ashby, Workable and Recruitee and uses the board with the most open jobs (the same name can belong to different organisations on different ATSs). To choose the ATS yourself, use a board URL or a prefix like 'ashby:ramp' or 'lever:spotify'.",
       "editor": "stringList",
       "prefill": [
         "stripe",

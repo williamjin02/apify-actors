@@ -11,6 +11,9 @@ These Actors are published, or on the way to the Store, under the Apify account 
 | [sitemap-url-extractor](actors/sitemap-url-extractor) | Extract every URL from a website's XML sitemap, including sitemap indexes and `.xml.gz` files, with optional HTTP status checks and new-page monitoring. | [https://apify.com/swillz/sitemap-url-extractor](https://apify.com/swillz/sitemap-url-extractor) |
 | [google-play-reviews-scraper](actors/google-play-reviews-scraper) | Scrape Google Play app reviews (rating, text, date, thumbs-up, app version, and developer replies) for any app, country, and language. | Coming soon |
 | [career-site-jobs-scraper](actors/career-site-jobs-scraper) | Scrape open jobs from Greenhouse, Lever, Ashby, Workable, and Recruitee career sites, including location, remote status, salary, and apply links. | Coming soon |
+| [company-website-enrichment](actors/company-website-enrichment) | Enrich company websites with name, description, role-based emails, phones, address, social profiles, careers page, and tech stack. | Coming soon |
+| [google-sheets-import-export](actors/google-sheets-import-export) | Import a Google Sheet into an Apify dataset, or export a dataset to a Google Sheet with append, replace, and deduplication. | Coming soon |
+| [ai-extract](actors/ai-extract) | Extract structured JSON from public web pages using a plain-English prompt or a JSON schema. | Coming soon |
 
 ## Run an Actor
 
