@@ -140,7 +140,19 @@ Open an issue on the **Issues** tab. We usually reply within 24 hours.
 
 ## Related tools
 
-- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): open jobs from Greenhouse, Lever, Ashby, Workable and Recruitee career sites.
-- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): extract every URL from any website's sitemap.
+More tools from the same developer, built to work together:
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): jobs from Greenhouse, Lever, Ashby, Workable and Recruitee boards, with salary fields, as a jobs API or CSV.
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
+- [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
+- [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+
+**Popular workflows**
+
+- **Hiring-signal leads:** scrape open roles with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper), enrich each hiring company's domain with this Actor, and append new rows daily with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **Enterprise hiring tracker:** pull Workday jobs with [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper), add company contacts with this Actor, and keep a live sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **Site audits for prospects:** check a prospect's pages and status codes with [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor), then get their contacts with this Actor.
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/company-website-enrichment

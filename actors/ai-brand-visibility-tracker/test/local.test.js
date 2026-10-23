@@ -89,4 +89,12 @@ await t('summarize: share of voice and leaderboard', () => {
 });
 
 await t('costUsd sane for default model', () => { const c = costUsd('gpt-6-luna', 13000, 400, 1); assert.ok(c > 0.011 && c < 0.013); });
+await t('free-plan trial cap only for built-in key on the free plan', async () => {
+    const { freeTrialCap, isFreePlan } = await import('../src/plan.js');
+    assert.equal(isFreePlan({ APIFY_USER_IS_PAYING: '0' }), true); assert.equal(isFreePlan({ APIFY_USER_IS_PAYING: '1' }), false); assert.equal(isFreePlan({}), false);
+    assert.deepEqual(freeTrialCap({ requested: 50, byok: false, limit: 10, env: { APIFY_USER_IS_PAYING: '0' } }), { cap: 10, limited: true });
+    assert.deepEqual(freeTrialCap({ requested: 50, byok: true, limit: 10, env: { APIFY_USER_IS_PAYING: '0' } }), { cap: 50, limited: false });
+    assert.deepEqual(freeTrialCap({ requested: 50, byok: false, limit: 10, env: { APIFY_USER_IS_PAYING: '1' } }), { cap: 50, limited: false });
+    assert.deepEqual(freeTrialCap({ requested: 5, byok: false, limit: 10, env: { APIFY_USER_IS_PAYING: '0' } }), { cap: 5, limited: false });
+});
 console.log(`${n} test groups passed`);

@@ -45,7 +45,7 @@ AI Extract uses **pay-per-result pricing**. You pay only for pages where data wa
 | 10,000 | $80 | $20 |
 | 100,000 | $800 | $200 |
 
-Pages that fail to load, are blocked by robots.txt, are empty, fail AI extraction or don't match your schema are returned with a status and **not charged**. Apify's **free plan includes $5 of monthly credit**, which covers about **600 pages a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it's reached.
+Pages that fail to load, are blocked by robots.txt, are empty, fail AI extraction or don't match your schema are returned with a status and **not charged**. Apify's **free plan includes $5 of monthly credit**. On the free plan the built-in AI processes up to **25 pages per run** (add your own AI key, or use any paid Apify plan, for bigger runs). You can set a maximum cost per run, and the actor stops cleanly when it's reached.
 
 ## Input example
 
@@ -136,7 +136,17 @@ Open an issue on the **Issues** tab. We usually reply within 24 hours.
 
 ## Related tools
 
-- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): company name, contacts, socials and tech stack from a list of domains.
-- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): get every URL of a site to feed into AI Extract.
+More tools from the same developer, built to work together:
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): jobs from Greenhouse, Lever, Ashby, Workable and Recruitee boards, with salary fields, as a jobs API or CSV.
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): turn a list of domains into company name, emails, phones, social links and tech stack.
+- [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
+- [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+
+**Popular workflows**
+
+- **Catalog or content extraction:** list every product or article URL with [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor), turn each page into JSON with this Actor, and export with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/ai-extract

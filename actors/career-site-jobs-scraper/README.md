@@ -130,7 +130,7 @@ A run summary (which ATS each company uses, jobs found vs saved, any errors) is 
 This actor only reads job postings that companies publish publicly through their ATS's public job-board API, which exists so job boards and websites can display them. It doesn't log in and doesn't collect personal data (recruiter names and emails are deliberately left out). Respect each site's terms and applicable laws for your use case.
 
 **Which ATS platforms are supported?**
-Greenhouse, Lever (including EU), Ashby, Workable and Recruitee. Workday, SmartRecruiters and others are on the roadmap; tell us on the **Issues** tab which one you need.
+Greenhouse, Lever (including EU), Ashby, Workable and Recruitee. For Workday (`myworkdayjobs.com`) sites use our [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper). SmartRecruiters and others are on the roadmap; tell us on the **Issues** tab which one you need.
 
 **Why does a company return no jobs?**
 Either it uses a different ATS, the board name is different from the company name (e.g. `openai` vs `open-ai`), or it currently has no open roles. The run summary shows which boards were found. You're never charged for jobs that weren't returned.
@@ -146,6 +146,17 @@ Open an issue on the **Issues** tab. We usually reply within 24 hours.
 
 ## Related tools
 
-- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): extract every URL from any website's sitemap.
+More tools from the same developer, built to work together:
+
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): turn a list of domains into company name, emails, phones, social links and tech stack.
+- [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
+- [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
+- [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+
+**Popular workflows**
+
+- **Hiring-signal leads:** scrape open roles with this Actor, enrich each hiring company's domain with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and append new rows daily with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/career-site-jobs-scraper

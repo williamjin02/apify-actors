@@ -4,6 +4,8 @@ import robotsParser from 'robots-parser';
 import { htmlToMarkdown, truncateToTokens, estTokens, isProbablyHtmlUrl } from './markdown.js';
 import { normalizeSchema, validate, stripNulls, InputError } from './schema.js';
 import { extract, PRESETS, priceOf, costUsd, LlmError } from './llm.js';
+import { freeTrialCap } from './plan.js';
+const FREE_TRIAL_PAGES = 25;
 
 const EVENT_BUILTIN = 'page-extracted';
 const EVENT_BYOK = 'page-extracted-own-key';
@@ -65,7 +67,10 @@ try {
     }
     const aiCfg = { provider: ai.provider, apiKey: ai.apiKey, baseUrl: ai.baseUrl, model: ai.model, maxOutputTokens: ai.maxOut, timeoutMs: 120000 }; // shared so a strict-mode fallback sticks
     const EVENT = byok ? EVENT_BYOK : EVENT_BUILTIN;
-    const pageCap = clampInt(maxPages, 20, 1, 100000);
+    const requestedPages = clampInt(maxPages, 20, 1, 100000);
+    const trial = freeTrialCap({ requested: requestedPages, byok, limit: FREE_TRIAL_PAGES });
+    const pageCap = trial.cap;
+    if (trial.limited) log.warning(`Apify free plan: the built-in AI processes at most ${FREE_TRIAL_PAGES} pages per run. Add your own AI API key, or use any paid Apify plan, to process up to ${requestedPages}.`);
     const depthCap = clampInt(maxCrawlDepth, 0, 0, 10);
     const conc = clampInt(maxConcurrency, 5, 1, 25);
     const retries = clampInt(maxRetries, 2, 0, 5);
