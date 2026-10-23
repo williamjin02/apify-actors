@@ -4,78 +4,139 @@
     "type": "object",
     "properties": {
       "input": {
-        "type": "string",
-        "description": "Website as you entered it"
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Website as you entered it",
+        "examples": [
+          "stripe.com"
+        ]
       },
       "domain": {
+        "title": "Domain",
         "type": [
           "string",
           "null"
         ],
-        "description": "Registrable domain, e.g. stripe.com"
+        "description": "Registrable domain, e.g. stripe.com",
+        "examples": [
+          "stripe.com"
+        ]
       },
       "url": {
+        "title": "Url",
         "type": [
           "string",
           "null"
         ],
-        "description": "Final homepage URL after redirects"
+        "description": "Final homepage URL after redirects",
+        "examples": [
+          "https://stripe.com/"
+        ]
       },
       "status": {
-        "type": "string",
-        "description": "ok, unreachable, http_error, blocked_by_robots_txt, not_html, invalid_input or error. Only 'ok' rows are charged."
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ok, unreachable, http_error, blocked_by_robots_txt, not_html, invalid_input or error. Only 'ok' rows are charged.",
+        "examples": [
+          "ok"
+        ]
       },
       "httpStatus": {
+        "title": "Http Status",
         "type": [
           "integer",
           "null"
         ],
-        "description": "Homepage HTTP status"
+        "description": "Homepage HTTP status",
+        "examples": [
+          200
+        ]
       },
       "companyName": {
+        "title": "Company Name",
         "type": [
           "string",
           "null"
         ],
-        "description": "Company name (schema.org, og:site_name or page title)"
+        "description": "Company name (schema.org, og:site_name or page title)",
+        "examples": [
+          "Stripe"
+        ]
       },
       "legalName": {
+        "title": "Legal Name",
         "type": [
           "string",
           "null"
         ],
-        "description": "Legal name (schema.org)"
+        "description": "Legal name (schema.org)",
+        "examples": [
+          "Stripe, LLC"
+        ]
       },
       "description": {
+        "title": "Description",
         "type": [
           "string",
           "null"
         ],
-        "description": "Meta description"
+        "description": "Meta description",
+        "examples": [
+          "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage mon…"
+        ]
       },
       "language": {
+        "title": "Language",
         "type": [
           "string",
           "null"
         ],
-        "description": "Site language (html lang)"
+        "description": "Site language (html lang)",
+        "examples": [
+          "en-US"
+        ]
       },
       "logoUrl": {
+        "title": "Logo URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Logo or icon URL"
+        "description": "Logo or icon URL",
+        "examples": [
+          "https://images.stripeassets.com/fzn2n1nzq965/1hgcBNd12BfT9VLgbId7By/01d91920114b124fb4cf6d448f9f06eb/favicon.svg"
+        ]
       },
       "emails": {
-        "type": "array",
-        "description": "Generic role-based emails on the company's own domain (info@, sales@, support@...). Personal addresses are never collected."
+        "title": "Emails",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Generic role-based emails on the company's own domain (info@, sales@, support@...). Personal addresses are never collected.",
+        "examples": [
+          []
+        ]
       },
       "phones": {
-        "type": "array",
-        "description": "Company phone numbers (tel: links and schema.org)"
+        "title": "Phones",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Company phone numbers (tel: links and schema.org)",
+        "examples": [
+          []
+        ]
       },
       "address": {
+        "title": "Address",
         "type": [
           "object",
           "null"
@@ -83,38 +144,69 @@
         "description": "Postal address from schema.org: street, city, region, postalCode, country"
       },
       "socials": {
-        "type": "object",
-        "description": "Company social profiles: linkedin, twitter, facebook, instagram, youtube, tiktok, github, pinterest"
+        "title": "Socials",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Company social profiles: linkedin, twitter, facebook, instagram, youtube, tiktok, github, pinterest",
+        "examples": [
+          {
+            "github": "https://github.com/stripe",
+            "twitter": "https://x.com/stripe",
+            "youtube": "https://www.youtube.com/@stripe",
+            "linkedin": "https://www.linkedin.com/company/stripe",
+            "facebook": "https://www.facebook.com/StripeHQ",
+            "instagram": "https://www.instagram.com/stripehq"
+          }
+        ]
       },
       "contactPageUrl": {
+        "title": "Contact Page URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Contact page"
+        "description": "Contact page",
+        "examples": [
+          "https://stripe.com/contact/sales"
+        ]
       },
       "aboutPageUrl": {
+        "title": "About Page URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "About page"
+        "description": "About page",
+        "examples": [
+          "https://stripe.com/about"
+        ]
       },
       "careersPageUrl": {
+        "title": "Careers Page URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Careers page"
+        "description": "Careers page",
+        "examples": [
+          "https://stripe.com/careers"
+        ]
       },
       "legalPageUrl": {
+        "title": "Legal Page URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Imprint / legal page"
+        "description": "Imprint / legal page",
+        "examples": [
+          "https://stripe.com/legal/ssa"
+        ]
       },
       "jobBoard": {
+        "title": "Job Board",
         "type": [
           "object",
           "null"
@@ -122,10 +214,27 @@
         "description": "Detected job board: ats (greenhouse, lever, ashby, workable, recruitee, workday...), slug, url"
       },
       "technologies": {
-        "type": "array",
-        "description": "Detected technologies: {name, category}"
+        "title": "Technologies",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Detected technologies: {name, category}",
+        "examples": [
+          [
+            {
+              "name": "Next.js",
+              "category": "JavaScript framework"
+            },
+            {
+              "name": "React",
+              "category": "JavaScript framework"
+            }
+          ]
+        ]
       },
       "foundingDate": {
+        "title": "Founding Date",
         "type": [
           "string",
           "null"
@@ -133,6 +242,7 @@
         "description": "Founding date (schema.org)"
       },
       "numberOfEmployees": {
+        "title": "Number Of Employees",
         "type": [
           "string",
           "null"
@@ -140,10 +250,21 @@
         "description": "Employee count (schema.org, when published)"
       },
       "pagesFetched": {
-        "type": "array",
-        "description": "Pages read on the site"
+        "title": "Pages Fetched",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Pages read on the site",
+        "examples": [
+          [
+            "https://stripe.com/",
+            "https://stripe.com/contact/sales"
+          ]
+        ]
       },
       "error": {
+        "title": "Error",
         "type": [
           "string",
           "null"
@@ -151,10 +272,29 @@
         "description": "Why a site was not enriched"
       },
       "scrapedAt": {
-        "type": "string",
-        "description": "Scrape time (ISO)"
+        "title": "Scraped At",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Scrape time (ISO)",
+        "examples": [
+          "2026-10-23T19:31:56.445Z"
+        ]
       }
-    }
+    },
+    "examples": [
+      {
+        "input": "stripe.com",
+        "domain": "stripe.com",
+        "url": "https://stripe.com/",
+        "status": "ok",
+        "httpStatus": 200,
+        "companyName": "Stripe",
+        "legalName": "Stripe, LLC",
+        "description": "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage mon…"
+      }
+    ]
   },
   "views": {
     "overview": {

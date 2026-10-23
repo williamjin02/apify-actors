@@ -48,6 +48,16 @@ apify run
 
 `npm start` runs `src/main.js` directly. A full local run expects the SDK environment that `apify run` sets up.
 
+## Use these tools from an AI agent
+
+Every Actor here works as an MCP tool for Claude, ChatGPT, Cursor and other agents through [mcp.apify.com](https://mcp.apify.com). Load all of them at once:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/sitemap-url-extractor,swillz/career-site-jobs-scraper,swillz/company-website-enrichment,swillz/google-sheets-import-export,swillz/workday-jobs-scraper"}}}
+```
+
+Agent-friendly by design: plain JSON inputs with real defaults, input descriptions that show the exact shape, and no silent empty runs (an input that returns nothing gets a free status row with the reason). Pipeline example: Workday Jobs Scraper → Company Website Enrichment → Google Sheets Import & Export.
+
 ## Make, n8n, Zapier, and MCP
 
 Apify connects these Actors to automation tools and AI clients. Sign in with your Apify account, choose **Run Actor**, and select the Actor (for example `swillz/sitemap-url-extractor`).

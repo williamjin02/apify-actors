@@ -25,7 +25,7 @@ try {
         tryCommonSitemapPaths = true,
         maxSitemapDepth = 5,
         maxSitemaps = 1000,
-        maxUrls = 0,
+        maxUrls: maxUrlsIn = 1000, // default 1000 also for API/agent calls that omit it; 0 = no limit
         maxUrlsPerSite = 0,
         includeUrlPatterns = [],
         excludeUrlPatterns = [],
@@ -42,7 +42,13 @@ try {
         sitemapConcurrency = 5,
         restrictToStartPath = true,
         proxyConfiguration = { useApifyProxy: false },
+        emitStatusRows = true,
     } = input;
+    // Effective cap: maxUrls, or aliases agents often send (maxItems, limit, maxResults), and the run's max paid items option.
+    const capList = [maxUrlsIn, input.maxItems, input.limit, input.maxResults, process.env.ACTOR_MAX_PAID_DATASET_ITEMS]
+        .map(Number).filter((n) => Number.isFinite(n) && n > 0).map(Math.floor);
+    const maxUrls = capList.length ? Math.min(...capList) : 0;
+    if (maxUrls > 0) log.info(`Output is capped at ${maxUrls} URLs (maxUrls). Set maxUrls to 0 for no limit.`);
 
     // ---------- Input validation ----------
     const rawStarts = (Array.isArray(startUrls) ? startUrls : [startUrls])
@@ -334,6 +340,14 @@ try {
         { const batch = buffer; buffer = []; if (checkUrlStatus && batch.length) await checkStatuses(batch); await flush(batch); }
         site.urlsOutput = pushed - before;
         if (!site.sitemapsFound.length) log.warning(`${origin}: no sitemap found${site.sitemapsFailed.length ? ` (${site.sitemapsFailed.length} failed)` : ''}. Tip: pass the sitemap URL directly.`);
+        if (!site.urlsOutput && !chargeLimitHit && !(maxUrls > 0 && accepted >= maxUrls)) {
+            if (!site.sitemapsFound.length) site.reason = `No sitemap found for ${origin}${site.discoveredVia === 'common-paths' || !site.discoveredVia ? ' in robots.txt or at /sitemap.xml, /sitemap_index.xml, /wp-sitemap.xml and similar paths' : ''}${site.sitemapsFailed.length ? `; failed: ${site.sitemapsFailed.slice(0, 3).map((f) => `${f.url} (${f.error})`).join(', ')}` : ''}. Pass the sitemap URL directly if you know it.`;
+            else if (onlyNewUrls && previouslySeen) site.reason = null; // monitoring: "no new URLs" is a normal result, reported in the status message only
+            else site.reason = `${site.sitemapsFound.length} sitemap(s) read, but all ${site.urlsFiltered + site.duplicates} URLs were removed by your filters (scope, include/exclude patterns, lastmod dates) or were duplicates.`;
+            if (site.reason && emitStatusRows !== false) {
+                await Actor.pushData({ status: 'no_results', url: null, site: origin, sitemapUrl: null, input: start, reason: site.reason, extractedAt: new Date().toISOString() }); // no event name = not charged
+            }
+        }
         await Actor.setStatusMessage(`${summary.sites.length}/${starts.length} sites, ${pushed} URLs so far`);
     }
     { const batch = buffer; buffer = []; if (checkUrlStatus && batch.length) await checkStatuses(batch); await flush(batch); }
@@ -353,9 +367,12 @@ try {
     const sitesWithSitemaps = summary.sites.filter((s) => s.sitemapsFound.length).length;
     summary.finishedAt = new Date().toISOString();
     summary.totals = { sites: starts.length, sitesWithSitemaps, sitemapsProcessed, urlsOutput: pushed, ...stats, chargeLimitHit };
+    summary.maxUrls = maxUrls;
+    summary.stoppedReason = chargeLimitHit ? 'Reached the maximum cost you set for this run.' : (maxUrls > 0 && accepted >= maxUrls ? `Reached maxUrls (${maxUrls}). Set maxUrls higher, or 0 for no limit.` : null);
+    summary.zeroResultsReason = pushed ? null : (summary.sites.map((s) => s.reason).filter(Boolean).join(' | ') || (onlyNewUrls && previouslySeen ? 'No new URLs since the last run.' : null));
     await Actor.setValue('OUTPUT', summary);
-    const msg = `Done: ${pushed} URLs from ${sitesWithSitemaps}/${starts.length} sites (${summary.sites.reduce((a, s) => a + s.sitemapsFound.length, 0)} sitemaps).`
-        + (maxUrls > 0 && accepted >= maxUrls ? ` Stopped at maxUrls (${maxUrls}).` : '')
+    const msg = !pushed && summary.zeroResultsReason ? `0 results: ${summary.zeroResultsReason}` : `Done: ${pushed} URLs from ${sitesWithSitemaps}/${starts.length} sites (${summary.sites.reduce((a, s) => a + s.sitemapsFound.length, 0)} sitemaps).`
+        + (maxUrls > 0 && accepted >= maxUrls ? ` Stopped at maxUrls (${maxUrls}); set it higher or 0 for all URLs.` : '')
         + (chargeLimitHit ? ' Stopped at your maximum cost per run.' : '')
         + (sitesWithSitemaps < summary.sites.length ? ' Some sites had no discoverable sitemap — see OUTPUT in the key-value store.' : '');
     log.info(msg);

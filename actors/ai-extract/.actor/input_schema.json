@@ -7,7 +7,7 @@
       "title": "Start URLs",
       "type": "array",
       "editor": "requestListSources",
-      "description": "Pages to extract from. With crawl depth 0 (default) only these pages are processed; with depth 1+ links on them are followed too.",
+      "description": "Required. Array of objects, e.g. [{\"url\":\"https://example.com/product/1\"}]. Each page is read and turned into one JSON row by AI.",
       "prefill": [
         {
           "url": "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
@@ -18,8 +18,9 @@
       "title": "Instructions (what to extract)",
       "type": "string",
       "editor": "textarea",
-      "description": "Describe in plain English what you want from each page, e.g. \"Product name, price as a number, currency, availability and star rating\". Optional if you give a JSON schema.",
-      "prefill": "Extract the book title, price as a number, currency code, whether it is in stock, star rating (1-5) and the product description."
+      "description": "What to extract, in plain words, e.g. \"product name, price, currency and whether it is in stock\". Give instructions, a jsonSchema, or both; the run stops with a clear error if both are empty.",
+      "prefill": "Extract the book title, price as a number, currency code, whether it is in stock, star rating (1-5) and the product description.",
+      "default": ""
     },
     "jsonSchema": {
       "title": "JSON schema (output shape)",
@@ -47,7 +48,7 @@
     "maxPages": {
       "title": "Max pages",
       "type": "integer",
-      "description": "Hard limit on pages processed in this run (start URLs + crawled).",
+      "description": "Stop after this many pages (default 20). AI agents: keep \u226410 for answers within ~45s. The free plan with the built-in AI processes up to 25 pages per run.",
       "default": 20,
       "minimum": 1,
       "maximum": 100000
@@ -145,7 +146,7 @@
         "Together AI",
         "Other OpenAI-compatible API"
       ],
-      "description": "Which provider your key is for.",
+      "description": "Provider of your own llmApiKey (ignored when using the built-in AI): openai, anthropic, gemini, deepseek, groq, openrouter, together, or openai-compatible with llmBaseUrl.",
       "default": "openai"
     },
     "llmModel": {
@@ -189,7 +190,7 @@
       "default": 30,
       "minimum": 5,
       "maximum": 120,
-      "description": "Timeout for loading one page."
+      "description": "Seconds to wait for each page to load before giving up (default 30)."
     },
     "proxyConfiguration": {
       "title": "Proxy",

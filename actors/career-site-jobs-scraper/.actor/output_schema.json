@@ -1,18 +1,18 @@
 {
   "actorOutputSchemaVersion": 1,
   "title": "Output of Career Site Jobs Scraper",
-  "description": "Jobs are stored in the default dataset; a per-company run summary is stored in the OUTPUT record of the default key-value store.",
+  "description": "One row per job in the default dataset; a per-company run summary in the OUTPUT record. Companies with no jobs get a free status row with a reason.",
   "properties": {
     "results": {
       "type": "string",
       "title": "Jobs",
-      "description": "Job postings (one per row) in the default dataset.",
+      "description": "One row per job. Example: {\"companyName\":\"Stripe\",\"title\":\"Backend Engineer, Payments\",\"location\":\"Seattle, WA\",\"remote\":false,\"salaryMin\":180000,\"salaryMax\":250000,\"salaryCurrency\":\"USD\",\"postedAt\":\"2026-10-01T00:00:00Z\",\"ats\":\"greenhouse\",\"jobUrl\":\"https://…\"}. Status rows: {\"status\":\"no_results\",\"input\":\"stripe\",\"jobsFound\":120,\"jobsMatched\":0,\"reason\":\"…\"}.",
       "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
     },
     "summary": {
       "type": "string",
       "title": "Run summary",
-      "description": "JSON summary: which ATS each company uses, jobs found and saved, errors.",
+      "description": "JSON: companies (ATS used, jobsFound, jobsSaved, status), jobsSaved, maxJobs, stoppedReason and zeroResultsReason.",
       "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
     }
   }

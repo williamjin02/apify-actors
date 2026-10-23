@@ -159,16 +159,16 @@ try {
     async function save(row) {
         counts[row.status] = (counts[row.status] ?? 0) + 1;
         if (row.status !== 'ok') { await Actor.pushData(row); return; } // failed sites are free
-        if (chargeLimitHit) return;
+        if (chargeLimitHit) { counts.ok--; skipped.push(row.input); return; }
         if (charging) {
             const allowedCount = charging.calculateMaxEventChargeCountWithinLimit(EVENT);
-            if (Number.isFinite(allowedCount) && allowedCount < 1) { chargeLimitHit = true; log.warning('Reached the maximum cost you set for this run. Stopping; results so far are saved.'); return; }
+            if (Number.isFinite(allowedCount) && allowedCount < 1) { chargeLimitHit = true; counts.ok--; skipped.push(row.input); log.warning('Reached the maximum cost you set for this run. Stopping; results so far are saved.'); return; }
         }
         const r = await Actor.pushData(row, EVENT); charged++;
         if (r?.eventChargeLimitReached) chargeLimitHit = true;
     }
 
-    let idx = 0; let done = 0;
+    let idx = 0; let done = 0; const skipped = [];
     const worker = async () => {
         while (idx < targets.length && !chargeLimitHit) {
             const t = targets[idx++];
@@ -180,12 +180,17 @@ try {
     };
     await Promise.all(Array.from({ length: Math.min(conc, targets.length) }, worker));
 
-    const summary = { websitesRequested: targets.length, enriched: counts.ok ?? 0, byStatus: counts, chargeLimitReached: chargeLimitHit, stats, finishedAt: new Date().toISOString() };
+    // Never silent: websites left out because the run hit your maximum cost get a free status row each.
+    for (const t of targets.slice(idx)) skipped.push(t.input);
+    for (const inp of skipped) await Actor.pushData({ input: inp, domain: null, status: 'skipped_charge_limit', error: 'Not processed: the run reached the maximum cost you set. Raise the limit and run these again.', scrapedAt: new Date().toISOString() });
+    if (skipped.length) counts.skipped_charge_limit = skipped.length;
+    const summary = { websitesRequested: targets.length, enriched: counts.ok ?? 0, byStatus: counts, chargeLimitReached: chargeLimitHit,
+        zeroResultsReason: counts.ok ? null : `No website could be enriched: ${Object.entries(counts).map(([k, v]) => `${v} ${k}`).join(', ')}. See the error field of each row.`, stats, finishedAt: new Date().toISOString() };
     await Actor.setValue('OUTPUT', summary);
     const valid = targets.filter((t) => t.n).length;
     // Silent-failure guard: many valid sites and none reachable means our network is broken, not the sites.
     if (valid >= 3 && !(counts.ok) && (counts.unreachable ?? 0) === valid) throw new Error(`None of the ${valid} websites could be reached. This looks like a network problem; try again or enable a proxy.`);
-    await Actor.exit(`Enriched ${counts.ok ?? 0} of ${targets.length} websites${counts.ok === targets.length ? '' : ` (${Object.entries(counts).filter(([k]) => k !== 'ok').map(([k, v]) => `${v} ${k}`).join(', ')}; not charged)`}.`);
+    await Actor.exit(`${counts.ok ? '' : '0 results: '}Enriched ${counts.ok ?? 0} of ${targets.length} websites${counts.ok === targets.length ? '' : ` (${Object.entries(counts).filter(([k]) => k !== 'ok').map(([k, v]) => `${v} ${k}`).join(', ')}; not charged)`}.`);
 } catch (e) {
     if (e instanceof InputError) { log.error(e.message); await Actor.fail(`Input error: ${e.message}`); }
     else { log.exception(e, 'Run failed'); await Actor.fail(e.message); }

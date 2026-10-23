@@ -4,36 +4,73 @@
     "type": "object",
     "properties": {
       "jobId": {
-        "type": "string",
-        "description": "Job ID in the ATS"
+        "title": "Job ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job ID in the ATS",
+        "examples": [
+          "8130913"
+        ]
       },
       "title": {
-        "type": "string",
-        "description": "Job title"
+        "title": "Title",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job title",
+        "examples": [
+          "Designer, Web Presence & Platform"
+        ]
       },
       "companyName": {
+        "title": "Company Name",
         "type": [
           "string",
           "null"
         ],
-        "description": "Company name"
+        "description": "Company name",
+        "examples": [
+          "Stripe"
+        ]
       },
       "companySlug": {
-        "type": "string",
-        "description": "Job-board name (slug)"
-      },
-      "ats": {
-        "type": "string",
-        "description": "greenhouse, lever, ashby, workable or recruitee"
-      },
-      "department": {
+        "title": "Company Slug",
         "type": [
           "string",
           "null"
         ],
-        "description": "Department"
+        "description": "Job-board name (slug)",
+        "examples": [
+          "stripe"
+        ]
+      },
+      "ats": {
+        "title": "Ats",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "greenhouse, lever, ashby, workable or recruitee",
+        "examples": [
+          "greenhouse"
+        ]
+      },
+      "department": {
+        "title": "Department",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Department",
+        "examples": [
+          "8815 WPP Growth"
+        ]
       },
       "team": {
+        "title": "Team",
         "type": [
           "string",
           "null"
@@ -41,17 +78,31 @@
         "description": "Team / function"
       },
       "location": {
+        "title": "Location",
         "type": [
           "string",
           "null"
         ],
-        "description": "Primary location"
+        "description": "Primary location",
+        "examples": [
+          "US-Remote"
+        ]
       },
       "locations": {
-        "type": "array",
-        "description": "All listed locations"
+        "title": "Locations",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "All listed locations",
+        "examples": [
+          [
+            "US-Remote"
+          ]
+        ]
       },
       "country": {
+        "title": "Country",
         "type": [
           "string",
           "null"
@@ -59,27 +110,37 @@
         "description": "Country (code or name, as provided by the ATS)"
       },
       "remote": {
+        "title": "Remote",
         "type": [
           "boolean",
           "null"
         ],
-        "description": "Marked as remote"
+        "description": "Marked as remote",
+        "examples": [
+          true
+        ]
       },
       "workplaceType": {
+        "title": "Workplace Type",
         "type": [
           "string",
           "null"
         ],
-        "description": "remote, hybrid or onsite"
+        "description": "remote, hybrid or onsite",
+        "examples": [
+          "remote"
+        ]
       },
       "employmentType": {
+        "title": "Employment Type",
         "type": [
           "string",
           "null"
         ],
-        "description": "Full-time, part-time, contract\u2026"
+        "description": "Full-time, part-time, contract…"
       },
       "salaryText": {
+        "title": "Salary Text",
         "type": [
           "string",
           "null"
@@ -87,6 +148,7 @@
         "description": "Salary range as shown"
       },
       "salaryMin": {
+        "title": "Salary Min",
         "type": [
           "number",
           "null"
@@ -94,6 +156,7 @@
         "description": "Minimum salary"
       },
       "salaryMax": {
+        "title": "Salary Max",
         "type": [
           "number",
           "null"
@@ -101,6 +164,7 @@
         "description": "Maximum salary"
       },
       "salaryCurrency": {
+        "title": "Salary Currency",
         "type": [
           "string",
           "null"
@@ -108,48 +172,70 @@
         "description": "Salary currency"
       },
       "salaryInterval": {
+        "title": "Salary Interval",
         "type": [
           "string",
           "null"
         ],
-        "description": "year, month, hour\u2026"
+        "description": "year, month, hour…"
       },
       "postedAt": {
+        "title": "Posted At",
         "type": [
           "string",
           "null"
         ],
-        "description": "Date posted (ISO 8601)"
+        "description": "Date posted (ISO 8601)",
+        "examples": [
+          "2026-08-31T16:15:39.000Z"
+        ]
       },
       "updatedAt": {
+        "title": "Updated At",
         "type": [
           "string",
           "null"
         ],
-        "description": "Last updated (ISO 8601)"
+        "description": "Last updated (ISO 8601)",
+        "examples": [
+          "2026-10-22T13:17:07.000Z"
+        ]
       },
       "jobUrl": {
+        "title": "Job URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Job posting URL"
+        "description": "Job posting URL",
+        "examples": [
+          "https://stripe.com/jobs/search?gh_jid=8130913"
+        ]
       },
       "applyUrl": {
+        "title": "Apply URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Application URL"
+        "description": "Application URL",
+        "examples": [
+          "https://stripe.com/jobs/search?gh_jid=8130913"
+        ]
       },
       "boardUrl": {
+        "title": "Board URL",
         "type": [
           "string",
           "null"
         ],
-        "description": "Company job-board URL"
+        "description": "Company job-board URL",
+        "examples": [
+          "https://job-boards.greenhouse.io/stripe"
+        ]
       },
       "descriptionText": {
+        "title": "Description Text",
         "type": [
           "string",
           "null"
@@ -157,6 +243,7 @@
         "description": "Job description (plain text)"
       },
       "descriptionHtml": {
+        "title": "Description Html",
         "type": [
           "string",
           "null"
@@ -164,15 +251,74 @@
         "description": "Job description (HTML), if enabled"
       },
       "scrapedAt": {
-        "type": "string",
-        "description": "When the job was scraped (ISO 8601)"
+        "title": "Scraped At",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the job was scraped (ISO 8601)",
+        "examples": [
+          "2026-10-23T19:35:53.962Z"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Empty (or \"ok\") on normal rows. Free status rows (not charged) use no_results, not_found, error, skipped_* etc. and explain why in reason or error."
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The input value this row belongs to (as you entered it)."
+      },
+      "reason": {
+        "title": "Reason",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Only on free status rows: why this input returned nothing, e.g. \"120 open jobs found, 0 matched your filters (titleKeywords=[rust]). Loosen or remove filters.\""
+      },
+      "jobsFound": {
+        "title": "Jobs Found",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Status rows only: open jobs on the board before your filters",
+        "examples": [
+          0
+        ]
+      },
+      "jobsMatched": {
+        "title": "Jobs Matched",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Status rows only: jobs left after your filters",
+        "examples": [
+          0
+        ]
       }
     },
-    "required": [
-      "jobId",
-      "title",
-      "ats",
-      "companySlug"
+    "examples": [
+      {
+        "ats": "greenhouse",
+        "companySlug": "stripe",
+        "companyName": "Stripe",
+        "jobId": "8130913",
+        "title": "Designer, Web Presence & Platform",
+        "department": "8815 WPP Growth",
+        "team": null,
+        "location": "US-Remote"
+      }
     ]
   },
   "views": {
@@ -189,7 +335,9 @@
           "salaryText",
           "postedAt",
           "ats",
-          "jobUrl"
+          "jobUrl",
+          "status",
+          "reason"
         ]
       },
       "display": {
@@ -227,6 +375,14 @@
           "jobUrl": {
             "label": "Job URL",
             "format": "link"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "reason": {
+            "label": "Reason",
+            "format": "text"
           }
         }
       }

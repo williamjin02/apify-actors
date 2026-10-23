@@ -6,7 +6,7 @@
     "startUrls": {
       "title": "Workday career-site URLs",
       "type": "array",
-      "description": "One URL per company: the address of its Workday jobs page, e.g. <code>https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite</code>. A filtered search URL (with <code>?q=</code> or location filters) keeps its filters.",
+      "description": "Required. Array of objects, one per company: its Workday jobs page, e.g. [{\"url\":\"https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite\"}]. A filtered search URL (with ?q= or location filters) keeps its filters. Find it via the company's Careers page: the address contains myworkdayjobs.com.",
       "editor": "requestListSources",
       "prefill": [
         {
@@ -20,7 +20,7 @@
     "searchText": {
       "title": "Search keywords",
       "type": "string",
-      "description": "Same as the search box on the career site, e.g. <code>data engineer</code>. Leave empty for all jobs.",
+      "description": "Same as the search box on the career site, e.g. \"data engineer\". Leave empty for all jobs.",
       "editor": "textfield",
       "sectionCaption": "Filters"
     },
@@ -33,13 +33,13 @@
     "excludeTitleKeywords": {
       "title": "Title must not contain",
       "type": "array",
-      "description": "Drop jobs whose title contains any of these, e.g. <code>intern</code>, <code>senior</code>.",
+      "description": "Array of strings. Drop jobs whose title contains any of these, e.g. [\"intern\",\"senior\"].",
       "editor": "stringList"
     },
     "locationKeywords": {
       "title": "Location contains (any)",
       "type": "array",
-      "description": "Keep jobs where any location or the country contains one of these, e.g. <code>Remote</code>, <code>Germany</code>, <code>CA</code>.",
+      "description": "Array of strings. Keep jobs where any location or the country contains one of these, e.g. [\"Remote\",\"Germany\",\"CA\"].",
       "editor": "stringList"
     },
     "postedWithinDays": {
@@ -77,7 +77,7 @@
     "maxJobsPerSite": {
       "title": "Max jobs per site",
       "type": "integer",
-      "description": "0 = no limit.",
+      "description": "Stop after this many jobs from each career site (0 = no limit).",
       "default": 0,
       "minimum": 0,
       "editor": "number",
@@ -86,7 +86,7 @@
     "maxJobs": {
       "title": "Max jobs in total",
       "type": "integer",
-      "description": "0 = no limit. You can also cap cost with the run's maximum cost setting.",
+      "description": "Stop after this many jobs in total. 0 = no limit (default). Agents: set 50–200 and includeDetails=false for answers in under 45 seconds. Aliases maxItems/limit/maxResults also work.",
       "default": 0,
       "minimum": 0,
       "editor": "number"
@@ -124,6 +124,12 @@
       "maximum": 6,
       "editor": "number",
       "description": "How many times to retry a failed request (network error, 429 or 5xx) before giving up on it."
+    },
+    "emitStatusRows": {
+      "title": "Add status rows for empty sites",
+      "type": "boolean",
+      "default": true,
+      "description": "Add one free row (status \"no_results\", \"not_found\" or \"error\" plus a reason) for each career site that returned no jobs, e.g. \"N jobs listed, 0 matched your filters\". Not charged. Turn off for jobs only."
     }
   },
   "required": [

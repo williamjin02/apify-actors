@@ -6,7 +6,7 @@
         "startUrls": {
             "title": "Websites or sitemap URLs",
             "type": "array",
-            "description": "Website home pages (e.g. https://example.com) \u2014 sitemaps are discovered from robots.txt and common paths \u2014 or direct sitemap URLs (sitemap.xml, sitemap index, .xml.gz, .txt or RSS/Atom feed).",
+            "description": "Required. Array of objects, e.g. [{\"url\":\"https://example.com\"}] or [{\"url\":\"https://example.com/sitemap.xml\"}]. A home page triggers sitemap auto-discovery (robots.txt + common paths); a sitemap URL is read directly.",
             "editor": "requestListSources",
             "prefill": [
                 {
@@ -17,15 +17,15 @@
         "maxUrls": {
             "title": "Max URLs (total)",
             "type": "integer",
-            "description": "Stop after this many URLs across all sites. 0 = no limit. Big sites can list hundreds of thousands of URLs (apify.com lists ~790,000), so set a cap to control cost.",
-            "default": 0,
+            "description": "Stop after this many URLs across all sites (default 1000; 0 = no limit). Large sites list 100k+ URLs: raise this deliberately. Also applies to API and AI-agent calls that omit it.",
+            "default": 1000,
             "minimum": 0,
             "prefill": 1000
         },
         "maxUrlsPerSite": {
             "title": "Max URLs per site",
             "type": "integer",
-            "description": "Limit per input website. 0 = no limit.",
+            "description": "Stop after this many URLs from each start URL (0 = no limit). Useful when one big site would use up maxUrls.",
             "default": 0,
             "minimum": 0
         },
@@ -76,7 +76,7 @@
         "statusCheckConcurrency": {
             "title": "Status check concurrency",
             "type": "integer",
-            "description": "Parallel status requests.",
+            "description": "How many HTTP status checks run at the same time (only with checkUrlStatus). Lower it if the site rate-limits you.",
             "default": 10,
             "minimum": 1,
             "maximum": 50
@@ -84,13 +84,13 @@
         "includeImages": {
             "title": "Include image URLs",
             "type": "boolean",
-            "description": "Add the list of <image:loc> URLs for each page (image sitemaps).",
+            "description": "Add the image URLs listed for each page (image:loc tags in image sitemaps).",
             "default": false
         },
         "includeAlternates": {
             "title": "Include hreflang alternates",
             "type": "boolean",
-            "description": "Add <xhtml:link hreflang> language alternates for each page.",
+            "description": "Add hreflang language alternates (xhtml:link tags) for each page.",
             "default": false
         },
         "restrictToStartPath": {
@@ -154,11 +154,17 @@
         "proxyConfiguration": {
             "title": "Proxy",
             "type": "object",
-            "description": "Usually not needed \u2014 sitemaps are meant for bots. Enable Apify Proxy only for sites that block datacenter traffic.",
+            "description": "Usually not needed — sitemaps are meant for bots. Enable Apify Proxy only for sites that block datacenter traffic.",
             "editor": "proxy",
             "default": {
                 "useApifyProxy": false
             }
+        },
+        "emitStatusRows": {
+            "title": "Add status rows for empty sites",
+            "type": "boolean",
+            "default": true,
+            "description": "Add one free row (status \"no_results\" plus a reason) for each start URL that returned no URLs, so you or an AI agent can see why. Not charged. Turn off for a pure URL list."
         }
     },
     "required": [

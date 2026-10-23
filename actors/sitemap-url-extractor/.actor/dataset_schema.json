@@ -3,52 +3,277 @@
   "fields": {
     "type": "object",
     "properties": {
-      "url": { "type": "string", "description": "Page URL from the sitemap" },
-      "lastmod": { "type": ["string", "null"], "description": "Last modification (ISO 8601)" },
-      "changefreq": { "type": ["string", "null"] },
-      "priority": { "type": ["number", "null"] },
-      "imageCount": { "type": "integer" },
-      "images": { "type": "array" },
-      "alternates": { "type": "array" },
-      "newsPublicationDate": { "type": ["string", "null"] },
-      "isNew": { "type": ["boolean", "null"], "description": "True if not seen in previous runs (monitoring mode)" },
-      "httpStatus": { "type": ["integer", "null"] },
-      "finalUrl": { "type": ["string", "null"] },
-      "statusError": { "type": ["string", "null"] },
-      "sitemapUrl": { "type": "string", "description": "Sitemap file the URL came from" },
-      "site": { "type": "string", "description": "Website origin" },
-      "extractedAt": { "type": "string" }
+      "url": {
+        "title": "Url",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Page URL from the sitemap",
+        "examples": [
+          "https://docs.apify.com/api"
+        ]
+      },
+      "lastmod": {
+        "title": "Lastmod",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Last modification (ISO 8601)"
+      },
+      "changefreq": {
+        "title": "Changefreq",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Changefreq",
+        "examples": [
+          "weekly"
+        ]
+      },
+      "priority": {
+        "title": "Priority",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Priority",
+        "examples": [
+          0.5
+        ]
+      },
+      "imageCount": {
+        "title": "Image Count",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Image Count",
+        "examples": [
+          0
+        ]
+      },
+      "images": {
+        "title": "Images",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Images"
+      },
+      "alternates": {
+        "title": "Alternates",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Alternates"
+      },
+      "newsPublicationDate": {
+        "title": "News Publication Date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "News Publication Date"
+      },
+      "isNew": {
+        "title": "Is New",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "True if not seen in previous runs (monitoring mode)"
+      },
+      "httpStatus": {
+        "title": "Http Status",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Http Status"
+      },
+      "finalUrl": {
+        "title": "Final URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Final URL"
+      },
+      "statusError": {
+        "title": "Status Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Status Error"
+      },
+      "sitemapUrl": {
+        "title": "Sitemap URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Sitemap file the URL came from",
+        "examples": [
+          "https://docs.apify.com/sitemap_base.xml"
+        ]
+      },
+      "site": {
+        "title": "Site",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Website origin",
+        "examples": [
+          "https://docs.apify.com"
+        ]
+      },
+      "extractedAt": {
+        "title": "Extracted At",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Extracted At",
+        "examples": [
+          "2026-10-23T08:19:59.684Z"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Empty (or \"ok\") on normal rows. Free status rows (not charged) use no_results, not_found, error, skipped_* etc. and explain why in reason or error."
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The input value this row belongs to (as you entered it)."
+      },
+      "reason": {
+        "title": "Reason",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Only on free status rows: why this input returned nothing, e.g. \"120 open jobs found, 0 matched your filters (titleKeywords=[rust]). Loosen or remove filters.\""
+      }
     },
-    "required": ["url", "sitemapUrl", "site"]
+    "examples": [
+      {
+        "url": "https://docs.apify.com/api",
+        "lastmod": null,
+        "changefreq": "weekly",
+        "priority": 0.5,
+        "imageCount": 0,
+        "isNew": null,
+        "sitemapUrl": "https://docs.apify.com/sitemap_base.xml",
+        "site": "https://docs.apify.com"
+      }
+    ]
   },
   "views": {
     "overview": {
       "title": "URLs",
-      "transformation": { "fields": ["url", "lastmod", "changefreq", "priority", "isNew", "sitemapUrl", "site"] },
+      "transformation": {
+        "fields": [
+          "url",
+          "lastmod",
+          "changefreq",
+          "priority",
+          "isNew",
+          "sitemapUrl",
+          "site",
+          "status",
+          "reason"
+        ]
+      },
       "display": {
         "component": "table",
         "properties": {
-          "url": { "label": "URL", "format": "link" },
-          "lastmod": { "label": "Last modified", "format": "date" },
-          "changefreq": { "label": "Change freq", "format": "text" },
-          "priority": { "label": "Priority", "format": "number" },
-          "isNew": { "label": "New?", "format": "boolean" },
-          "sitemapUrl": { "label": "Sitemap", "format": "link" },
-          "site": { "label": "Site", "format": "text" }
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "lastmod": {
+            "label": "Last modified",
+            "format": "date"
+          },
+          "changefreq": {
+            "label": "Change freq",
+            "format": "text"
+          },
+          "priority": {
+            "label": "Priority",
+            "format": "number"
+          },
+          "isNew": {
+            "label": "New?",
+            "format": "boolean"
+          },
+          "sitemapUrl": {
+            "label": "Sitemap",
+            "format": "link"
+          },
+          "site": {
+            "label": "Site",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "reason": {
+            "label": "Reason",
+            "format": "text"
+          }
         }
       }
     },
     "status": {
       "title": "HTTP status",
-      "transformation": { "fields": ["url", "httpStatus", "finalUrl", "statusError", "lastmod"] },
+      "transformation": {
+        "fields": [
+          "url",
+          "httpStatus",
+          "finalUrl",
+          "statusError",
+          "lastmod"
+        ]
+      },
       "display": {
         "component": "table",
         "properties": {
-          "url": { "label": "URL", "format": "link" },
-          "httpStatus": { "label": "Status", "format": "number" },
-          "finalUrl": { "label": "Redirects to", "format": "link" },
-          "statusError": { "label": "Error", "format": "text" },
-          "lastmod": { "label": "Last modified", "format": "date" }
+          "url": {
+            "label": "URL",
+            "format": "link"
+          },
+          "httpStatus": {
+            "label": "Status",
+            "format": "number"
+          },
+          "finalUrl": {
+            "label": "Redirects to",
+            "format": "link"
+          },
+          "statusError": {
+            "label": "Error",
+            "format": "text"
+          },
+          "lastmod": {
+            "label": "Last modified",
+            "format": "date"
+          }
         }
       }
     }

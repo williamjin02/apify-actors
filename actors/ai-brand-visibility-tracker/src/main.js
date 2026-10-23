@@ -120,7 +120,10 @@ try {
             const row = await one(job); inflight--;
             if (!row) continue;
             counts[row.status] = (counts[row.status] ?? 0) + 1; rows.push(row);
-            if (row.status === 'ok') { await Actor.pushData(row, EVENT); charged++; } else await Actor.pushData(row); // failed checks are free
+            if (row.status === 'ok') {
+                const res = await Actor.pushData(row, EVENT); charged++;
+                if (res?.eventChargeLimitReached) stop ??= 'Reached your maximum cost per run'; // spend cap: stop before the next paid check
+            } else await Actor.pushData(row); // failed checks are free
             if (budgetKv) { // additive: re-read so overlapping runs never overwrite each other's spend
                 const delta = aiCost - recorded; recorded = aiCost;
                 const cur = await budgetKv.getValue('SPEND');
@@ -132,14 +135,23 @@ try {
     };
     await Promise.all(Array.from({ length: Math.min(conc, todo.length) }, worker));
 
+    // Never silent about partial results: one free notice row when checks were skipped (spend cap, stop, or free-plan limit).
+    const skippedByLimit = jobs.length - todo.length; const skippedByStop = todo.length - rows.length;
+    const freePlanNote = trial.limited && skippedByLimit > 0 ? `Apify free plan: ran ${todo.length} of ${jobs.length} checks with the built-in AI. Add your own OpenAI API key, or use any paid Apify plan, to run all of them.` : null;
+    const notice = [fatal || stop ? `Stopped: ${fatal || stop}; ${skippedByStop} checks not run (not charged).` : null, freePlanNote,
+        !trial.limited && skippedByLimit > 0 ? `${skippedByLimit} checks over the per-run limit of ${trial.cap} were not run.` : null].filter(Boolean).join(' ');
+    if (notice) await Actor.pushData({ engine: 'chatgpt', model: mdl, prompt: null, sample: null, country: cc || null, brand: main.name, status: fatal || stop ? 'stopped' : 'limited',
+        checksRequested: jobs.length, checksRun: rows.length, error: notice, checkedAt: new Date().toISOString() }); // no event name = not charged
     const summary = { ...summarize(rows, entities), engine: 'chatgpt', model: mdl, country: cc || null, aiKey: byok ? 'own-key' : 'built-in',
         checksRequested: jobs.length, checksRun: rows.length, charged, byStatus: counts, aiCostUsd: +aiCost.toFixed(5),
+        truncated: skippedByLimit + skippedByStop > 0, checksSkipped: skippedByLimit + skippedByStop, freePlanLimited: !!freePlanNote, notice: notice || null,
         stoppedReason: fatal || stop || null, finishedAt: new Date().toISOString() };
     await Actor.setValue('OUTPUT', summary);
     if (fatal && !charged) throw new EngineError(fatal);
     const pct = Math.round(100 * (summary.brandMentionRate || 0));
     exitMsg = `${main.name} was mentioned in ${summary.leaderboard.find((l) => l.role === 'brand')?.mentions ?? 0} of ${counts.ok ?? 0} ChatGPT answers (${pct}%)` +
-        `${counts.error ? `; ${counts.error} checks failed (not charged)` : ''}${fatal || stop ? `. Stopped: ${fatal || stop}` : ''}.`;
+        `${counts.error ? `; ${counts.error} checks failed (not charged)` : ''}${fatal || stop ? `. Stopped: ${fatal || stop}` : ''}.${freePlanNote ? ` ${freePlanNote}` : ''}`;
+    if (!counts.ok) exitMsg = `0 results: ${counts.error ? `all ${counts.error} checks failed (not charged); see the error field.` : notice || 'no checks ran.'}`;
 } catch (e) {
     if (e instanceof InputError) { log.error(e.message); await Actor.setValue('OUTPUT', { error: e.message }); await Actor.fail(`Input error: ${e.message}`); }
     else if (e instanceof EngineError) { log.error(e.message); await Actor.fail(e.message); }

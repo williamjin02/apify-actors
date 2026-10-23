@@ -2,6 +2,10 @@
 
 Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $3**. No login, no browser, no proxy.
 
+**When to use:** you need the open jobs of specific companies that hire through Greenhouse, Lever, Ashby, Workable or Recruitee.
+**Input:** board names or URLs, e.g. `{"companies":["stripe","https://jobs.lever.co/spotify"]}`.
+**Output:** one row per job with title, department, location, remote, salary, posted date, description and apply URL. From $3.50 per 1,000 jobs.
+
 ## What can Career Site Jobs Scraper do?
 
 - 🏢 **Scrape any company's careers page** on Greenhouse, Lever, Ashby, Workable or Recruitee. Thousands of tech companies and startups (Stripe, Spotify, Ramp, Hugging Face, Notion, OpenAI and more) use these ATSs.
@@ -109,6 +113,32 @@ A run summary (which ATS each company uses, jobs found vs saved, any errors) is 
 1. Save your input with *Posted since* = `1 day` (or `7 days` for weekly).
 2. Open **Schedules** in Apify Console and run the task daily.
 3. Add an integration (Slack, email, Google Sheets, webhook) to receive each day's new jobs.
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/career-site-jobs-scraper"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/career-site-jobs-scraper` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/career-site-jobs-scraper`.
+
+Example prompts:
+
+- "Is Stripe hiring backend engineers in London?"
+- "List remote data jobs at Ramp, Notion and Figma posted this week"
+- "Export all Spotify openings to a spreadsheet"
+
+Minimal input:
+
+```json
+{"companies": ["stripe"], "titleKeywords": ["engineer"], "maxJobs": 100}
+```
+
+**Keep it fast:** Set `maxJobs` to 50–200 and use `titleKeywords` / `locationKeywords` filters. Companies with no matching jobs return a free status row with the reason (e.g. "120 open jobs found, 0 matched your filters").
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations and API
 

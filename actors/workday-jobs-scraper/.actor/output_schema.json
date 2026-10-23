@@ -1,8 +1,19 @@
 {
   "actorOutputSchemaVersion": 1,
-  "title": "Workday jobs",
+  "title": "Output of Workday Jobs Scraper",
+  "description": "One row per job in the default dataset; a per-site run summary in the OUTPUT record. Sites with no jobs get a free status row with a reason.",
   "properties": {
-    "jobs": { "type": "string", "title": "Jobs", "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview" },
-    "summary": { "type": "string", "title": "Run summary (per site)", "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT" }
+    "jobs": {
+      "type": "string",
+      "title": "Jobs",
+      "description": "One row per job. Example: {\"company\":\"NVIDIA\",\"title\":\"Senior Software Engineer\",\"location\":\"US, CA, Santa Clara\",\"country\":\"United States\",\"remote\":false,\"timeType\":\"Full time\",\"postedDate\":\"2026-10-20\",\"salaryMin\":184000,\"salaryMax\":356500,\"salaryCurrency\":\"USD\",\"jobUrl\":\"https://nvidia.wd5.myworkdayjobs.com/…\"}. Status rows: {\"status\":\"no_results\",\"input\":\"…\",\"jobsListed\":800,\"jobsMatched\":0,\"reason\":\"…\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary (per site)",
+      "description": "JSON: sites (status, jobsListed, jobsMatched, jobsSaved), jobsSaved, maxJobs, stoppedReason and zeroResultsReason.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
   }
 }

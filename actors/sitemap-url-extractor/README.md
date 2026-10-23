@@ -4,6 +4,10 @@ It works from just a domain. Sitemaps are auto-discovered through `robots.txt` a
 
 It's the fastest way to **extract all URLs from a sitemap**, convert a **sitemap to CSV**, check sitemap URLs for 404s, or get alerted when a site publishes new pages. Try it free: the Apify free plan covers thousands of URLs every month.
 
+**When to use:** you need every page URL of a website (SEO audits, crawl lists, content inventories, new-page monitoring).
+**Input:** a domain or sitemap URL, e.g. `{"startUrls":[{"url":"https://example.com"}]}`.
+**Output:** one row per page URL with lastmod, changefreq, priority, images and hreflang (optional HTTP status). From $0.10 per 1,000 URLs.
+
 ## What can XML Sitemap URL Extractor do?
 
 - 🗺️ **Extract all URLs from a sitemap.** Give it a domain or a sitemap link and get a clean, deduplicated URL list in seconds. A 10,000-URL sitemap usually takes less than 30 seconds.
@@ -104,6 +108,32 @@ A run summary is saved to the `OUTPUT` record. For each site it shows how the si
 1. Enable **Only new URLs since the last run**. To run several independent monitors, give each one its own `stateKey`.
 2. Create a **Schedule** in Apify (for example, daily). The first run saves a baseline, and each later run outputs only new URLs.
 3. Add an integration to get notified: email, Slack, a webhook, Zapier, Make or n8n.
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/sitemap-url-extractor"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/sitemap-url-extractor` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/sitemap-url-extractor`.
+
+Example prompts:
+
+- "List every blog URL on example.com updated in the last 30 days"
+- "Find broken links in stripe.com's sitemap"
+- "Give me all product URLs from this Shopify store"
+
+Minimal input:
+
+```json
+{"startUrls": [{"url": "https://example.com"}], "maxUrls": 1000}
+```
+
+**Keep it fast:** `maxUrls` defaults to 1000, so a call finishes in seconds. Add `includeUrlPatterns` (e.g. `["/blog/"]`) instead of fetching everything; `checkUrlStatus` makes runs slower.
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations and API
 

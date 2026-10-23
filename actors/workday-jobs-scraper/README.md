@@ -4,6 +4,10 @@ Get **every job** from any company's Workday career site (`*.myworkdayjobs.com` 
 
 **$1.00-1.50 per 1,000 jobs**, depending on your Apify plan. You pay only for jobs saved after your filters.
 
+**When to use:** you need the open jobs of a company whose careers site runs on Workday (myworkdayjobs.com), including sites with more than 2,000 jobs.
+**Input:** the Workday jobs URL, e.g. `{"startUrls":[{"url":"https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite"}]}`.
+**Output:** one row per job with title, locations, country, remote, pay range, posted date, description and apply URL. From $1 per 1,000 jobs.
+
 ## Why this one
 
 - **No 2,000-job ceiling.** Workday's search stops paging at 2,000 results, and big employers like NVIDIA, Salesforce and Walmart have more than that. The scraper detects this and splits the search by location, job family or other facets, so you get the full list (for example, 2,718 of 2,718 NVIDIA jobs in our tests).
@@ -88,6 +92,32 @@ Open the company's careers page and click through to the job search. If the addr
 1. Save your input with *Posted within days* = `1` and save it as a task.
 2. In **Schedules**, run the task daily.
 3. Add an integration (Slack, email, Google Sheets or a webhook) to get each day's new jobs.
+
+## Use with AI agents (MCP, ChatGPT, Claude, Cursor, n8n)
+
+AI agents can find and run this Actor through the [Apify MCP server](https://mcp.apify.com). Add it to Claude Desktop, Cursor, VS Code or any MCP client:
+
+```json
+{"mcpServers":{"apify":{"url":"https://mcp.apify.com?tools=swillz/workday-jobs-scraper"}}}
+```
+
+Or run it locally: `npx -y @apify/actors-mcp-server --tools swillz/workday-jobs-scraper` with `APIFY_TOKEN` set. In n8n or Make, use the Apify node with Actor `swillz/workday-jobs-scraper`.
+
+Example prompts:
+
+- "How many open roles does NVIDIA have in Germany?"
+- "List Adobe's remote design jobs posted in the last 7 days"
+- "Export every Salesforce opening in London to a sheet"
+
+Minimal input:
+
+```json
+{"startUrls": [{"url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite"}], "maxJobs": 100, "includeDetails": false}
+```
+
+**Keep it fast:** Set `maxJobs` to 50–200 and `includeDetails` to `false` for answers in under 45 seconds. Sites with no matching jobs return a free status row with the reason.
+
+**Cap the cost:** pass `maxTotalChargeUsd` ("Maximum cost per run") when you call the Actor. The run stops cleanly at the cap, keeps the results so far, and says why in the status message and the OUTPUT record.
 
 ## Integrations and API
 
