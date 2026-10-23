@@ -1,0 +1,113 @@
+{
+  "title": "Google Play Reviews Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "apps": {
+      "title": "Apps",
+      "type": "array",
+      "description": "Google Play package names (e.g. com.spotify.music) or app URLs (https://play.google.com/store/apps/details?id=com.spotify.music). One per line.",
+      "editor": "stringList",
+      "prefill": [
+        "com.spotify.music"
+      ]
+    },
+    "maxReviewsPerApp": {
+      "title": "Max reviews per app",
+      "type": "integer",
+      "description": "Stop after this many reviews per app (per star rating if you filter by stars). 0 = no limit (popular apps can have hundreds of thousands).",
+      "minimum": 0,
+      "default": 100,
+      "prefill": 100
+    },
+    "sort": {
+      "title": "Sort by",
+      "type": "string",
+      "description": "Order in which Google Play returns reviews. Use Newest together with 'Only reviews since' for monitoring.",
+      "editor": "select",
+      "enum": [
+        "NEWEST",
+        "MOST_RELEVANT",
+        "RATING"
+      ],
+      "enumTitles": [
+        "Newest",
+        "Most relevant",
+        "Rating"
+      ],
+      "default": "NEWEST"
+    },
+    "ratings": {
+      "title": "Star ratings",
+      "type": "array",
+      "description": "Only return reviews with these star ratings. Leave empty for all ratings.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "enumTitles": [
+          "1 star",
+          "2 stars",
+          "3 stars",
+          "4 stars",
+          "5 stars"
+        ]
+      },
+      "default": []
+    },
+    "reviewsSince": {
+      "title": "Only reviews since",
+      "type": "string",
+      "description": "Skip older reviews. A date (2026-01-01) or a relative period such as '7 days', '2 weeks', '3 months'. With sort = Newest the scraper stops as soon as it reaches older reviews, which keeps scheduled runs cheap.",
+      "editor": "textfield"
+    },
+    "language": {
+      "title": "Language",
+      "type": "string",
+      "description": "Review language code, e.g. en, de, es, fr, pt-BR, ja.",
+      "editor": "textfield",
+      "default": "en"
+    },
+    "country": {
+      "title": "Country",
+      "type": "string",
+      "description": "2-letter Google Play country code, e.g. us, gb, de, in, br.",
+      "editor": "textfield",
+      "default": "us"
+    },
+    "maxReviews": {
+      "title": "Max reviews in total",
+      "type": "integer",
+      "description": "Optional overall cap across all apps. 0 = no overall cap.",
+      "minimum": 0,
+      "default": 0,
+      "sectionCaption": "Advanced"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Usually not needed. Turn on Apify Proxy if you scrape very large volumes and see HTTP 429 errors.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": false
+      }
+    },
+    "maxRetries": {
+      "title": "Max retries per request",
+      "type": "integer",
+      "description": "Retries with exponential backoff on network errors and HTTP 429/5xx.",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 4
+    }
+  },
+  "required": [
+    "apps"
+  ]
+}

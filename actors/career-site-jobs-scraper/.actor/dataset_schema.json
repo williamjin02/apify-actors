@@ -1,0 +1,235 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "jobId": {
+        "type": "string",
+        "description": "Job ID in the ATS"
+      },
+      "title": {
+        "type": "string",
+        "description": "Job title"
+      },
+      "companyName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Company name"
+      },
+      "companySlug": {
+        "type": "string",
+        "description": "Job-board name (slug)"
+      },
+      "ats": {
+        "type": "string",
+        "description": "greenhouse, lever, ashby, workable or recruitee"
+      },
+      "department": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Department"
+      },
+      "team": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Team / function"
+      },
+      "location": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Primary location"
+      },
+      "locations": {
+        "type": "array",
+        "description": "All listed locations"
+      },
+      "country": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Country (code or name, as provided by the ATS)"
+      },
+      "remote": {
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Marked as remote"
+      },
+      "workplaceType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "remote, hybrid or onsite"
+      },
+      "employmentType": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Full-time, part-time, contract\u2026"
+      },
+      "salaryText": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Salary range as shown"
+      },
+      "salaryMin": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Minimum salary"
+      },
+      "salaryMax": {
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Maximum salary"
+      },
+      "salaryCurrency": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Salary currency"
+      },
+      "salaryInterval": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "year, month, hour\u2026"
+      },
+      "postedAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Date posted (ISO 8601)"
+      },
+      "updatedAt": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Last updated (ISO 8601)"
+      },
+      "jobUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job posting URL"
+      },
+      "applyUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Application URL"
+      },
+      "boardUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Company job-board URL"
+      },
+      "descriptionText": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job description (plain text)"
+      },
+      "descriptionHtml": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Job description (HTML), if enabled"
+      },
+      "scrapedAt": {
+        "type": "string",
+        "description": "When the job was scraped (ISO 8601)"
+      }
+    },
+    "required": [
+      "jobId",
+      "title",
+      "ats",
+      "companySlug"
+    ]
+  },
+  "views": {
+    "overview": {
+      "title": "Jobs",
+      "transformation": {
+        "fields": [
+          "companyName",
+          "title",
+          "department",
+          "location",
+          "remote",
+          "workplaceType",
+          "salaryText",
+          "postedAt",
+          "ats",
+          "jobUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "companyName": {
+            "label": "Company"
+          },
+          "title": {
+            "label": "Job title"
+          },
+          "department": {
+            "label": "Department"
+          },
+          "location": {
+            "label": "Location"
+          },
+          "remote": {
+            "label": "Remote",
+            "format": "boolean"
+          },
+          "workplaceType": {
+            "label": "Workplace"
+          },
+          "salaryText": {
+            "label": "Salary"
+          },
+          "postedAt": {
+            "label": "Posted",
+            "format": "date"
+          },
+          "ats": {
+            "label": "ATS"
+          },
+          "jobUrl": {
+            "label": "Job URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

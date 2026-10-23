@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "sitemap-url-extractor",
+  "title": "XML Sitemap URL Extractor & Sitemap to CSV",
+  "description": "Extract every URL from any website's XML sitemap to CSV, JSON or Excel. Auto-discovers sitemaps via robots.txt, follows sitemap indexes and .gz files, and returns lastmod, images and hreflang. Optional HTTP status check and new-page monitoring.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 4096,
+  "defaultMemoryMbytes": 512,
+  "output": "./output_schema.json"
+}

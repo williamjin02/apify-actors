@@ -1,0 +1,165 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "reviewId": {
+        "type": "string",
+        "description": "Stable Google Play review ID"
+      },
+      "appId": {
+        "type": "string",
+        "description": "Package name"
+      },
+      "appTitle": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "App name"
+      },
+      "userName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reviewer display name"
+      },
+      "userImage": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reviewer avatar URL"
+      },
+      "rating": {
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Star rating 1-5"
+      },
+      "text": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Review text"
+      },
+      "date": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Review date (ISO 8601)"
+      },
+      "thumbsUpCount": {
+        "type": "integer",
+        "description": "Helpful votes"
+      },
+      "appVersion": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "App version used by the reviewer"
+      },
+      "replyText": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Developer reply"
+      },
+      "replyDate": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Developer reply date (ISO 8601)"
+      },
+      "language": {
+        "type": "string",
+        "description": "Language code"
+      },
+      "country": {
+        "type": "string",
+        "description": "Country code"
+      },
+      "reviewUrl": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Direct link to the review"
+      },
+      "scrapedAt": {
+        "type": "string",
+        "description": "Scrape time (ISO 8601)"
+      }
+    },
+    "required": [
+      "reviewId",
+      "appId"
+    ]
+  },
+  "views": {
+    "overview": {
+      "title": "Reviews",
+      "transformation": {
+        "fields": [
+          "appTitle",
+          "rating",
+          "text",
+          "date",
+          "userName",
+          "thumbsUpCount",
+          "appVersion",
+          "replyText",
+          "replyDate",
+          "reviewUrl"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "appTitle": {
+            "label": "App"
+          },
+          "rating": {
+            "label": "Stars",
+            "format": "number"
+          },
+          "text": {
+            "label": "Review"
+          },
+          "date": {
+            "label": "Date",
+            "format": "date"
+          },
+          "userName": {
+            "label": "User"
+          },
+          "thumbsUpCount": {
+            "label": "Thumbs up",
+            "format": "number"
+          },
+          "appVersion": {
+            "label": "App version"
+          },
+          "replyText": {
+            "label": "Developer reply"
+          },
+          "replyDate": {
+            "label": "Reply date",
+            "format": "date"
+          },
+          "reviewUrl": {
+            "label": "Link",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}
