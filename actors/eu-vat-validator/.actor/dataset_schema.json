@@ -1,0 +1,207 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "vatId": {
+        "title": "VAT ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Normalized VAT number with country prefix.",
+        "examples": [
+          "IE6388047V"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "valid, invalid (not registered for intra-EU trade), invalid_format (checked locally, not sent), unsupported_country (e.g. GB, CH), service_unavailable (member state offline; retry later), invalid_input, error, skipped_charge_limit. Only valid and invalid are charged.",
+        "examples": [
+          "valid"
+        ]
+      },
+      "valid": {
+        "title": "Valid?",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if VIES says the number is valid today.",
+        "examples": [
+          true
+        ]
+      },
+      "name": {
+        "title": "Registered name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Name from VIES (some countries, e.g. DE, return none).",
+        "examples": [
+          "GOOGLE IRELAND LIMITED"
+        ]
+      },
+      "address": {
+        "title": "Registered address",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Address from VIES.",
+        "examples": [
+          "3RD FLOOR, GORDON HOUSE, BARROW STREET, DUBLIN 4"
+        ]
+      },
+      "addressLines": {
+        "title": "Address lines",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Address split into lines.",
+        "examples": [
+          [
+            "3RD FLOOR, GORDON HOUSE, BARROW STREET, DUBLIN 4"
+          ]
+        ]
+      },
+      "countryCode": {
+        "title": "Country code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "EU code (Greece is EL, Northern Ireland XI).",
+        "examples": [
+          "IE"
+        ]
+      },
+      "countryName": {
+        "title": "Country",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Member state name.",
+        "examples": [
+          "Ireland"
+        ]
+      },
+      "vatNumber": {
+        "title": "Number",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Number without the country prefix.",
+        "examples": [
+          "6388047V"
+        ]
+      },
+      "expectedName": {
+        "title": "Expected name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Name you supplied (after \" | \" or from nameField).",
+        "examples": [
+          "Google Ireland"
+        ]
+      },
+      "nameMatch": {
+        "title": "Name match",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "exact, close, partial, mismatch, not_available (VIES returned no name), or null.",
+        "examples": [
+          "close"
+        ]
+      },
+      "consultationNumber": {
+        "title": "Consultation number",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "VIES request identifier (only with requesterVatNumber): proof of the check.",
+        "examples": [
+          "WAPIAAAAZ1aBcD"
+        ]
+      },
+      "requestDate": {
+        "title": "VIES request date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Timestamp from VIES.",
+        "examples": [
+          "2026-10-24T02:27:55.086Z"
+        ]
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Value as supplied.",
+        "examples": [
+          "IE 6388047V"
+        ]
+      },
+      "error": {
+        "title": "Error / note",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a row was not validated (free rows).",
+        "examples": [
+          null
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp.",
+        "examples": [
+          "2026-10-24T02:30:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "VAT checks",
+      "transformation": {
+        "fields": [
+          "vatId",
+          "status",
+          "valid",
+          "name",
+          "address",
+          "countryCode",
+          "nameMatch",
+          "consultationNumber",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

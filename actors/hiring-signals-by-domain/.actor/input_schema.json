@@ -1,0 +1,114 @@
+{
+  "title": "Hiring Signals by Company Domain input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "domains": {
+      "title": "Company domains or websites",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required unless datasetId is set. Array of strings: company domains, website URLs or work emails, e.g. [\"stripe.com\",\"https://www.notion.so\",\"jane@ramp.com\"]. Emails are reduced to the domain; the part before @ is never stored. Returns one row per domain with isHiring, openJobs, jobsByFunction, signals and status.",
+      "prefill": [
+        "stripe.com",
+        "notion.so",
+        "ramp.com"
+      ]
+    },
+    "maxDomains": {
+      "title": "Max domains",
+      "type": "integer",
+      "editor": "number",
+      "description": "Check at most this many unique domains per run (default 1000) to keep cost predictable. Aliases: maxItems, limit, maxResults.",
+      "default": 1000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Read domains from another run's dataset, e.g. Google Maps, lead lists or swillz/company-website-enrichment results. Example: \"aBcD1234efGH5678\". In an integration the triggering run's dataset is used automatically.",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "domainField": {
+      "title": "Domain field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the domain, website or email, e.g. \"website\" (dot paths like \"company.domain\" work). Leave empty to auto-detect (domain, companyDomain, website, websiteUrl, companyWebsite, url, email)."
+    },
+    "datasetMaxItems": {
+      "title": "Max values from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many values from the dataset (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "scanWebsite": {
+      "title": "Find the job board on the company website",
+      "type": "boolean",
+      "description": "Read the homepage and careers page (respecting robots.txt) to find the linked Greenhouse, Lever, Ashby, Workable or Recruitee board. Most accurate. Turn off to only guess board names (faster).",
+      "default": true,
+      "sectionCaption": "Matching"
+    },
+    "probeBoardNames": {
+      "title": "Guess board names when none is linked",
+      "type": "boolean",
+      "description": "If the site links no board, try the domain's name (stripe.com -> \"stripe\") on each ATS. A guessed board is kept only if its company name or job URLs match the domain (matchConfidence high/medium).",
+      "default": true
+    },
+    "includeLowConfidence": {
+      "title": "Keep uncorroborated name matches",
+      "type": "boolean",
+      "description": "Also return boards that only share the board name, with matchConfidence \"low\" (they may belong to another company). Off by default: such domains return status no_public_board_found with a possibleBoard hint.",
+      "default": false
+    },
+    "sampleJobsPerDomain": {
+      "title": "Sample jobs per domain",
+      "type": "integer",
+      "editor": "number",
+      "description": "Newest job titles to include in sampleJobs (0-25, default 5). For every job, chain to swillz/career-site-jobs-scraper.",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 25,
+      "sectionCaption": "Output"
+    },
+    "maxPagesPerSite": {
+      "title": "Max website pages per domain",
+      "type": "integer",
+      "editor": "number",
+      "description": "Website pages read per domain to find the board: homepage + careers links (1-6, default 3).",
+      "default": 3,
+      "minimum": 1,
+      "maximum": 6,
+      "sectionCaption": "Advanced"
+    },
+    "concurrency": {
+      "title": "Concurrency",
+      "type": "integer",
+      "editor": "number",
+      "description": "Domains checked in parallel (1-25, default 8).",
+      "default": 8,
+      "minimum": 1,
+      "maximum": 25
+    },
+    "requestTimeoutSecs": {
+      "title": "Request timeout (seconds)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Per-request timeout (5-60, default 20).",
+      "default": 20,
+      "minimum": 5,
+      "maximum": 60
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "editor": "proxy",
+      "description": "Usually not needed: job-board APIs are public. Use Apify Proxy if many company sites block datacenter IPs.",
+      "default": {
+        "useApifyProxy": false
+      }
+    }
+  },
+  "required": []
+}

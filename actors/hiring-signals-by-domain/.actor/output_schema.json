@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Hiring Signals by Company Domain",
+  "description": "One row per domain in the default dataset (domains with no board, unsupported ATS or errors are included as free rows with status and error); a run summary in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Hiring signals",
+      "description": "One row per domain. Example: {\"domain\":\"stripe.com\",\"status\":\"ok\",\"isHiring\":true,\"openJobs\":412,\"topFunction\":\"engineering\",\"signals\":[\"scaling_sales\",\"hiring_leadership\"]}. Not found: {\"domain\":\"acme.com\",\"status\":\"no_public_board_found\",\"error\":\"...\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: domainsRequested, boardsFound, hiring, byStatus, bySignal, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

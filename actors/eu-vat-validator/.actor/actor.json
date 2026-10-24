@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "eu-vat-validator",
+  "title": "EU VAT Number Validator (VIES): Bulk Check, Name & Address",
+  "description": "Bulk-validate EU VAT numbers against the official EU VIES service. Get valid/invalid, the registered company name and address, an optional VIES consultation number for audit proof and a name match against your records. Bad formats, non-EU numbers and VIES outages come back as free status rows.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 128,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 256
+}

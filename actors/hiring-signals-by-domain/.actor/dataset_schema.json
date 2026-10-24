@@ -1,0 +1,319 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "title": "Domain",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Company domain checked (lowercase, www removed).",
+        "examples": [
+          "stripe.com"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ok (hiring), not_hiring (board found, 0 open roles), no_public_board_found, unsupported_ats (e.g. Workday), site_unreachable, not_a_company_domain, invalid_input, error, skipped_charge_limit. Only ok and not_hiring are charged.",
+        "examples": [
+          "ok"
+        ]
+      },
+      "isHiring": {
+        "title": "Hiring?",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if the board has open roles; null when no board was found.",
+        "examples": [
+          true
+        ]
+      },
+      "openJobs": {
+        "title": "Open jobs",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Open roles on the board.",
+        "examples": [
+          412
+        ]
+      },
+      "hiringIntensity": {
+        "title": "Hiring intensity",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "none, low (1-4), moderate (5-19), high (20-99), very_high (100+).",
+        "examples": [
+          "very_high"
+        ]
+      },
+      "signals": {
+        "title": "Signals",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "scaling_sales, building_engineering, investing_in_data_ai, growing_marketing, expanding_customer_success, hiring_leadership, international_expansion, remote_friendly, hiring_surge_last_30_days, high_volume_hiring.",
+        "examples": [
+          [
+            "scaling_sales",
+            "hiring_leadership"
+          ]
+        ]
+      },
+      "topFunction": {
+        "title": "Top function",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Function with the most open roles.",
+        "examples": [
+          "engineering"
+        ]
+      },
+      "jobsByFunction": {
+        "title": "Jobs by function",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Counts: engineering, data_ai, product, design, sales, marketing, customer_success, operations, finance, people_hr, legal, other.",
+        "examples": [
+          {
+            "engineering": 180,
+            "sales": 90
+          }
+        ]
+      },
+      "jobsBySeniority": {
+        "title": "Jobs by seniority",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Counts: executive, director, manager, senior, mid, junior, intern_entry (from titles).",
+        "examples": [
+          {
+            "senior": 120,
+            "mid": 200
+          }
+        ]
+      },
+      "leadershipRoles": {
+        "title": "Leadership roles",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Up to 10 open VP/Head/Director/C-level titles.",
+        "examples": [
+          [
+            "Head of Sales, EMEA"
+          ]
+        ]
+      },
+      "postedLast7Days": {
+        "title": "Posted last 7 days",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Roles first posted in the last 7 days (null if the ATS has no dates).",
+        "examples": [
+          14
+        ]
+      },
+      "postedLast30Days": {
+        "title": "Posted last 30 days",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Roles first posted in the last 30 days.",
+        "examples": [
+          60
+        ]
+      },
+      "remoteShare": {
+        "title": "Remote share",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Share of roles marked remote (0-1).",
+        "examples": [
+          0.25
+        ]
+      },
+      "countries": {
+        "title": "Countries",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Country codes found on roles.",
+        "examples": [
+          [
+            "US",
+            "IE"
+          ]
+        ]
+      },
+      "topLocations": {
+        "title": "Top locations",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Up to 10 {name, count}.",
+        "examples": [
+          [
+            {
+              "name": "San Francisco, CA",
+              "count": 80
+            }
+          ]
+        ]
+      },
+      "topDepartments": {
+        "title": "Top departments",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Up to 10 {name, count} from the ATS department field.",
+        "examples": [
+          [
+            {
+              "name": "Engineering",
+              "count": 150
+            }
+          ]
+        ]
+      },
+      "ats": {
+        "title": "ATS",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "greenhouse, lever, ashby, workable or recruitee.",
+        "examples": [
+          "greenhouse"
+        ]
+      },
+      "boardUrl": {
+        "title": "Job board URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Public job board found.",
+        "examples": [
+          "https://job-boards.greenhouse.io/stripe"
+        ]
+      },
+      "matchConfidence": {
+        "title": "Match confidence",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "high (linked from the company site or company name/job URLs match), medium (exact board-name match), low (name only; only with includeLowConfidence).",
+        "examples": [
+          "high"
+        ]
+      },
+      "detectedVia": {
+        "title": "Detected via",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "homepage_link, careers_page_link or board_name_match.",
+        "examples": [
+          "careers_page_link"
+        ]
+      },
+      "sampleJobs": {
+        "title": "Sample jobs",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Newest roles: {title, department, location, postedAt, url}.",
+        "examples": [
+          [
+            {
+              "title": "Account Executive"
+            }
+          ]
+        ]
+      },
+      "error": {
+        "title": "Error / note",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a row has no signals (free rows).",
+        "examples": [
+          null
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp.",
+        "examples": [
+          "2026-10-24T03:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Hiring signals",
+      "transformation": {
+        "fields": [
+          "domain",
+          "status",
+          "isHiring",
+          "openJobs",
+          "hiringIntensity",
+          "signals",
+          "topFunction",
+          "postedLast30Days",
+          "remoteShare",
+          "ats",
+          "boardUrl",
+          "matchConfidence",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "boardUrl": {
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}

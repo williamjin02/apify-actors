@@ -17,6 +17,8 @@ These Actors are published, or on the way to the Store, under the Apify account 
 | [workday-jobs-scraper](actors/workday-jobs-scraper) | Scrape every open job from any company's public Workday career site, including location, remote status, salary, posted date, and apply links. | Coming soon |
 | [ai-brand-visibility-tracker](actors/ai-brand-visibility-tracker) | Track how often ChatGPT (with live web search) mentions, ranks, and cites your brand versus competitors, with share of voice, sentiment, and cited domains. | Coming soon |
 | [email-provider-detector](actors/email-provider-detector) | Detect whether a domain uses Google Workspace, Microsoft 365 or another mailbox provider, including the provider behind secure email gateways like Proofpoint and Mimecast, with SPF, DMARC and DKIM checks. DNS only. | Coming soon |
+| [hiring-signals-by-domain](actors/hiring-signals-by-domain) | Turn company domains into hiring signals: whether the company is hiring, open roles by function and seniority, leadership hires, locations, remote share and posting velocity, from its public Greenhouse, Lever, Ashby, Workable or Recruitee board. | Coming soon |
+| [eu-vat-validator](actors/eu-vat-validator) | Bulk-validate EU VAT numbers against the official EU VIES service, with registered name and address, consultation number and name match. Bad formats and VIES outages return status rows. | Coming soon |
 
 ## Run an Actor
 
