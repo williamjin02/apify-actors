@@ -21,6 +21,8 @@ jobs:
           - workday-jobs-scraper
           - ai-brand-visibility-tracker
           - email-provider-detector
+          - hiring-signals-by-domain
+          - eu-vat-validator
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

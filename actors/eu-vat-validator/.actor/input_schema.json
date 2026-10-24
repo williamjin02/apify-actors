@@ -1,0 +1,106 @@
+{
+  "title": "EU VAT Number Validator (VIES) input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "vatNumbers": {
+      "title": "EU VAT numbers",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required unless datasetId is set. Array of strings with the country prefix, e.g. [\"IE6388047V\",\"DE 811 128 135\",\"IT00743110157\"]. Spaces, dots and dashes are fine; GR becomes EL. Add \" | Expected name\" to compare names, e.g. \"IE6388047V | Google Ireland\". One row per unique number.",
+      "prefill": [
+        "IE6388047V",
+        "BE0403448140",
+        "IT00743110157 | Motorola Solutions Italia",
+        "DE 811 128 135"
+      ]
+    },
+    "defaultCountry": {
+      "title": "Default country",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional 2-letter EU code (e.g. \"DE\") used for numbers that have no country prefix.",
+      "default": ""
+    },
+    "requesterVatNumber": {
+      "title": "Your EU VAT number (for consultation numbers)",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Your own EU VAT number, e.g. \"DE123456789\". VIES then returns a consultation number per valid check, which tax authorities accept as proof that you checked. It is sent only to VIES and is not stored in the output.",
+      "sectionCaption": "Audit proof"
+    },
+    "maxNumbers": {
+      "title": "Max numbers",
+      "type": "integer",
+      "editor": "number",
+      "description": "Check at most this many unique numbers per run (default 5000). Aliases: maxItems, limit, maxResults.",
+      "default": 5000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Read VAT numbers from another run's dataset, e.g. a supplier or customer export. Example: \"aBcD1234efGH5678\". In an integration the triggering run's dataset is used automatically.",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "vatField": {
+      "title": "VAT field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the VAT number (dot paths work). Leave empty to auto-detect: vatNumber, vat, vatId, vat_number, taxId, euVat."
+    },
+    "nameField": {
+      "title": "Company name field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional field to compare with the VIES name (nameMatch). Leave empty to auto-detect: companyName, name, company, legalName."
+    },
+    "datasetMaxItems": {
+      "title": "Max values from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many values from the dataset (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "concurrency": {
+      "title": "Concurrency",
+      "type": "integer",
+      "editor": "number",
+      "description": "Numbers checked in parallel (1-10, default 4). VIES limits concurrent requests; higher values cause more retries.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 10,
+      "sectionCaption": "Advanced"
+    },
+    "perCountryConcurrency": {
+      "title": "Per-country concurrency",
+      "type": "integer",
+      "editor": "number",
+      "description": "Parallel requests per member state (1-5, default 2). Some national services (e.g. DE, IT, ES) reject bursts.",
+      "default": 2,
+      "minimum": 1,
+      "maximum": 5
+    },
+    "maxRetries": {
+      "title": "Retries when a country is busy",
+      "type": "integer",
+      "editor": "number",
+      "description": "Retries with backoff on MS_UNAVAILABLE, MS_MAX_CONCURRENT_REQ or timeouts (0-6, default 3). After that the row is service_unavailable (free).",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 6
+    },
+    "requestTimeoutSecs": {
+      "title": "Request timeout (seconds)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Per-request timeout (5-90, default 30).",
+      "default": 30,
+      "minimum": 5,
+      "maximum": 90
+    }
+  },
+  "required": []
+}
