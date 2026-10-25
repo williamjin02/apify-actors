@@ -1,0 +1,80 @@
+{
+  "title": "EORI Number Validator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "eoriNumbers": {
+      "title": "EORI numbers",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required unless datasetId is set. Strings with the country prefix, e.g. [\"GB117223643000\",\"BE0403448140\",\"XI220430231000\"]. Spaces and dashes are fine. Add \" | Expected name\" to compare names, e.g. \"GB117223643000 | Apple Distribution International\". GB goes to HMRC; EU and XI to the EU EOS service.",
+      "prefill": [
+        "GB117223643000 | Apple Distribution International",
+        "BE0403448140",
+        "IT00743110157",
+        "XI220430231000"
+      ]
+    },
+    "defaultCountry": {
+      "title": "Default country",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional 2-letter code (e.g. \"DE\" or \"GB\") used for numbers without a country prefix.",
+      "default": ""
+    },
+    "maxNumbers": {
+      "title": "Max numbers",
+      "type": "integer",
+      "editor": "number",
+      "description": "Check at most this many unique numbers per run (default 5000). Aliases: maxItems, limit, maxResults.",
+      "default": 5000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Read EORI numbers from another run's dataset, e.g. a supplier export. In an integration the triggering run's dataset is used automatically.",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "eoriField": {
+      "title": "EORI field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the EORI (dot paths work). Leave empty to auto-detect: eori, eoriNumber, EORI, eori_number, eoriNo, customsId."
+    },
+    "nameField": {
+      "title": "Company name field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional field compared with the official trader name (nameMatch). Leave empty to auto-detect: companyName, name, company, legalName, traderName."
+    },
+    "datasetMaxItems": {
+      "title": "Max values from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many values from the dataset (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "maxRetries": {
+      "title": "Max retries",
+      "type": "integer",
+      "editor": "number",
+      "description": "Retries per batch of 10 when a service is busy or offline (0-6, default 3).",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 6,
+      "sectionCaption": "Advanced"
+    },
+    "requestTimeoutSecs": {
+      "title": "Request timeout (seconds)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Timeout per request (5-90, default 30).",
+      "default": 30,
+      "minimum": 5,
+      "maximum": 90
+    }
+  }
+}

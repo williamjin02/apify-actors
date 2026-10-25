@@ -19,6 +19,9 @@ These Actors are published, or on the way to the Store, under the Apify account 
 | [email-provider-detector](actors/email-provider-detector) | Detect whether a domain uses Google Workspace, Microsoft 365 or another mailbox provider, including the provider behind secure email gateways like Proofpoint and Mimecast, with SPF, DMARC and DKIM checks. DNS only. | Coming soon |
 | [hiring-signals-by-domain](actors/hiring-signals-by-domain) | Turn company domains into hiring signals: whether the company is hiring, open roles by function and seniority, leadership hires, locations, remote share and posting velocity, from its public Greenhouse, Lever, Ashby, Workable or Recruitee board. | Coming soon |
 | [eu-vat-validator](actors/eu-vat-validator) | Bulk-validate EU VAT numbers against the official EU VIES service, with registered name and address, consultation number and name match. Bad formats and VIES outages return status rows. | Coming soon |
+| [eori-validator](actors/eori-validator) | Bulk-validate EU and UK (GB/XI) EORI numbers against the official EU EOS and UK HMRC services, with registered trader name and address where published. Bad formats and outages return status rows. | Coming soon |
+| [lei-lookup](actors/lei-lookup) | Look up Legal Entity Identifiers (LEI) in the official GLEIF register by LEI, company name, BIC or ISIN, with legal name, addresses, status, renewal date and parent companies. | Coming soon |
+| [sanctions-screener](actors/sanctions-screener) | Screen people and companies against the official OFAC SDN and Consolidated, UN, EU and UK sanctions lists with fuzzy name matching, aliases and country hints. Lists refreshed every 6 hours. | Coming soon |
 
 ## Run an Actor
 

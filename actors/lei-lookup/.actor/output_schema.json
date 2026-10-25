@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of LEI Lookup",
+  "description": "One row per found LEI record (plus free rows for misses and bad codes) in the default dataset; a run summary in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "LEI records",
+      "description": "Example: {\"query\":\"Siemens AG\",\"status\":\"found\",\"lei\":\"W38RGI023J3WT1HWRP32\",\"legalName\":\"Siemens Aktiengesellschaft\",\"registrationStatus\":\"ISSUED\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: queriesRequested, recordsFound, byStatus, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

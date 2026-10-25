@@ -1,0 +1,227 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "eori": {
+        "title": "EORI",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Normalized EORI with country prefix.",
+        "examples": [
+          "GB117223643000"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "valid, invalid (not registered or expired), invalid_format (checked locally, not sent), unsupported_country (e.g. CH, US), service_unavailable (retry later), invalid_input, error, skipped_charge_limit. Only valid and invalid are charged.",
+        "examples": [
+          "valid"
+        ]
+      },
+      "valid": {
+        "title": "Valid?",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if the official service says the EORI is valid today.",
+        "examples": [
+          true
+        ]
+      },
+      "name": {
+        "title": "Trader name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Official trader name, only when the trader agreed to publish it.",
+        "examples": [
+          "APPLE DISTRIBUTION INTERNATIONAL LIMITED"
+        ]
+      },
+      "address": {
+        "title": "Address",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Published address, joined into one line.",
+        "examples": [
+          "HM REVENUE AND CUSTOMS, AB10 1ZP, ABERDEEN, GB"
+        ]
+      },
+      "street": {
+        "title": "Street",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Street and number.",
+        "examples": [
+          "HM REVENUE AND CUSTOMS"
+        ]
+      },
+      "postalCode": {
+        "title": "Postal code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Postal code.",
+        "examples": [
+          "AB10 1ZP"
+        ]
+      },
+      "city": {
+        "title": "City",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "City.",
+        "examples": [
+          "ABERDEEN"
+        ]
+      },
+      "countryCode": {
+        "title": "Country code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "2-letter code from the EORI prefix (GR for EL).",
+        "examples": [
+          "GB"
+        ]
+      },
+      "countryName": {
+        "title": "Country",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Country name.",
+        "examples": [
+          "United Kingdom"
+        ]
+      },
+      "expectedName": {
+        "title": "Expected name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Name you supplied.",
+        "examples": [
+          "Apple Distribution International"
+        ]
+      },
+      "nameMatch": {
+        "title": "Name match",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "exact, close, partial, mismatch, or not_available when no name is published.",
+        "examples": [
+          "exact"
+        ]
+      },
+      "namePublished": {
+        "title": "Name published?",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Whether the trader consented to publish name and address.",
+        "examples": [
+          true
+        ]
+      },
+      "source": {
+        "title": "Source",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "EU EOS (European Commission) or HMRC (UK).",
+        "examples": [
+          "HMRC (UK)"
+        ]
+      },
+      "requestDate": {
+        "title": "Request date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Date reported by the service.",
+        "examples": [
+          "2026-10-25T08:00:00Z"
+        ]
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Your original value.",
+        "examples": [
+          "GB 117 223 643 000"
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why the row is not valid or was not checked.",
+        "examples": [
+          null
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When this row was produced (UTC).",
+        "examples": [
+          "2026-10-25T08:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "EORI checks",
+      "transformation": {
+        "fields": [
+          "eori",
+          "status",
+          "valid",
+          "name",
+          "address",
+          "countryCode",
+          "nameMatch",
+          "source",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

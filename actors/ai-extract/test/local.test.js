@@ -27,6 +27,18 @@ await t('markdown strips chrome, keeps main, absolutizes links', () => {
     assert.doesNotMatch(md.markdown, /evil|Menu|cookies|© 2026/);
     assert.ok(md.links.includes('https://s.test/w/2'));
 });
+await t('markdown surfaces ratings, microdata and icon labels hidden in attributes', () => {
+    const md = htmlToMarkdown(`<html><body><main><h1>Book</h1><p class="star-rating Three"><i class="icon-star"></i><i class="icon-star"></i></p>
+<div class="stars-4-5"></div><span data-rating="4.2"></span><p class="rating">Rated 5 of 5</p>
+<span itemprop="ratingValue" content="4.7"></span><meta itemprop="priceCurrency" content="EUR"><link itemprop="availability" href="https://schema.org/InStock">
+<a href="https://linkedin.com/company/x" aria-label="LinkedIn"><svg></svg></a><div class="score-board">Scores</div></main></body></html>`, 'https://s.test/');
+    const m = md.markdown;
+    assert.match(m, /\(rating: 3\)/); assert.match(m, /\(rating: 4\.5\)/); assert.match(m, /\(rating: 4\.2\)/);
+    assert.doesNotMatch(m, /\(rating: 5\)/); // already visible as text, no duplicate
+    assert.match(m, /\(ratingValue: 4\.7\)/); assert.match(m, /\(priceCurrency: EUR\)/); assert.match(m, /\(availability: InStock\)/);
+    assert.match(m, /\[LinkedIn\]\(https:\/\/linkedin\.com\/company\/x\)/);
+    assert.equal((m.match(/\(rating:/g) || []).length, 3);
+});
 await t('truncate', () => { const r = truncateToTokens('word '.repeat(5000), 100); assert.ok(r.truncated); assert.ok(r.text.length <= 440 && r.text.endsWith("truncated ...]")); });
 await t('schema shorthand + strict conversion', () => {
     const s = normalizeSchema({ title: 'string', price: 'number', tags: 'string[]', inStock: 'boolean' });
@@ -39,6 +51,14 @@ await t('schema shorthand + strict conversion', () => {
     assert.ok(validate(s, stripNulls({ title: 'x', price: 1, tags: [], inStock: null }, s)).ok);
     assert.equal(validate(s, { title: 'x', price: 'cheap' }).ok, false);
     assert.throws(() => normalizeSchema('{not json'), /schema/i);
+});
+await t('nested shorthand (arrays of objects, objects) + empty schema rejected', () => {
+    const s = normalizeSchema({ books: [{ title: 'string', price: 'number' }], seller: { name: 'string' }, label: { type: 'string', description: 'x' } });
+    assert.equal(s.properties.books.type, 'array'); assert.equal(s.properties.books.items.properties.price.type, 'number');
+    assert.equal(s.properties.seller.properties.name.type, 'string'); assert.equal(s.properties.label.description, 'x');
+    const st = toStrict(s); assert.deepEqual(st.properties.books.type, ['array', 'null']); assert.equal(st.properties.books.items.additionalProperties, false);
+    assert.throws(() => normalizeSchema({ type: 'object' }), /no fields/);
+    assert.throws(() => normalizeSchema({ foo: 'bar' }), /no fields/);
 });
 
 // ---------- provider adapters against mock servers ----------

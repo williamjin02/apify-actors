@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "lei-lookup",
+  "title": "LEI Lookup (GLEIF): Company Search by Name, LEI, ISIN or BIC",
+  "description": "Look up Legal Entity Identifiers in the official GLEIF registry by LEI, company name, ISIN or BIC. Get legal name, entity and registration status, legal form, legal and HQ addresses, registry ID, renewal date and direct and ultimate parent companies. Bad codes and misses are free status rows.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 128,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 256
+}

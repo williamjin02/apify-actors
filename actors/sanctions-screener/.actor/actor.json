@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "sanctions-screener",
+  "title": "Sanctions Screener: OFAC, UN, EU & UK Lists",
+  "description": "Screen people and companies against the official OFAC SDN and Consolidated, UN, EU and UK sanctions lists, refreshed from the government sources every 6 hours. Fuzzy name matching handles spelling variants, word order and aliases. Each name returns clear or potential_match with list, program, country and date of birth.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 1024,
+  "maxMemoryMbytes": 4096,
+  "defaultMemoryMbytes": 1024
+}

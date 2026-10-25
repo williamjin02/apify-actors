@@ -16,6 +16,46 @@ td.remove(['script', 'style', 'noscript']);
 // Keep image alt text only (no URLs) unless it's meaningful; drops data: URIs that waste tokens.
 td.addRule('img', { filter: 'img', replacement: (_c, n) => { const alt = (n.getAttribute('alt') || '').trim(); return alt ? `[image: ${alt}]` : ''; } });
 
+// Values that a page shows only through attributes (star icons, microdata, icon links) are invisible
+// once the HTML becomes text. Write them into the text so the AI can read them instead of guessing.
+const WORD_NUM = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
+const RATING_CLASS = /(^|[-_\s])(rating|ratings|stars?|score)([-_\s]|$)/i;
+function ratingFromClasses(cls) {
+    const tokens = cls.split(/\s+/).filter(Boolean);
+    for (const tk of tokens) {
+        const low = tk.toLowerCase();
+        if (low in WORD_NUM) return WORD_NUM[low];
+        if (/^\d+(\.\d+)?$/.test(low)) return Number(low);
+        const m = low.match(/(?:rating|stars?|score)[-_]?(\d+)(?:[-_.](\d+))?$/) || low.match(/^(\d+)(?:[-_.](\d+))?[-_]?(?:stars?)$/);
+        if (m) return Number(m[2] ? `${m[1]}.${m[2]}` : m[1]);
+    }
+    return null;
+}
+export function annotateHiddenValues($, root) {
+    root.find('[itemprop][content], link[itemprop][href]').each((_i, el) => {
+        const $el = $(el); const prop = ($el.attr('itemprop') || '').trim();
+        let val = ($el.attr('content') ?? $el.attr('href') ?? '').trim();
+        if (el.tagName === 'link') val = val.replace(/^https?:\/\/schema\.org\//i, '');
+        if (!prop || !val || val.length > 120 || $el.text().trim()) return;
+        $el.after(` (${prop}: ${val}) `);
+    });
+    root.find('[class], [data-rating], [data-score]').each((_i, el) => {
+        const $el = $(el);
+        if (/\d/.test($el.text())) return; // the number is already visible
+        const data = $el.attr('data-rating') ?? $el.attr('data-score');
+        const cls = $el.attr('class') || '';
+        let v = data != null && /^\d+(\.\d+)?$/.test(String(data).trim()) ? Number(data) : null;
+        if (v == null && RATING_CLASS.test(cls)) v = ratingFromClasses(cls);
+        if (v != null && v <= 10) $el.prepend(`(rating: ${v}) `);
+    });
+    root.find('[aria-label], [title]').each((_i, el) => {
+        const $el = $(el);
+        if (el.tagName === 'img' || $el.text().trim() || $el.find('img[alt]').length) return;
+        const label = ($el.attr('aria-label') || $el.attr('title') || '').trim();
+        if (label && label.length <= 120) $el.append(` ${label} `);
+    });
+}
+
 /**
  * @returns {{ title, description, lang, markdown, links: string[] }}
  */
@@ -33,6 +73,7 @@ export function htmlToMarkdown(html, baseUrl, { contentSelector, removeSelectors
     });
     let root = contentSelector ? $(contentSelector) : null;
     if (!root || !root.length) root = $('main').length === 1 ? $('main') : ($('article').length === 1 ? $('article') : $('body'));
+    annotateHiddenValues($, root);
     root.find(keepHeaderFooter ? DROP.replace('nav,footer,', '') : DROP).remove();
     if (!keepHeaderFooter) root.find('header').filter((_i, el) => $(el).find('h1').length === 0).remove();
     if (removeSelectors) { try { root.find(removeSelectors).remove(); } catch { /* invalid selector -> ignore */ } }

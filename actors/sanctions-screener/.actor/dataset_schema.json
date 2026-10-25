@@ -1,0 +1,185 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The name you screened.",
+        "examples": [
+          "Rosneft"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "clear (no listed name at or above minScore), potential_match (review matches), clear_incomplete / potential_match_incomplete (a list could not be downloaded; not charged), invalid_input, service_unavailable, skipped_charge_limit. Only clear and potential_match are charged.",
+        "examples": [
+          "potential_match"
+        ]
+      },
+      "topScore": {
+        "title": "Top score",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Best match score 0-100.",
+        "examples": [
+          100
+        ]
+      },
+      "matchCount": {
+        "title": "Match count",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of listed records at or above minScore.",
+        "examples": [
+          3
+        ]
+      },
+      "matches": {
+        "title": "Matches",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Best listed records first: score, list, listName, listId, listedName, matchedName (the alias that matched), type, programs, countries, countryMatch, datesOfBirth, listedOn, remarks.",
+        "examples": [
+          [
+            {
+              "score": 100,
+              "list": "uk",
+              "listId": "RUS0001",
+              "listedName": "ROSNEFT",
+              "type": "entity",
+              "programs": [
+                "Russia"
+              ]
+            }
+          ]
+        ]
+      },
+      "countryHint": {
+        "title": "Country hint",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO country you passed with the name, if any.",
+        "examples": [
+          "RU"
+        ]
+      },
+      "listsChecked": {
+        "title": "Lists checked",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Lists this name was screened against.",
+        "examples": [
+          [
+            "ofac_sdn",
+            "ofac_consolidated",
+            "un",
+            "eu",
+            "uk"
+          ]
+        ]
+      },
+      "listsNotChecked": {
+        "title": "Lists not checked",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Selected lists that could not be downloaded in this run.",
+        "examples": [
+          []
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a row was not screened or not charged.",
+        "examples": [
+          null
+        ]
+      },
+      "screenedAt": {
+        "title": "Screened at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp.",
+        "examples": [
+          "2026-10-25T12:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Overview",
+      "transformation": {
+        "fields": [
+          "name",
+          "status",
+          "topScore",
+          "matchCount",
+          "matches",
+          "countryHint",
+          "listsNotChecked",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "name": {
+            "label": "Name"
+          },
+          "status": {
+            "label": "Status"
+          },
+          "topScore": {
+            "label": "Top score",
+            "format": "number"
+          },
+          "matchCount": {
+            "label": "Matches",
+            "format": "number"
+          },
+          "matches": {
+            "label": "Details",
+            "format": "object"
+          },
+          "countryHint": {
+            "label": "Country hint"
+          },
+          "listsNotChecked": {
+            "label": "Lists not checked",
+            "format": "array"
+          },
+          "error": {
+            "label": "Error"
+          }
+        }
+      }
+    }
+  }
+}
