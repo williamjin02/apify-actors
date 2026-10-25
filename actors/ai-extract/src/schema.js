@@ -5,6 +5,22 @@ const ajv = new Ajv({ allErrors: true, strict: false, validateFormats: false });
 
 export class InputError extends Error {}
 
+const TYPES = new Set(['string', 'number', 'integer', 'boolean', 'object', 'array', 'null']);
+const KEYWORDS = new Set(['type', 'description', 'enum', 'items', 'properties', 'required', 'format', 'anyOf', 'oneOf', 'allOf', 'nullable', 'default', 'examples', 'title', 'minimum', 'maximum', 'pattern', 'additionalProperties', '$ref']);
+const isTypeStr = (v) => typeof v === 'string' && TYPES.has(v.replace(/\[\]$/, '').trim());
+const isSchemaNode = (v) => v && typeof v === 'object' && !Array.isArray(v) && typeof v.type === 'string' && TYPES.has(v.type) && Object.keys(v).every((k) => KEYWORDS.has(k));
+function isShorthand(v) {
+    if (isTypeStr(v) || isSchemaNode(v)) return true;
+    if (Array.isArray(v)) return v.length === 1 && isShorthand(v[0]);
+    return !!v && typeof v === 'object' && Object.keys(v).length > 0 && Object.values(v).every(isShorthand);
+}
+function fromShorthand(v) {
+    if (typeof v === 'string') { const t = v.trim(); return t.endsWith('[]') ? { type: 'array', items: { type: t.slice(0, -2) } } : { type: t }; }
+    if (isSchemaNode(v)) return v;
+    if (Array.isArray(v)) return { type: 'array', items: fromShorthand(v[0]) };
+    return { type: 'object', properties: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, fromShorthand(x)])) };
+}
+
 /** Accepts an object or a JSON string. Wraps non-object roots so every provider gets an object. */
 export function normalizeSchema(raw) {
     if (raw === undefined || raw === null || raw === '' || (typeof raw === 'object' && !Object.keys(raw).length)) return null;
@@ -13,12 +29,11 @@ export function normalizeSchema(raw) {
         try { s = JSON.parse(s); } catch (e) { throw new InputError(`"JSON schema" is not valid JSON: ${e.message}`); }
     }
     if (typeof s !== 'object' || Array.isArray(s)) throw new InputError('"JSON schema" must be a JSON object, e.g. {"type":"object","properties":{"title":{"type":"string"}}}');
-    // Shorthand: {"title":"string","price":"number"} -> full schema.
-    if (!s.type && !s.properties && !s.$schema && Object.values(s).every((v) => typeof v === 'string')) {
-        s = { type: 'object', properties: Object.fromEntries(Object.entries(s).map(([k, v]) => [k, { type: v.replace(/\[\]$/, '') === v ? v : 'array', ...(v.endsWith('[]') ? { items: { type: v.slice(0, -2) } } : {}) }])) };
-    }
+    // Shorthand: {"title":"string","price":"number","tags":"string[]","items":[{"name":"string"}],"seller":{"name":"string"}} -> full schema.
+    if (!s.type && !s.properties && !s.$schema && isShorthand(s)) s = fromShorthand(s);
     if (s.type && s.type !== 'object') s = { type: 'object', properties: { items: s }, required: ['items'], 'x-wrapped': true };
     if (!s.type) s = { type: 'object', ...s };
+    if (s.type === 'object' && !s.properties && !s.$ref && !s.anyOf && !s.oneOf && !s.allOf && !s.additionalProperties) throw new InputError('"JSON schema" has no fields. Use a shorthand like {"title":"string","price":"number","items":[{"name":"string"}]} or a JSON Schema with "properties".');
     try { ajv.compile(s); } catch (e) { throw new InputError(`"JSON schema" is not a valid JSON Schema: ${e.message}`); }
     return s;
 }

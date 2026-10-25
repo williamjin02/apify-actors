@@ -1,0 +1,98 @@
+{
+  "title": "LEI Lookup input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "queries": {
+      "title": "LEIs, company names, ISINs or BICs",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required unless datasetId is set. One per line; the type is auto-detected. Examples: \"HWUPKR0MPOU8FGXBT394\" (LEI), \"Siemens AG | DE\" (name with optional country), \"US0378331005\" (ISIN), \"DEUTDEFFXXX\" (BIC). Force a type with a prefix: \"name: ...\", \"lei: ...\", \"isin: ...\", \"bic: ...\".",
+      "prefill": [
+        "HWUPKR0MPOU8FGXBT394",
+        "Siemens AG | DE",
+        "US0378331005",
+        "Tesco PLC | GB"
+      ]
+    },
+    "includeParents": {
+      "title": "Include parent companies",
+      "type": "boolean",
+      "description": "Add the direct and ultimate accounting parent (LEI, name, country) when reported to GLEIF. Costs 1-2 extra API calls per record, so large runs take longer. Default true.",
+      "default": true
+    },
+    "maxMatchesPerName": {
+      "title": "Matches per name",
+      "type": "integer",
+      "editor": "number",
+      "description": "For company-name searches, return up to this many best matches (1-10, default 1). Each returned record is charged.",
+      "default": 1,
+      "minimum": 1,
+      "maximum": 10
+    },
+    "minNameScore": {
+      "title": "Minimum name score",
+      "type": "integer",
+      "editor": "number",
+      "description": "Only return name matches scoring at least this (0-100, default 80). Lower it for loose matching; misses are free not_found rows.",
+      "default": 80,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "onlyActive": {
+      "title": "Only active entities",
+      "type": "boolean",
+      "description": "Skip entities whose status is not ACTIVE (e.g. merged or dissolved). Default false.",
+      "default": false
+    },
+    "defaultCountry": {
+      "title": "Default country for names",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional ISO 2-letter code (e.g. \"DE\") applied to name searches without a \"| XX\" hint.",
+      "default": ""
+    },
+    "maxQueries": {
+      "title": "Max queries",
+      "type": "integer",
+      "editor": "number",
+      "description": "Run at most this many unique queries (default 2000). Aliases: maxItems, limit, maxResults.",
+      "default": 2000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Read LEIs or company names from another run's dataset. In an integration the triggering run's dataset is used automatically.",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "queryField": {
+      "title": "Query field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the LEI or company name (dot paths work). Leave empty to auto-detect: lei, LEI, isin, bic, companyName, name, company, legalName."
+    },
+    "countryField": {
+      "title": "Country field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional field with a 2-letter country code used as the name-search hint."
+    },
+    "datasetMaxItems": {
+      "title": "Max values from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many values from the dataset (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "includeLegalFormName": {
+      "title": "Resolve legal form names",
+      "type": "boolean",
+      "description": "Turn ELF codes like \"H1UM\" into names like \"For-Profit Corporation General Stock\" (cached; one call per distinct code). Default true.",
+      "default": true,
+      "sectionCaption": "Advanced"
+    }
+  }
+}

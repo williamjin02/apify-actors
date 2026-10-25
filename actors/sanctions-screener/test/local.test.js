@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import { normalize, tokens, scoreTokens, jaroWinkler, NameIndex, countryToIso } from '../src/match.js';
+import { parseOfac, parseUn, parseEu, parseUk } from '../src/lists.js';
+let pass = 0; const t = (name, fn) => { fn(); pass++; console.log('ok -', name); };
+t('normalize strips diacritics and punctuation', () => assert.equal(normalize("Nestlé S.A. & Co'"), 'nestle s a and co'));
+t('tokens drop legal suffixes and titles', () => assert.deepEqual(tokens('Dr. Acme Trading LLC'), ['acme', 'trading']));
+t('tokens keep something for all-suffix names', () => assert.deepEqual(tokens('The Co'), ['the', 'co']));
+t('jaro-winkler identical', () => assert.equal(jaroWinkler('martha', 'martha'), 1));
+t('jaro-winkler classic', () => assert.ok(Math.abs(jaroWinkler('martha', 'marhta') - 0.961) < 0.01));
+t('reordered names score 99', () => assert.equal(scoreTokens(tokens('Putin, Vladimir'), tokens('Vladimir Putin')), 99));
+t('spelling variant scores high', () => assert.ok(scoreTokens(tokens('Osama bin Laden'), tokens('Usama bin Ladin')) >= 85));
+t('unrelated company scores low', () => assert.ok(scoreTokens(tokens('Bank of America'), tokens('Bank Melli Iran')) < 85));
+t('short near-miss scores low', () => assert.ok(scoreTokens(tokens('Microsoft'), tokens('Microem')) < 85));
+t('country names to ISO', () => { assert.equal(countryToIso('Russian Federation'), 'RU'); assert.equal(countryToIso('Iran (Islamic Republic of)'), 'IR'); assert.equal(countryToIso('DE'), 'DE'); assert.equal(countryToIso('Germany'), 'DE'); assert.equal(countryToIso('Atlantis'), null); });
+const sdn = '2674,"ABBAS, Abu","individual","SDGT",-0- ,-0- ,-0- ,-0- ,-0- ,-0- ,-0- ,"DOB 10 Dec 1948; nationality Iraq."\n36,"AEROCARIBBEAN AIRLINES",-0- ,"CUBA] [RUSSIA-EO14024",-0- ,-0- ,-0- ,-0- ,-0- ,-0- ,-0- ,-0- \n';
+const alt = '2674,1,"aka","ZAYDAN, Muhammad",-0- \n';
+const add = '36,25,-0- ,"Havana","Cuba",-0- \n';
+const ofac = parseOfac('ofac_sdn', sdn, alt, add);
+t('OFAC parse: records, aliases, programs, countries, DOB', () => {
+    assert.equal(ofac.length, 2);
+    const a = ofac.find((r) => r.listId === '2674'); assert.equal(a.type, 'individual'); assert.deepEqual(a.names, ['ABBAS, Abu', 'ZAYDAN, Muhammad']); assert.deepEqual(a.datesOfBirth, ['10 Dec 1948']); assert.deepEqual(a.countries, ['IQ']);
+    const b = ofac.find((r) => r.listId === '36'); assert.equal(b.type, 'entity'); assert.deepEqual(b.programs, ['CUBA', 'RUSSIA-EO14024']); assert.deepEqual(b.countries, ['CU']);
+});
+const unXml = '<CONSOLIDATED_LIST dateGenerated="2026-10-24T00:00:00Z"><INDIVIDUALS><INDIVIDUAL><DATAID>1</DATAID><FIRST_NAME>ABDUL</FIRST_NAME><SECOND_NAME>BAQI</SECOND_NAME><UN_LIST_TYPE>Al-Qaida</UN_LIST_TYPE><REFERENCE_NUMBER>QDi.001</REFERENCE_NUMBER><LISTED_ON>2001-01-25</LISTED_ON><NATIONALITY><VALUE>Afghanistan</VALUE></NATIONALITY><INDIVIDUAL_ALIAS><QUALITY>Good</QUALITY><ALIAS_NAME>Abdul Baki</ALIAS_NAME></INDIVIDUAL_ALIAS><INDIVIDUAL_DATE_OF_BIRTH><TYPE_OF_DATE>APPROXIMATELY</TYPE_OF_DATE><YEAR>1962</YEAR></INDIVIDUAL_DATE_OF_BIRTH></INDIVIDUAL></INDIVIDUALS><ENTITIES><ENTITY><DATAID>2</DATAID><FIRST_NAME>AL-HARAMAIN &amp; CO</FIRST_NAME><UN_LIST_TYPE>Al-Qaida</UN_LIST_TYPE><REFERENCE_NUMBER>QDe.103</REFERENCE_NUMBER></ENTITY></ENTITIES></CONSOLIDATED_LIST>';
+t('UN XML parse', () => { const u = parseUn(unXml); assert.equal(u.records.length, 2); assert.equal(u.generated, '2026-10-24T00:00:00Z'); const a = u.records[0]; assert.equal(a.primaryName, 'ABDUL BAQI'); assert.deepEqual(a.names, ['ABDUL BAQI', 'Abdul Baki']); assert.deepEqual(a.countries, ['AF']); assert.deepEqual(a.datesOfBirth, ['1962']); assert.equal(u.records[1].primaryName, 'AL-HARAMAIN & CO'); });
+const euCsv = '\ufefffileGenerationDate;Entity_LogicalId;Entity_EU_ReferenceNumber;Entity_SubjectType;Entity_Regulation_Programme;Entity_Regulation_PublicationDate;NameAlias_WholeName;Address_CountryIso2Code;BirthDate_BirthDate;Citizenship_CountryIso2Code\n23/10/2026;13;EU.27.28;P;UKR;2014-03-17;Виктор ЯНУКОВИЧ;;;\n23/10/2026;13;EU.27.28;P;UKR;2014-03-17;Viktor Fedorovych Yanukovych;UA;1950-07-09;UA\n';
+t('EU CSV parse groups rows and prefers a Latin primary name', () => { const e = parseEu(euCsv); assert.equal(e.records.length, 1); const r = e.records[0]; assert.equal(r.primaryName, 'Viktor Fedorovych Yanukovych'); assert.equal(r.names.length, 2); assert.deepEqual(r.countries, ['UA']); assert.deepEqual(r.datesOfBirth, ['1950-07-09']); assert.equal(e.generated, '23/10/2026'); });
+const ukCsv = 'Report Date: 16-Oct-2026\nLast Updated,Unique ID,Name 6,Name 1,Name 2,Name 3,Name 4,Name 5,Name type,Name non-latin script,Regime Name,Designation Type,Address Country,Date Designated,D.O.B,Nationality(/ies),Other Information\n01/01/2026,RUS0001,PUTIN,Vladimir,Vladimirovich,,,,Primary Name,,The Russia (Sanctions) (EU Exit) Regulations 2019,Individual,Russia,25/02/2022,07/10/1952,Russia,\n01/01/2026,RUS0001,PUTIN,Vladimir,,,,,Alias,,The Russia (Sanctions) (EU Exit) Regulations 2019,Individual,,25/02/2022,,,\n';
+t('UK CSV parse skips report line and groups by Unique ID', () => { const u = parseUk(ukCsv); assert.equal(u.records.length, 1); const r = u.records[0]; assert.equal(r.primaryName, 'Vladimir Vladimirovich PUTIN'); assert.deepEqual(r.names, ['Vladimir Vladimirovich PUTIN', 'Vladimir PUTIN']); assert.deepEqual(r.programs, ['Russia']); assert.deepEqual(r.countries, ['RU']); assert.equal(u.generated, '16-Oct-2026'); });
+t('index search finds aliases and ignores weak hits', () => {
+    const ix = new NameIndex(); ofac.forEach((r, i) => r.names.forEach((n) => ix.add(i, n)));
+    assert.equal(ix.search('Muhammad Zaydan', 85)[0].r, 0);
+    assert.equal(ix.search('Aerocaribbean Airlines Ltd', 85)[0].score, 100);
+    assert.equal(ix.search('Abbott Laboratories', 85).length, 0);
+});
+console.log(`${pass} tests passed`);

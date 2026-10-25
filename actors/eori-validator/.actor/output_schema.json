@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of EORI Number Validator",
+  "description": "One row per unique EORI in the default dataset (bad formats and outages included as free rows); a run summary in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "EORI checks",
+      "description": "One row per number. Example: {\"eori\":\"GB117223643000\",\"status\":\"valid\",\"valid\":true,\"name\":\"APPLE DISTRIBUTION INTERNATIONAL LIMITED\"}. Failed: {\"eori\":\"GB123\",\"status\":\"invalid_format\",\"error\":\"...\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: numbersRequested, uniqueChecked, valid, invalid, byStatus, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

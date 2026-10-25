@@ -8,9 +8,10 @@
 
 ## What can AI Extract do?
 
-- 🧠 **Prompt or schema:** write "product name, price as a number, currency and stock status", give a JSON Schema, or both. A shorthand such as `{"title":"string","price":"number","tags":"string[]"}` also works.
+- 🧠 **Prompt or schema:** write "product name, price as a number, currency and stock status", give a JSON Schema, or both. A shorthand such as `{"title":"string","price":"number","tags":"string[]"}` also works, including nested lists like `{"products":[{"name":"string","price":"number"}]}`.
 - ✅ **Validated output:** every answer is checked against your schema. If it doesn't match, AI Extract retries with the errors. Pages that still don't match are returned as `invalid_output` and **not charged**.
 - 🕸️ **URLs or crawl:** process a list of URLs, or start from a category page and follow links up to a crawl depth, with a page limit, same-site restriction and include/exclude URL patterns.
+- ⭐ **Reads what's hidden in HTML:** star ratings shown as icons or CSS classes, schema.org microdata (`ratingValue`, `priceCurrency`, `availability`) and icon-link labels are turned into text, so the AI can return them.
 - 🧹 **Clean markdown, fewer tokens:** scripts, navigation, footers, cookie banners and ads are stripped. You can narrow extraction to a CSS selector (`main`, `.product`) and get the markdown back for RAG.
 - 🔑 **Bring your own key (optional):** OpenAI, Anthropic Claude, Google Gemini, DeepSeek, Groq, OpenRouter, Together or any OpenAI-compatible API. Your key is stored encrypted, and you can cap your AI spend per run.
 - 🛡️ **Safe defaults:** robots.txt and crawl-delay are honored, there are no logins, and requests to the same site are spaced out. The AI is told to use only what's on the page, return `null` instead of guessing, and ignore instructions hidden in page text.

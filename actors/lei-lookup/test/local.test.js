@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import { parseQuery, leiChecksumOk, isinChecksumOk, nameScore, normName, flatten } from '../src/lei.js';
+let pass = 0; let fail = 0;
+const t = (n, fn) => { try { fn(); pass++; console.log(`ok   ${n}`); } catch (e) { fail++; console.log(`FAIL ${n}\n     ${e.message}`); } };
+t('lei checksum ok', () => { assert.ok(leiChecksumOk('HWUPKR0MPOU8FGXBT394')); assert.ok(leiChecksumOk('7LTWFZYICNSX8D621K86')); });
+t('lei checksum bad', () => assert.ok(!leiChecksumOk('HWUPKR0MPOU8FGXBT395')));
+t('isin checksum', () => { assert.ok(isinChecksumOk('US0378331005')); assert.ok(!isinChecksumOk('US0378331006')); });
+t('parse lei', () => assert.equal(parseQuery('hwupkr0mpou8fgxbt394').type, 'lei'));
+t('parse bad lei', () => assert.equal(parseQuery('HWUPKR0MPOU8FGXBT395').status, 'invalid_format'));
+t('parse isin', () => assert.equal(parseQuery('US0378331005').type, 'isin'));
+t('parse bic', () => assert.equal(parseQuery('DEUTDEFFXXX').type, 'bic'));
+t('DEUTSCHE is a name', () => assert.equal(parseQuery('DEUTSCHE').type, 'name'));
+t('prefix bic', () => assert.equal(parseQuery('bic: DEUTDEFF').type, 'bic'));
+t('name with country', () => assert.deepEqual(parseQuery('Siemens Aktiengesellschaft | de'), { type: 'name', value: 'Siemens Aktiengesellschaft', country: 'DE' }));
+t('name keeps pipe if no country', () => assert.equal(parseQuery('A | B Corp').value, 'A | B Corp'));
+t('empty', () => assert.equal(parseQuery('  ').status, 'invalid_input'));
+t('normName suffix', () => assert.equal(normName('Siemens Aktiengesellschaft'), 'siemens ag'));
+t('nameScore exact', () => assert.equal(nameScore('Siemens AG', ['SIEMENS AKTIENGESELLSCHAFT']), 100));
+t('nameScore core', () => assert.equal(nameScore('Apple Inc', ['Apple Inc.']), 100));
+t('nameScore weak', () => assert.ok(nameScore('Siemens AG', ['Siemens Energy AG']) < 60));
+t('flatten', () => {
+    const f = flatten({ id: 'X', attributes: { lei: 'X', entity: { legalName: { name: 'A' }, legalAddress: { addressLines: ['1 St'], city: 'C', country: 'US', postalCode: '1' }, status: 'ACTIVE', legalForm: { id: 'H1UM' } }, registration: { status: 'ISSUED' }, bic: ['B'] }, relationships: { 'direct-parent': { links: { 'lei-record': 'u' } } } });
+    assert.equal(f.legalAddressText, '1 St, 1 C, US'); assert.equal(f.hasDirectParent, true); assert.equal(f.hasUltimateParent, false);
+});
+console.log(`\n${pass} passed, ${fail} failed`); if (fail) process.exit(1);

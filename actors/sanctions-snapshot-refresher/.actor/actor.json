@@ -1,0 +1,11 @@
+{
+  "actorSpecification": 1,
+  "name": "sanctions-snapshot-refresher",
+  "title": "Sanctions list snapshot refresher (private helper)",
+  "description": "Private helper for swillz/sanctions-screener: downloads the official OFAC, UN, EU and UK lists and stores a parsed snapshot.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "dockerfile": "./Dockerfile",
+  "readme": "./README.md",
+  "defaultMemoryMbytes": 2048
+}

@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Sanctions Screener",
+  "description": "One row per unique name in the default dataset (bad inputs and outages included as free rows); a run summary with list dates in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Screening results",
+      "description": "One row per name. Example: {\"name\":\"Rosneft\",\"status\":\"potential_match\",\"topScore\":100,\"matches\":[{\"list\":\"uk\",\"listedName\":\"ROSNEFT\"}]}. Clear: {\"name\":\"Acme Ltd\",\"status\":\"clear\",\"matchCount\":0}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: namesRequested, screened, clear, potentialMatches, byStatus, lists (records and list date per source), listsNotChecked, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

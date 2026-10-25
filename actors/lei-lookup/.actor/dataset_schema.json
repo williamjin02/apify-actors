@@ -1,0 +1,397 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "title": "Query",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Normalized query.",
+        "examples": [
+          "Siemens AG"
+        ]
+      },
+      "queryType": {
+        "title": "Query type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "lei, name, isin or bic.",
+        "examples": [
+          "name"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "found (charged), not_found, invalid_format (bad LEI/ISIN/BIC check digit, not sent), invalid_input, service_unavailable, skipped_charge_limit. Only found is charged.",
+        "examples": [
+          "found"
+        ]
+      },
+      "lei": {
+        "title": "LEI",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "20-character Legal Entity Identifier.",
+        "examples": [
+          "W38RGI023J3WT1HWRP32"
+        ]
+      },
+      "legalName": {
+        "title": "Legal name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Registered legal name (may be in local script; see otherNames).",
+        "examples": [
+          "Siemens Aktiengesellschaft"
+        ]
+      },
+      "otherNames": {
+        "title": "Other names",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Previous, trading and transliterated names.",
+        "examples": [
+          [
+            "Toyota Motor Corporation"
+          ]
+        ]
+      },
+      "matchScore": {
+        "title": "Match score",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Name searches only: 0-100 similarity to your query.",
+        "examples": [
+          100
+        ]
+      },
+      "matchRank": {
+        "title": "Match rank",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Name searches only: 1 = best.",
+        "examples": [
+          1
+        ]
+      },
+      "entityStatus": {
+        "title": "Entity status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ACTIVE or INACTIVE.",
+        "examples": [
+          "ACTIVE"
+        ]
+      },
+      "registrationStatus": {
+        "title": "LEI status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISSUED (current), LAPSED (not renewed), RETIRED, MERGED, ANNULLED, etc.",
+        "examples": [
+          "ISSUED"
+        ]
+      },
+      "legalForm": {
+        "title": "Legal form",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Legal form name (from the ISO 20275 ELF code).",
+        "examples": [
+          "Aktiengesellschaft"
+        ]
+      },
+      "legalFormCode": {
+        "title": "ELF code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO 20275 legal form code.",
+        "examples": [
+          "6QQB"
+        ]
+      },
+      "jurisdiction": {
+        "title": "Jurisdiction",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Legal jurisdiction.",
+        "examples": [
+          "DE"
+        ]
+      },
+      "country": {
+        "title": "Country",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Legal address country.",
+        "examples": [
+          "DE"
+        ]
+      },
+      "category": {
+        "title": "Category",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "GENERAL, FUND, BRANCH, SOLE_PROPRIETOR, etc.",
+        "examples": [
+          "GENERAL"
+        ]
+      },
+      "legalAddressText": {
+        "title": "Legal address",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Legal address on one line.",
+        "examples": [
+          "Werner-von-Siemens-Str. 1, 80333 München, DE-BY, DE"
+        ]
+      },
+      "headquartersAddressText": {
+        "title": "HQ address",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Headquarters address on one line.",
+        "examples": [
+          "Werner-von-Siemens-Str. 1, 80333 München, DE-BY, DE"
+        ]
+      },
+      "legalAddress": {
+        "title": "Legal address (parts)",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "lines, city, region, postalCode, country."
+      },
+      "headquartersAddress": {
+        "title": "HQ address (parts)",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "lines, city, region, postalCode, country."
+      },
+      "registrationAuthorityId": {
+        "title": "Registry ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "GLEIF registration authority code.",
+        "examples": [
+          "RA000304"
+        ]
+      },
+      "registeredAs": {
+        "title": "Registry number",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Company number in that registry.",
+        "examples": [
+          "HRB 6684"
+        ]
+      },
+      "entityCreationDate": {
+        "title": "Founded",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Entity creation date when reported.",
+        "examples": [
+          null
+        ]
+      },
+      "initialRegistrationDate": {
+        "title": "LEI issued",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "First LEI registration date.",
+        "examples": [
+          "2012-06-06T15:52:00Z"
+        ]
+      },
+      "lastUpdateDate": {
+        "title": "Last update",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Last record update.",
+        "examples": [
+          "2026-01-01T00:00:00Z"
+        ]
+      },
+      "nextRenewalDate": {
+        "title": "Next renewal",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "LEI renewal due date.",
+        "examples": [
+          "2027-01-01T00:00:00Z"
+        ]
+      },
+      "managingLou": {
+        "title": "Managing LOU",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "LEI of the issuing organisation.",
+        "examples": [
+          "5299000J2N45DDNE4Y28"
+        ]
+      },
+      "corroborationLevel": {
+        "title": "Corroboration",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "FULLY_CORROBORATED, PARTIALLY_CORROBORATED, ENTITY_SUPPLIED_ONLY.",
+        "examples": [
+          "FULLY_CORROBORATED"
+        ]
+      },
+      "bic": {
+        "title": "BICs",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "BIC codes mapped to this LEI.",
+        "examples": [
+          [
+            "DEUTDEFFXXX"
+          ]
+        ]
+      },
+      "directParent": {
+        "title": "Direct parent",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "{lei, legalName, country, entityStatus} of the direct accounting parent, if reported."
+      },
+      "ultimateParent": {
+        "title": "Ultimate parent",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "{lei, legalName, country, entityStatus} of the ultimate parent, if reported."
+      },
+      "gleifUrl": {
+        "title": "GLEIF page",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Link to the record on search.gleif.org.",
+        "examples": [
+          "https://search.gleif.org/#/record/W38RGI023J3WT1HWRP32"
+        ]
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Your original value.",
+        "examples": [
+          "Siemens AG | DE"
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why nothing was returned.",
+        "examples": [
+          null
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When this row was produced (UTC).",
+        "examples": [
+          "2026-10-25T08:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "LEI records",
+      "transformation": {
+        "fields": [
+          "query",
+          "status",
+          "lei",
+          "legalName",
+          "country",
+          "entityStatus",
+          "registrationStatus",
+          "legalForm",
+          "nextRenewalDate",
+          "matchScore",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

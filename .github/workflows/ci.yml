@@ -23,6 +23,10 @@ jobs:
           - email-provider-detector
           - hiring-signals-by-domain
           - eu-vat-validator
+          - eori-validator
+          - lei-lookup
+          - sanctions-screener
+          - sanctions-snapshot-refresher
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

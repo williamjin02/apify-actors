@@ -1,0 +1,150 @@
+{
+  "title": "Sanctions Screener input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "names": {
+      "title": "Names to screen",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required unless datasetId is set. People or company names, e.g. [\"Rosneft\",\"Acme Trading LLC\"]. Add \" | Country\" to flag country matches, e.g. \"Vladimir Putin | RU\". Objects work too: {\"name\":\"...\",\"country\":\"IR\",\"type\":\"entity\"}.",
+      "prefill": [
+        "Vladimir Putin | RU",
+        "Rosneft",
+        "Bank Melli Iran",
+        "Microsoft Corporation"
+      ]
+    },
+    "lists": {
+      "title": "Lists",
+      "type": "array",
+      "editor": "select",
+      "description": "Which official lists to check (default: all). Each is downloaded fresh from the government source on every run.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ofac_sdn",
+          "ofac_consolidated",
+          "un",
+          "eu",
+          "uk"
+        ],
+        "enumTitles": [
+          "OFAC SDN (US)",
+          "OFAC Consolidated non-SDN (US)",
+          "UN Security Council",
+          "EU Consolidated",
+          "UK Sanctions List"
+        ]
+      },
+      "default": [
+        "ofac_sdn",
+        "ofac_consolidated",
+        "un",
+        "eu",
+        "uk"
+      ]
+    },
+    "minScore": {
+      "title": "Minimum match score",
+      "type": "integer",
+      "editor": "number",
+      "description": "0-100 similarity needed to report a match (default 85). 92+ gives fewer, closer matches; 80 catches more spelling variants. Range 70-100.",
+      "default": 85,
+      "minimum": 70,
+      "maximum": 100
+    },
+    "entityType": {
+      "title": "Entity type",
+      "type": "string",
+      "editor": "select",
+      "description": "Only match listed individuals, only entities (companies, vessels, aircraft), or any (default).",
+      "enum": [
+        "any",
+        "individual",
+        "entity"
+      ],
+      "enumTitles": [
+        "Any",
+        "Individuals only",
+        "Entities only"
+      ],
+      "default": "any"
+    },
+    "maxMatchesPerName": {
+      "title": "Max matches per name",
+      "type": "integer",
+      "editor": "number",
+      "description": "How many listed records to return per name, best first (default 5, max 25). matchCount always shows the total.",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 25
+    },
+    "defaultCountry": {
+      "title": "Default country",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional country (2-letter code or name) used as the hint for names without \" | Country\". It only sets countryMatch; it never hides matches.",
+      "default": ""
+    },
+    "maxNames": {
+      "title": "Max names",
+      "type": "integer",
+      "editor": "number",
+      "description": "Screen at most this many unique names per run (default 10000). Aliases: maxItems, limit.",
+      "default": 10000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Read names from another run's dataset, e.g. a supplier or customer export. In an integration the triggering run's dataset is used automatically."
+    },
+    "nameField": {
+      "title": "Name field in the dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field with the name. Auto-detected from name, fullName, companyName, company, legalName, title and more. Dot paths work, e.g. \"owner.name\"."
+    },
+    "countryField": {
+      "title": "Country field in the dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional field with a country (code or name). Auto-detected from country, countryCode, nationality, location."
+    },
+    "datasetMaxItems": {
+      "title": "Max dataset items",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many items from datasetId (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "alwaysDownloadFresh": {
+      "title": "Always download fresh lists",
+      "type": "boolean",
+      "editor": "checkbox",
+      "description": "Off (default): use the copy of each list downloaded from the official source within the last maxListAgeHours (refreshed every 6 hours), which makes runs fast. On: download every list from the government sites in this run (adds 1-2 minutes).",
+      "default": false
+    },
+    "maxListAgeHours": {
+      "title": "Max list age (hours)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Use the cached copy of a list only if it was downloaded from the official source within this many hours (default 24, min 1). Older lists are downloaded live.",
+      "default": 24,
+      "minimum": 1,
+      "maximum": 168
+    },
+    "downloadTimeoutSecs": {
+      "title": "List download timeout (seconds)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Per-file timeout for downloading a list (default 150). A list that cannot be downloaded is reported in listsNotChecked and its rows are not charged.",
+      "default": 150,
+      "minimum": 30,
+      "maximum": 300
+    }
+  }
+}
