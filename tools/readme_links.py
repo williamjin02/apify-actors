@@ -16,13 +16,29 @@ CAT = {  # slug: (Store title, one-line pitch with search keywords)
  'google-sheets-import-export': ('Google Sheets Import & Export', 'send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.'),
  'sitemap-url-extractor': ('XML Sitemap URL Extractor & Sitemap to CSV', 'every URL from a website\'s sitemap, with lastmod, HTTP status and new-page monitoring.'),
  'ai-brand-visibility-tracker': ('AI Brand Visibility Tracker', 'track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).'),
+ 'email-provider-detector': ('Email Provider Detector', 'bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.'),
+ 'hiring-signals-by-domain': ('Hiring Signals by Company Domain', 'from a list of company domains, find which ATS each uses and how many open roles, by department and location.'),
+ 'eu-vat-validator': ('EU VAT Number Validator (VIES)', 'bulk check EU VAT numbers against official VIES, with company name and address.'),
+ 'eori-validator': ('EORI Number Validator', 'bulk check EU and UK EORI numbers for customs, with trader name where published.'),
+ 'lei-lookup': ('LEI Lookup (GLEIF)', 'find a company\'s Legal Entity Identifier, legal name, address, status and parent from official GLEIF data.'),
+ 'sanctions-screener': ('Sanctions Screener', 'screen company and person names against official OFAC, UN, EU and UK sanctions lists with fuzzy matching.'),
+ 'hts-code-lookup': ('HTS Code Lookup (USITC)', 'US HTS codes and import duty rates from the official tariff schedule, by code or product description.'),
+ 'federal-awards-by-company': ('Federal Contracts & Grants by Company', 'federal contracts, grants and loans any US company won, from official USAspending.gov data.'),
 }
 FLOWS = [  # (actors involved in order, text)
  (['career-site-jobs-scraper', 'company-website-enrichment', 'google-sheets-import-export'], '**Hiring-signal leads:** scrape open roles with {0}, enrich each hiring company\'s domain with {1}, and append new rows daily with {2}.'),
  (['workday-jobs-scraper', 'company-website-enrichment', 'google-sheets-import-export'], '**Enterprise hiring tracker:** pull Workday jobs with {0}, add company contacts with {1}, and keep a live sheet with {2}.'),
  (['sitemap-url-extractor', 'ai-extract', 'google-sheets-import-export'], '**Catalog or content extraction:** list every product or article URL with {0}, turn each page into JSON with {1}, and export with {2}.'),
  (['ai-brand-visibility-tracker', 'google-sheets-import-export'], '**Weekly AI-visibility report:** schedule {0} weekly and append each run\'s share of voice to a sheet with {1}.'),
+ (['email-provider-detector', 'company-website-enrichment', 'google-sheets-import-export'], '**Cold email list prep:** get domains from a lead or Google Maps scraper, split them by Google Workspace vs Microsoft 365 (`espMatch`) with {0}, add contacts with {1}, and export with {2}.'),
+ (['email-provider-detector', 'company-website-enrichment'], '**Email security prospecting:** find companies with `p=none` DMARC or SPF over the lookup limit with {0}, then get their contacts with {1}.'),
  (['sitemap-url-extractor', 'company-website-enrichment'], '**Site audits for prospects:** check a prospect\'s pages and status codes with {0}, then get their contacts with {1}.'),
+ (['hiring-signals-by-domain', 'company-website-enrichment', 'google-sheets-import-export'], '**Hiring-signal prospecting:** rank target accounts by open roles with {0}, add contacts with {1}, and track weekly in a sheet with {2}.'),
+ (['hiring-signals-by-domain', 'career-site-jobs-scraper'], '**From signal to job list:** find which companies are hiring with {0}, then pull every open role with {1}.'),
+ (['eu-vat-validator', 'eori-validator', 'lei-lookup', 'sanctions-screener'], '**B2B customer onboarding (KYB):** validate the VAT number with {0} and the EORI with {1}, confirm the legal entity with {2}, and screen the name with {3}.'),
+ (['federal-awards-by-company', 'sanctions-screener', 'company-website-enrichment'], '**Government-contractor research:** pull a company\'s federal awards with {0}, screen it with {1}, and add contacts with {2}.'),
+ (['hts-code-lookup', 'eori-validator'], '**Import compliance:** classify products and get US duty rates with {0}, and check trading partners\' EORI numbers with {1}.'),
+ (['federal-awards-by-company', 'google-sheets-import-export'], '**Weekly award watch:** schedule {0} for your competitors or prospects and append new awards to a sheet with {1}.'),
 ]
 def link(s): return f'[{CAT[s][0]}](https://apify.com/swillz/{s})'
 def public_set():

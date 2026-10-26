@@ -27,6 +27,8 @@ jobs:
           - lei-lookup
           - sanctions-screener
           - sanctions-snapshot-refresher
+          - hts-code-lookup
+          - federal-awards-by-company
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

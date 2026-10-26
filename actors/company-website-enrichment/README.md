@@ -1,10 +1,10 @@
 **Company Website Enrichment** turns a list of company domains into **ready-to-use B2B lead data**. For every website you get the **company name, description, logo, generic contact emails (info@, sales@, support@), phone numbers, postal address, LinkedIn company page and other social profiles**, the contact, about and careers pages, the **job board the company uses** and its **tech stack (130+ technologies)**. Export to **CSV, JSON or Excel**, or push straight into your CRM.
 
-Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$2-3 per 1,000 enriched websites**. Websites that can't be reached are free.
+Paste domains, click Start. The actor reads the homepage plus up to 3 key pages per site over fast HTTP (no browser), **respects robots.txt**, and costs **$0.65-1 per 1,000 enriched websites**. Websites that can't be reached are free.
 
 **When to use:** you have a list of company domains and need firmographic and contact data for each one.
 **Input:** a list of domains, e.g. `{"websites":["stripe.com","hubspot.com"]}`, or the `datasetId` of another Actor run (Google Maps, lead lists, directories) to enrich its `website` column.
-**Output:** one row per company with name, description, logo, generic emails, phones, address, social links, key pages and 130+ detected technologies. From $2 per 1,000 websites.
+**Output:** one row per company with name, description, logo, generic emails, phones, address, social links, key pages and 130+ detected technologies. From $0.65 per 1,000 websites.
 
 ## What can Company Website Enrichment do?
 
@@ -41,18 +41,18 @@ Paste domains, click Start. The actor reads the homepage plus up to 3 key pages 
 
 ## How much does it cost?
 
-This actor uses **pay-per-result pricing**: **$2.00-3.00 per 1,000 websites enriched** (by Apify plan), plus a tiny $0.00005 per run start. Websites that are unreachable, blocked or invalid are returned with a status but **not charged**. No monthly fee, no compute or proxy charges on top.
+This actor uses **pay-per-result pricing**: **$0.65-1.00 per 1,000 websites enriched** (by Apify plan), plus a tiny $0.00005 per run start. Websites that are unreachable, blocked or invalid are returned with a status but **not charged**. No monthly fee, no compute or proxy charges on top.
 
 | Apify plan | Per 1,000 websites | 10,000 websites |
 |---|---|---|
-| Free | $3 | $30 |
-| Starter | $3 | $30 |
-| Scale | $2.50 | $25 |
-| Business and up | $2 | $20 |
+| Free | $1 | $10 |
+| Starter | $1 | $10 |
+| Scale | $0.80 | $8 |
+| Business and up | $0.65 | $6.50 |
 
 Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
 
-Apify's **free plan includes $5 of monthly credit**, enough for about **1,600 websites a month for free**. You can set a maximum cost per run and the actor stops cleanly when it's reached.
+Apify's **free plan includes $5 of monthly credit**, enough for about **5,000 websites a month for free**. You can set a maximum cost per run and the actor stops cleanly when it's reached.
 
 ## Input example
 
@@ -160,7 +160,7 @@ Minimal input:
 
 | | This actor | Contact scrapers (per page) | Paid enrichment APIs |
 |---|---|---|---|
-| Price | $2-3 per 1,000 websites by plan | ~$2 per 1,000 pages (+ extras) | $50+/month |
+| Price | $0.65-1 per 1,000 websites by plan | ~$2 per 1,000 pages (+ extras) | $50+/month |
 | Tech stack | ✅ 130+ technologies | ❌ | Sometimes |
 | Social profiles + address | ✅ | ✅ | ✅ |
 | Job board / hiring signal | ✅ | ❌ | Rarely |
@@ -194,11 +194,17 @@ More tools from the same developer, built to work together:
 - [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
 - [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
 - [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+- [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
+- [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain): from a list of company domains, find which ATS each uses and how many open roles, by department and location.
+- [EU VAT Number Validator (VIES)](https://apify.com/swillz/eu-vat-validator): bulk check EU VAT numbers against official VIES, with company name and address.
 
 **Popular workflows**
 
 - **Hiring-signal leads:** scrape open roles with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper), enrich each hiring company's domain with this Actor, and append new rows daily with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 - **Enterprise hiring tracker:** pull Workday jobs with [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper), add company contacts with this Actor, and keep a live sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **Cold email list prep:** get domains from a lead or Google Maps scraper, split them by Google Workspace vs Microsoft 365 (`espMatch`) with [Email Provider Detector](https://apify.com/swillz/email-provider-detector), add contacts with this Actor, and export with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **Email security prospecting:** find companies with `p=none` DMARC or SPF over the lookup limit with [Email Provider Detector](https://apify.com/swillz/email-provider-detector), then get their contacts with this Actor.
 - **Site audits for prospects:** check a prospect's pages and status codes with [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor), then get their contacts with this Actor.
+- **Hiring-signal prospecting:** rank target accounts by open roles with [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain), add contacts with this Actor, and track weekly in a sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/company-website-enrichment

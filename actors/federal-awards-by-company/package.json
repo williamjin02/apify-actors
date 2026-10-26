@@ -1,0 +1,18 @@
+{
+  "name": "federal-awards-by-company",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Federal contracts, grants and loans won by any US company from USAspending.gov: award rows plus a company summary with totals, top agencies and NAICS.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node test/local.test.js"
+  },
+  "dependencies": {
+    "apify": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,379 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "title": "Row type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "award (one federal award), company_summary (totals for the company) or status (a free row explaining a miss).",
+        "examples": [
+          "award"
+        ]
+      },
+      "query": {
+        "title": "Query",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The company name or UEI you asked for.",
+        "examples": [
+          "Palantir"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "found (charged), not_found, invalid_input, service_unavailable, skipped_charge_limit. Only found rows are charged.",
+        "examples": [
+          "found"
+        ]
+      },
+      "rank": {
+        "title": "Rank",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position of the award within this company's results.",
+        "examples": [
+          1
+        ]
+      },
+      "awardCategory": {
+        "title": "Award category",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "contract, idv, grant or loan.",
+        "examples": [
+          "contract"
+        ]
+      },
+      "awardId": {
+        "title": "Award ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "PIID (contracts) or FAIN/URI (assistance).",
+        "examples": [
+          "W58RGZ24C0001"
+        ]
+      },
+      "recipientName": {
+        "title": "Recipient name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Recipient legal name as reported.",
+        "examples": [
+          "PALANTIR USG INC"
+        ]
+      },
+      "recipientUei": {
+        "title": "Recipient UEI",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "SAM.gov Unique Entity ID.",
+        "examples": [
+          "JCBMLGPE6Z71"
+        ]
+      },
+      "amount": {
+        "title": "Amount (USD)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Award amount (obligated total for contracts and grants; face value for loans).",
+        "examples": [
+          637552404.79
+        ]
+      },
+      "totalOutlays": {
+        "title": "Total outlays (USD)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Amount paid out so far, when reported.",
+        "examples": [
+          230344858.71
+        ]
+      },
+      "startDate": {
+        "title": "Start date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Period of performance start (issue date for loans).",
+        "examples": [
+          "2024-05-29"
+        ]
+      },
+      "endDate": {
+        "title": "End date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Period of performance end.",
+        "examples": [
+          "2029-05-28"
+        ]
+      },
+      "awardType": {
+        "title": "Award type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Detailed type, e.g. DEFINITIVE CONTRACT, DELIVERY ORDER, PROJECT GRANT.",
+        "examples": [
+          "DEFINITIVE CONTRACT"
+        ]
+      },
+      "description": {
+        "title": "Description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Award description (max 1,000 characters).",
+        "examples": [
+          "..."
+        ]
+      },
+      "awardingAgency": {
+        "title": "Awarding agency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Top-tier awarding agency.",
+        "examples": [
+          "Department of Defense"
+        ]
+      },
+      "awardingSubAgency": {
+        "title": "Awarding sub-agency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Sub-tier awarding agency.",
+        "examples": [
+          "Department of the Army"
+        ]
+      },
+      "fundingAgency": {
+        "title": "Funding agency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Agency providing the money.",
+        "examples": [
+          "Department of Defense"
+        ]
+      },
+      "naicsCode": {
+        "title": "NAICS code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "NAICS industry code (contracts and IDVs).",
+        "examples": [
+          "541511"
+        ]
+      },
+      "naicsDescription": {
+        "title": "NAICS description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "NAICS title.",
+        "examples": [
+          "CUSTOM COMPUTER PROGRAMMING SERVICES"
+        ]
+      },
+      "pscCode": {
+        "title": "PSC code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Product and Service Code (contracts and IDVs).",
+        "examples": [
+          "DA01"
+        ]
+      },
+      "pscDescription": {
+        "title": "PSC description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "PSC title.",
+        "examples": [
+          "IT AND TELECOM - BUSINESS APPLICATION/APPLICATION DEVELOPMENT SUPPORT SERVICES"
+        ]
+      },
+      "assistanceListings": {
+        "title": "Assistance listings",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "CFDA / Assistance Listing numbers and titles (grants and loans).",
+        "examples": [
+          [
+            "93.855 Allergy and Infectious Diseases Research"
+          ]
+        ]
+      },
+      "placeOfPerformanceState": {
+        "title": "Place of performance state",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "2-letter state code.",
+        "examples": [
+          "VA"
+        ]
+      },
+      "usaspendingUrl": {
+        "title": "USAspending link",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Award page on USAspending.gov.",
+        "examples": [
+          "https://www.usaspending.gov/award/CONT_AWD_..."
+        ]
+      },
+      "obligatedInPeriod": {
+        "title": "Obligated in period (USD)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "company_summary only: total obligations to the matched recipients in the period and award types chosen.",
+        "examples": [
+          1981710256.98
+        ]
+      },
+      "matchedRecipients": {
+        "title": "Matched recipients",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "company_summary only: recipient names, UEIs and obligated amounts that matched the query.",
+        "examples": [
+          [
+            {
+              "name": "PALANTIR USG INC",
+              "uei": "...",
+              "amount": 1411899868.54
+            }
+          ]
+        ]
+      },
+      "topAwardingAgencies": {
+        "title": "Top awarding agencies",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "company_summary only: top 5 agencies by obligated amount.",
+        "examples": [
+          [
+            {
+              "name": "Department of Defense",
+              "amount": 1500000000
+            }
+          ]
+        ]
+      },
+      "topNaics": {
+        "title": "Top NAICS",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "company_summary only: top 5 NAICS codes by obligated amount.",
+        "examples": [
+          [
+            {
+              "code": "541511",
+              "name": "Custom Computer Programming Services",
+              "amount": 1157460371.18
+            }
+          ]
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a row is not_found, invalid_input, service_unavailable or skipped_charge_limit, and what to try next."
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the row was produced (UTC).",
+        "examples": [
+          "2026-10-26T18:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Awards",
+      "transformation": {
+        "fields": [
+          "type",
+          "query",
+          "status",
+          "recipientName",
+          "awardCategory",
+          "amount",
+          "awardingAgency",
+          "startDate",
+          "endDate",
+          "naicsCode",
+          "obligatedInPeriod",
+          "usaspendingUrl",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

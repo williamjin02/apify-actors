@@ -1,10 +1,10 @@
 **Career Site Jobs Scraper** extracts **open job postings directly from company career sites** hosted on **Greenhouse, Lever, Ashby, Workable and Recruitee**, and exports them to **CSV, JSON or Excel**. For every job you get the title, department, team, location, remote/hybrid flag, **salary range** (when published), posted date, full description and the apply link.
 
-Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $3**. No login, no browser, no proxy.
+Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $2 or less**. No login, no browser, no proxy.
 
 **When to use:** you need the open jobs of specific companies that hire through Greenhouse, Lever, Ashby, Workable or Recruitee.
 **Input:** board names or URLs, e.g. `{"companies":["stripe","https://jobs.lever.co/spotify"]}`.
-**Output:** one row per job with title, department, location, remote, salary, posted date, description and apply URL. From $3.50 per 1,000 jobs.
+**Output:** one row per job with title, department, location, remote, salary, posted date, description and apply URL. From $1.30 per 1,000 jobs.
 
 ## What can Career Site Jobs Scraper do?
 
@@ -43,18 +43,18 @@ Just paste company names or job-board URLs. The actor reads each ATS's **officia
 
 ## How much does it cost?
 
-This actor uses **pay-per-result pricing**: **$3.50-6.00 per 1,000 jobs** saved (by Apify plan), plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
+This actor uses **pay-per-result pricing**: **$1.30-2.00 per 1,000 jobs** saved (by Apify plan), plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
 
 | Apify plan | Per 1,000 jobs | 10,000 jobs |
 |---|---|---|
-| Free | $6 | $60 |
-| Starter | $6 | $60 |
-| Scale | $4.50 | $45 |
-| Business and up | $3.50 | $35 |
+| Free | $2 | $20 |
+| Starter | $2 | $20 |
+| Scale | $1.60 | $16 |
+| Business and up | $1.30 | $13 |
 
 Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
 
-Apify's **free plan includes $5 of monthly credit**, which covers about **800 jobs a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it reaches it.
+Apify's **free plan includes $5 of monthly credit**, which covers about **2,500 jobs a month for free**. You can set a maximum cost per run, and the actor stops cleanly when it reaches it.
 
 ## Input example
 
@@ -159,7 +159,7 @@ Every run saves the exact next step in its `OUTPUT` record (`nextSteps`). To mak
 | Login / cookies needed | ❌ none | Often | ❌ |
 | Breaks on layout changes | ❌ official APIs | Often | – |
 | Multi-ATS auto-detection | ✅ | – | ❌ |
-| Price | $3.50-6 per 1,000 jobs by plan | Varies | Your time |
+| Price | $1.30-2 per 1,000 jobs by plan | Varies | Your time |
 
 ## FAQ
 
@@ -191,9 +191,13 @@ More tools from the same developer, built to work together:
 - [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
 - [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
 - [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+- [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
+- [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain): from a list of company domains, find which ATS each uses and how many open roles, by department and location.
+- [EU VAT Number Validator (VIES)](https://apify.com/swillz/eu-vat-validator): bulk check EU VAT numbers against official VIES, with company name and address.
 
 **Popular workflows**
 
 - **Hiring-signal leads:** scrape open roles with this Actor, enrich each hiring company's domain with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and append new rows daily with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **From signal to job list:** find which companies are hiring with [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain), then pull every open role with this Actor.
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/career-site-jobs-scraper
