@@ -1,0 +1,313 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "title": "Query",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The code or description you asked for.",
+        "examples": [
+          "cotton t-shirts"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "found (charged), not_found, invalid_input, service_unavailable, skipped_charge_limit. Only found rows are charged.",
+        "examples": [
+          "found"
+        ]
+      },
+      "matchType": {
+        "title": "Match type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "code (the exact line), code_child (a line under the code), keyword (all key words matched), keyword_partial (best partial match).",
+        "examples": [
+          "keyword"
+        ]
+      },
+      "rank": {
+        "title": "Rank",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position within this query's results (1 = best).",
+        "examples": [
+          1
+        ]
+      },
+      "score": {
+        "title": "Score",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Keyword relevance 0-100 (null for code lookups).",
+        "examples": [
+          92.5
+        ]
+      },
+      "htsNumber": {
+        "title": "HTS number",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "HTS code with dots.",
+        "examples": [
+          "6109.10.00.12"
+        ]
+      },
+      "htsDigits": {
+        "title": "HTS digits",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The same code without dots.",
+        "examples": [
+          "6109100012"
+        ]
+      },
+      "level": {
+        "title": "Level",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "chapter, heading (4 digits), subheading (6), tariff_line (8, where duty rates are set) or statistical (10, used on customs entries).",
+        "examples": [
+          "statistical"
+        ]
+      },
+      "description": {
+        "title": "Description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "This line's own description.",
+        "examples": [
+          "Men's (338)"
+        ]
+      },
+      "fullDescription": {
+        "title": "Full description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Breadcrumb from the heading down to this line, joined with \" > \".",
+        "examples": [
+          "T-shirts, singlets, tank tops and similar garments, knitted or crocheted: > Of cotton > Men's or boys': > Other T-shirts: > Men's (338)"
+        ]
+      },
+      "generalRate": {
+        "title": "General duty rate",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Column 1 General (normal trade relations) rate, inherited from the parent 8-digit line when the 10-digit line has none.",
+        "examples": [
+          "16.5%"
+        ]
+      },
+      "specialRate": {
+        "title": "Special rate",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Column 1 Special rate with program codes (FTAs and preference programs).",
+        "examples": [
+          "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,PA,PE,S,SG)"
+        ]
+      },
+      "specialPrograms": {
+        "title": "Special programs",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Program codes parsed from the special rate.",
+        "examples": [
+          [
+            "AU",
+            "BH",
+            "CL"
+          ]
+        ]
+      },
+      "column2Rate": {
+        "title": "Column 2 rate",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Column 2 rate (countries without normal trade relations, e.g. Cuba, North Korea, Russia, Belarus).",
+        "examples": [
+          "90%"
+        ]
+      },
+      "rateSource": {
+        "title": "Rate source",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "this_line, or which parent line the rates were inherited from.",
+        "examples": [
+          "inherited from 6109.10.00"
+        ]
+      },
+      "units": {
+        "title": "Units",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Units of quantity for statistical reporting.",
+        "examples": [
+          [
+            "doz.",
+            "kg"
+          ]
+        ]
+      },
+      "additionalDutyRefs": {
+        "title": "Chapter 99 references",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Chapter 99 provisions this line (or its parents) points to: htsNumber, appliesTo (general/special/column2), description, rate.",
+        "examples": [
+          [
+            {
+              "htsNumber": "9903.90.08",
+              "appliesTo": "column2",
+              "description": "...",
+              "rate": "The duty provided in the applicable subheading + 35%"
+            }
+          ]
+        ]
+      },
+      "footnotes": {
+        "title": "Footnotes",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Footnote texts on this line.",
+        "examples": [
+          [
+            "See 9903.88.15."
+          ]
+        ]
+      },
+      "htsRelease": {
+        "title": "HTS release",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "USITC release the data came from.",
+        "examples": [
+          "2026HTSRev21"
+        ]
+      },
+      "sourceUrl": {
+        "title": "Source URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Link to this code on hts.usitc.gov.",
+        "examples": [
+          "https://hts.usitc.gov/search?query=6109.10.00.12"
+        ]
+      },
+      "closestHtsNumber": {
+        "title": "Closest code (misses)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "For a code that does not exist: the closest existing parent code.",
+        "examples": [
+          "8507.60.00"
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a row was not found or not run."
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp.",
+        "examples": [
+          "2026-10-26T19:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "HTS lines",
+      "transformation": {
+        "fields": [
+          "query",
+          "status",
+          "rank",
+          "htsNumber",
+          "level",
+          "fullDescription",
+          "generalRate",
+          "specialRate",
+          "column2Rate",
+          "rateSource",
+          "additionalDutyRefs",
+          "htsRelease",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "fullDescription": {
+            "label": "Full description"
+          },
+          "generalRate": {
+            "label": "General"
+          },
+          "specialRate": {
+            "label": "Special"
+          },
+          "column2Rate": {
+            "label": "Column 2"
+          }
+        }
+      }
+    }
+  }
+}

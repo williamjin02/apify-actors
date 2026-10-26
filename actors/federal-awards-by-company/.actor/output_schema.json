@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Federal Contracts & Grants by Company",
+  "description": "One company_summary row and award rows per company; misses and bad input come back as free status rows. A run summary is in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Awards and summaries",
+      "description": "Example award: {\"type\":\"award\",\"query\":\"Palantir\",\"awardId\":\"...\",\"recipientName\":\"PALANTIR USG INC\",\"amount\":637552404.79,\"awardingAgency\":\"Department of Defense\",\"naicsCode\":\"541511\"}. Miss: {\"type\":\"status\",\"status\":\"not_found\",\"error\":\"...\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: companies, recordsReturned, byStatus, period, awardTypes, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

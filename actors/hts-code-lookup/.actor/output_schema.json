@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of HTS Code Lookup",
+  "description": "One row per HTS line returned (misses and bad input included as free status rows); a run summary in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "HTS lines",
+      "description": "Example: {\"query\":\"8507.60.00\",\"status\":\"found\",\"htsNumber\":\"8507.60.00\",\"description\":\"Lithium-ion batteries\",\"generalRate\":\"3.4%\",\"specialRate\":\"Free (A,AU,...)\",\"column2Rate\":\"40%\"}. Miss: {\"query\":\"8507.60.00.20\",\"status\":\"not_found\",\"closestHtsNumber\":\"8507.60.00\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: queries, rowsReturned, byStatus, htsRelease, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

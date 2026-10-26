@@ -115,7 +115,21 @@ Run it from the Apify API, the Python or JavaScript client, Make, Zapier or n8n.
 
 ## Related tools
 
-- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): every open role, with full descriptions, from the same ATS boards.
-- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): for companies on Workday.
-- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): emails, socials and tech from company sites.
-- [Email Provider Detector](https://apify.com/swillz/email-provider-detector): Google Workspace or Microsoft 365, plus email security.
+More tools from the same developer, built to work together:
+
+- [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper): jobs from Greenhouse, Lever, Ashby, Workable and Recruitee boards, with salary fields, as a jobs API or CSV.
+- [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper): every job from any myworkdayjobs.com career site, past the 2,000-result cap.
+- [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment): turn a list of domains into company name, emails, phones, social links and tech stack.
+- [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
+- [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export): send any Apify dataset to a Google Sheet (append, replace or dedupe) or read a sheet as JSON.
+- [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
+- [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+- [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
+- [EU VAT Number Validator (VIES)](https://apify.com/swillz/eu-vat-validator): bulk check EU VAT numbers against official VIES, with company name and address.
+
+**Popular workflows**
+
+- **Hiring-signal prospecting:** rank target accounts by open roles with this Actor, add contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and track weekly in a sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
+- **From signal to job list:** find which companies are hiring with this Actor, then pull every open role with [Career Site Jobs Scraper](https://apify.com/swillz/career-site-jobs-scraper).
+
+Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/hiring-signals-by-domain

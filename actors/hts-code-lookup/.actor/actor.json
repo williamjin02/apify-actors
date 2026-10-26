@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "hts-code-lookup",
+  "title": "HTS Code Lookup: US Tariff Rates & Duty Search (USITC)",
+  "description": "Look up US HTS codes in the official USITC Harmonized Tariff Schedule by code or product description. Get general, special and column 2 duty rates (inherited down to 10-digit lines), full descriptions, units and Chapter 99 references. Misses are free status rows.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 512
+}

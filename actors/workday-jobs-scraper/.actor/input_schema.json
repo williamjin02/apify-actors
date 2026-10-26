@@ -11,9 +11,6 @@
       "prefill": [
         {
           "url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite"
-        },
-        {
-          "url": "https://adobe.wd5.myworkdayjobs.com/external_experienced"
         }
       ]
     },
@@ -82,7 +79,7 @@
       "minimum": 0,
       "editor": "number",
       "sectionCaption": "Limits",
-      "prefill": 50
+      "prefill": 20
     },
     "maxJobs": {
       "title": "Max jobs in total",

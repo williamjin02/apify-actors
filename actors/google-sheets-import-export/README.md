@@ -165,6 +165,9 @@ More tools from the same developer, built to work together:
 - [AI Extract](https://apify.com/swillz/ai-extract): structured JSON from any web page with a plain-English prompt or a JSON schema. AI included.
 - [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor): every URL from a website's sitemap, with lastmod, HTTP status and new-page monitoring.
 - [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
+- [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
+- [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain): from a list of company domains, find which ATS each uses and how many open roles, by department and location.
+- [EU VAT Number Validator (VIES)](https://apify.com/swillz/eu-vat-validator): bulk check EU VAT numbers against official VIES, with company name and address.
 
 **Popular workflows**
 
@@ -172,5 +175,7 @@ More tools from the same developer, built to work together:
 - **Enterprise hiring tracker:** pull Workday jobs with [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper), add company contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and keep a live sheet with this Actor.
 - **Catalog or content extraction:** list every product or article URL with [XML Sitemap URL Extractor & Sitemap to CSV](https://apify.com/swillz/sitemap-url-extractor), turn each page into JSON with [AI Extract](https://apify.com/swillz/ai-extract), and export with this Actor.
 - **Weekly AI-visibility report:** schedule [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker) weekly and append each run's share of voice to a sheet with this Actor.
+- **Cold email list prep:** get domains from a lead or Google Maps scraper, split them by Google Workspace vs Microsoft 365 (`espMatch`) with [Email Provider Detector](https://apify.com/swillz/email-provider-detector), add contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and export with this Actor.
+- **Hiring-signal prospecting:** rank target accounts by open roles with [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain), add contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment), and track weekly in a sheet with this Actor.
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/google-sheets-import-export

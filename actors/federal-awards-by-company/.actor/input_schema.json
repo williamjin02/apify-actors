@@ -1,0 +1,167 @@
+{
+  "title": "Federal Contracts & Grants by Company input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "companies": {
+      "title": "Companies (names or UEIs)",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Company names (e.g. \"Booz Allen Hamilton\", \"Palantir\") or 12-character SAM.gov UEIs (e.g. \"JCBMLGPE6Z71\"). Names are matched strictly: every word must appear in the recipient name, so all subsidiaries that share the name are included. Leave empty to search by filters only.",
+      "prefill": [
+        "Booz Allen Hamilton",
+        "Palantir",
+        "JCBMLGPE6Z71"
+      ]
+    },
+    "awardTypes": {
+      "title": "Award types",
+      "type": "array",
+      "editor": "select",
+      "description": "Which awards to return: contracts (definitive contracts, purchase orders, delivery orders), idvs (GSA schedules, GWACs, IDIQs, BPAs), grants, loans. Default contracts.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "contracts",
+          "idvs",
+          "grants",
+          "loans"
+        ],
+        "enumTitles": [
+          "Contracts",
+          "IDVs (schedules, IDIQs, BPAs)",
+          "Grants",
+          "Loans"
+        ]
+      },
+      "default": [
+        "contracts"
+      ]
+    },
+    "lookbackDays": {
+      "title": "Look back (days)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Awards with activity in the last N days (default 365). Ignored when startDate is set.",
+      "default": 365,
+      "minimum": 1,
+      "maximum": 7000
+    },
+    "startDate": {
+      "title": "Start date",
+      "type": "string",
+      "editor": "datepicker",
+      "description": "Optional start of the period, YYYY-MM-DD (earliest 2007-10-01). Overrides lookbackDays."
+    },
+    "endDate": {
+      "title": "End date",
+      "type": "string",
+      "editor": "datepicker",
+      "description": "Optional end of the period, YYYY-MM-DD. Default today."
+    },
+    "maxAwardsPerCompany": {
+      "title": "Max awards per company",
+      "type": "integer",
+      "editor": "number",
+      "description": "Most award rows per company (or for a filters-only search), 1-5000, default 100. Each row is one charged record.",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 5000,
+      "prefill": 20
+    },
+    "sortBy": {
+      "title": "Sort awards by",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "amount",
+        "newest"
+      ],
+      "enumTitles": [
+        "Largest amount first",
+        "Newest first"
+      ],
+      "description": "Return the largest awards first (default) or the newest first.",
+      "default": "amount"
+    },
+    "includeSummary": {
+      "title": "Add a company summary row",
+      "type": "boolean",
+      "description": "Add one company_summary row per company: matched recipient names and UEIs, total obligated in the period, top awarding agencies and top NAICS codes. Counts as one record. Default true.",
+      "default": true
+    },
+    "strictNameMatch": {
+      "title": "Strict name matching",
+      "type": "boolean",
+      "description": "Keep only recipients whose name contains every word of your query (default true). USAspending's own name search is fuzzy and returns unrelated companies; turn this off only to see everything it returns.",
+      "default": true
+    },
+    "keywords": {
+      "title": "Keywords",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional: only awards whose description or fields match these words, e.g. \"cybersecurity\", \"cloud migration\" (3+ characters each).",
+      "sectionCaption": "Filters (optional)"
+    },
+    "agencies": {
+      "title": "Awarding agencies",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional top-tier awarding agency names exactly as USAspending writes them, e.g. \"Department of Defense\", \"Department of Veterans Affairs\", \"General Services Administration\"."
+    },
+    "naicsCodes": {
+      "title": "NAICS codes",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional NAICS codes or prefixes (2-6 digits), e.g. \"541512\" or \"5415\"."
+    },
+    "pscCodes": {
+      "title": "PSC codes",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional Product and Service Codes, e.g. \"DA01\" or \"R425\" (contracts and IDVs only)."
+    },
+    "states": {
+      "title": "Place of performance states",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional 2-letter US state codes for where the work is done, e.g. \"VA\", \"CA\"."
+    },
+    "minAmount": {
+      "title": "Minimum award amount (USD)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Optional: skip awards smaller than this amount.",
+      "minimum": 0
+    },
+    "maxCompanies": {
+      "title": "Max companies per run",
+      "type": "integer",
+      "editor": "number",
+      "description": "Safety cap on companies processed in one run (default 200).",
+      "default": 200,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Dataset ID",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional: read company names from another Actor's dataset (e.g. a lead list). The name field is auto-detected (companyName, company, organization, legalName, name, uei) or set companyField.",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "companyField": {
+      "title": "Company field",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field in that dataset holding the company name or UEI. Dot paths work (e.g. company.name)."
+    },
+    "datasetMaxItems": {
+      "title": "Max companies from dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Most companies read from the dataset (default 100).",
+      "default": 100,
+      "minimum": 1
+    }
+  }
+}

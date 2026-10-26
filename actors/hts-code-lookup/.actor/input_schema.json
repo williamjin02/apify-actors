@@ -1,0 +1,81 @@
+{
+  "title": "HTS Code Lookup input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "queries": {
+      "title": "HTS codes or product descriptions",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Required unless datasetId is set. Mix HTS/HS codes (2-10 digits, dots optional, e.g. \"8507.60.00\", \"610910\") and product descriptions (e.g. \"cotton t-shirts\"). A code returns that line plus its sub-lines; a description returns the best-matching lines, ranked.",
+      "prefill": [
+        "8507.60.00",
+        "cotton t-shirts",
+        "roasted coffee",
+        "6403.99"
+      ]
+    },
+    "maxResultsPerQuery": {
+      "title": "Max lines per query",
+      "type": "integer",
+      "editor": "number",
+      "description": "Most HTS lines returned per query (1-200, default 10). For a code, the line itself comes first, then its sub-lines.",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 200
+    },
+    "includeChildren": {
+      "title": "Include sub-lines of a code",
+      "type": "boolean",
+      "description": "For code queries, also return the lines under the code (e.g. all 10-digit lines under 8507.60). Default true.",
+      "default": true
+    },
+    "statisticalOnly": {
+      "title": "Description search: leaf lines only",
+      "type": "boolean",
+      "description": "For description queries, return only lines with no sub-lines (usually the 10-digit codes used on an entry). Default false.",
+      "default": false
+    },
+    "includeChapter99": {
+      "title": "Search Chapter 98/99 too",
+      "type": "boolean",
+      "description": "Include special provisions (Chapter 98) and temporary or additional duties (Chapter 99) in description search. Default false. Code queries such as 9903.88.15 always work.",
+      "default": false
+    },
+    "resolveAdditionalDuties": {
+      "title": "Resolve Chapter 99 references",
+      "type": "boolean",
+      "description": "When a line points to Chapter 99 (e.g. \"See 9903.88.15\"), add that provision's description and rate. Default true.",
+      "default": true
+    },
+    "maxQueries": {
+      "title": "Max queries",
+      "type": "integer",
+      "editor": "number",
+      "description": "Process at most this many queries per run (default 1000).",
+      "default": 1000,
+      "minimum": 1
+    },
+    "datasetId": {
+      "title": "Or: dataset ID from another Actor",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional. Read codes or product names from another run's dataset (e.g. a product catalog scrape). In an integration the triggering run's dataset is used automatically.",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "queryField": {
+      "title": "Field in that dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field holding the code or product text (dot paths work). Leave empty to auto-detect: htsCode, hsCode, hts, tariffCode, productDescription, description, title, productName, name."
+    },
+    "datasetMaxItems": {
+      "title": "Max values from the dataset",
+      "type": "integer",
+      "editor": "number",
+      "description": "Read at most this many values from the dataset (default 500).",
+      "default": 500,
+      "minimum": 1
+    }
+  }
+}
