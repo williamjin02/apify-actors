@@ -1,0 +1,18 @@
+{
+  "name": "grants-gov-opportunity-search",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Search federal grant opportunities on Grants.gov (official API): deadlines, award ceiling/floor, eligibility, assistance listings and descriptions.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node test/local.test.js"
+  },
+  "dependencies": {
+    "apify": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

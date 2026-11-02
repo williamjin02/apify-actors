@@ -110,6 +110,7 @@ try {
         try {
             const res = await resolveAndFetch(t);
             if (!res) { row.status = 'not_found'; row.error = t.ats ? `No ${t.ats} job board named "${t.slug}"` : `No public job board named "${t.slug}" on ${ATS_LIST.join(', ')}`; log.warning(row.error); perCompanySummary.push(row); continue; }
+            if (res.region !== undefined) t.region = res.region;
             const resolvedKey = `${res.ats}|${t.region ?? ''}|${t.slug.toLowerCase()}`;
             if (resolvedBoards.has(resolvedKey)) { row.ats = res.ats; row.status = 'duplicate'; row.error = `Same board as "${resolvedBoards.get(resolvedKey)}"; skipped so jobs aren't saved (or charged) twice`; log.info(`${t.input}: ${row.error}`); perCompanySummary.push(row); continue; }
             resolvedBoards.set(resolvedKey, t.input);

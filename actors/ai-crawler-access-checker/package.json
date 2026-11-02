@@ -1,0 +1,11 @@
+{
+  "name": "ai-crawler-access-checker",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Check which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more) a website allows or blocks in robots.txt, plus llms.txt, Content-Signal and meta robots. No personal data.",
+  "main": "src/main.js",
+  "scripts": { "start": "node src/main.js", "test": "node test/local.test.js" },
+  "dependencies": { "apify": "^3.4.0" },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}

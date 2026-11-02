@@ -6,7 +6,7 @@
     "companies": {
       "title": "Companies",
       "type": "array",
-      "description": "Required. Array of strings: board names or URLs, e.g. [\"stripe\",\"https://jobs.lever.co/spotify\",\"https://jobs.ashbyhq.com/ramp\"]. Supports Greenhouse, Lever, Ashby, Workable, Recruitee. A bare name is tried on each platform. Tip: the board name is the last part of the careers URL (boards.greenhouse.io/stripe = stripe).",
+      "description": "Required. Array of strings: board names or URLs, e.g. [\"stripe\",\"https://jobs.lever.co/spotify\",\"https://jobs.ashbyhq.com/ramp\"]. Supports Greenhouse, Lever (incl. EU: jobs.eu.lever.co URLs or \"lever-eu:olx\"), Ashby, Workable, Recruitee. A bare name is tried on each platform. Tip: the board name is the last part of the careers URL (boards.greenhouse.io/stripe = stripe).",
       "editor": "stringList",
       "prefill": [
         "stripe",

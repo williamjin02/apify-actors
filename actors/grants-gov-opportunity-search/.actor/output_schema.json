@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Grants.gov Opportunity Search",
+  "description": "One row per funding opportunity; searches that return nothing come back as free status rows. A run summary is in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Opportunities",
+      "description": "Example: {\"type\":\"opportunity\",\"status\":\"found\",\"opportunityNumber\":\"DE-FOA-0003631\",\"title\":\"Unlocking New Levels of Output... SBIR/STTR\",\"agencyCode\":\"DOE-ARPAE\",\"closeDate\":\"2026-11-20\",\"awardCeiling\":4630944,\"grantsGovUrl\":\"https://www.grants.gov/search-results-detail/364135\"}. Miss: {\"type\":\"status\",\"status\":\"no_results\",\"error\":\"...\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: searches, opportunitiesReturned, byStatus, perSearch, statuses, sortBy, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

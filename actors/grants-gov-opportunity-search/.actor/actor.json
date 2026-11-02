@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "grants-gov-opportunity-search",
+  "title": "Grants.gov Opportunity Search: Federal Grants API",
+  "description": "Search open and forecasted US federal grants on Grants.gov (official API) by keyword, agency, eligibility (e.g. small businesses, nonprofits), category or ALN. Get deadlines, award ceiling/floor, total funding, eligibility and descriptions. Misses are free status rows.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 256
+}

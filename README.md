@@ -24,6 +24,8 @@ These Actors are published, or on the way to the Store, under the Apify account 
 | [sanctions-screener](actors/sanctions-screener) | Screen people and companies against the official OFAC SDN and Consolidated, UN, EU and UK sanctions lists with fuzzy name matching, aliases and country hints. Lists refreshed every 6 hours. | [https://apify.com/swillz/sanctions-screener](https://apify.com/swillz/sanctions-screener) |
 | [hts-code-lookup](actors/hts-code-lookup) | Look up US HTS codes and import duty rates in the official USITC Harmonized Tariff Schedule by code or product description, with general, special and column 2 rates, units and Chapter 99 references. | [https://apify.com/swillz/hts-code-lookup](https://apify.com/swillz/hts-code-lookup) |
 | [federal-awards-by-company](actors/federal-awards-by-company) | Get the federal contracts, grants and loans a US company won from official USAspending.gov data, by company name or UEI, with a per-company summary of total obligated, top agencies and NAICS. | [https://apify.com/swillz/federal-awards-by-company](https://apify.com/swillz/federal-awards-by-company) |
+| [grants-gov-opportunity-search](actors/grants-gov-opportunity-search) | Search open and forecasted US federal grant opportunities from the official Grants.gov API by keyword, agency, eligibility, category or opportunity number, with deadlines, award ceilings, funding and eligibility details. | Coming soon |
+| [ai-crawler-access-checker](actors/ai-crawler-access-checker) | Bulk check which AI crawlers (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended and 18 more) websites allow or block in robots.txt, with a training-vs-AI-search verdict, llms.txt, Content-Signal and meta robots. | Coming soon |
 
 ## Run an Actor
 
