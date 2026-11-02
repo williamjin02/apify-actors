@@ -1,0 +1,477 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "title": "Row type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "opportunity (one funding opportunity, charged) or status (a free row explaining a miss).",
+        "examples": [
+          "opportunity"
+        ]
+      },
+      "query": {
+        "title": "Query",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The keyword, opportunity number or \"(filters only)\" that produced this row.",
+        "examples": [
+          "artificial intelligence"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "found (charged), no_results, not_found, invalid_input, service_unavailable, skipped_charge_limit. Only found rows are charged.",
+        "examples": [
+          "found"
+        ]
+      },
+      "rank": {
+        "title": "Rank",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Position within this search's results (after filters).",
+        "examples": [
+          3
+        ]
+      },
+      "opportunityId": {
+        "title": "Opportunity ID",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Grants.gov internal ID (used in grantsGovUrl).",
+        "examples": [
+          "364135"
+        ]
+      },
+      "opportunityNumber": {
+        "title": "Opportunity number",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Funding opportunity number set by the agency.",
+        "examples": [
+          "DE-FOA-0003631"
+        ]
+      },
+      "title": {
+        "title": "Title",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Opportunity title.",
+        "examples": [
+          "Unlocking New Levels of Output and Capacity for Key Subsurface Resources SBIR/STTR (UNLOCK SBIR/STTR)"
+        ]
+      },
+      "agencyCode": {
+        "title": "Agency code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Grants.gov agency code (sub-agency).",
+        "examples": [
+          "DOE-ARPAE"
+        ]
+      },
+      "agencyName": {
+        "title": "Agency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Agency name.",
+        "examples": [
+          "Advanced Research Projects Agency Energy"
+        ]
+      },
+      "topAgencyCode": {
+        "title": "Parent agency code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Department-level code, e.g. HHS for HHS-NIH11.",
+        "examples": [
+          "DOE"
+        ]
+      },
+      "topAgencyName": {
+        "title": "Parent agency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Department-level name (when details are included).",
+        "examples": [
+          "Department of Energy"
+        ]
+      },
+      "opportunityStatus": {
+        "title": "Opportunity status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "posted, forecasted, closed or archived.",
+        "examples": [
+          "posted"
+        ]
+      },
+      "docType": {
+        "title": "Document type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "synopsis (posted call) or forecast.",
+        "examples": [
+          "synopsis"
+        ]
+      },
+      "postedDate": {
+        "title": "Posted date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD the opportunity was posted.",
+        "examples": [
+          "2026-10-21"
+        ]
+      },
+      "closeDate": {
+        "title": "Application deadline",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD application due date; null when the call has no fixed deadline (rolling) or is a forecast.",
+        "examples": [
+          "2026-11-20"
+        ]
+      },
+      "daysUntilClose": {
+        "title": "Days until deadline",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Days from today (UTC) to closeDate; 0 = closes today, negative = past.",
+        "examples": [
+          18
+        ]
+      },
+      "closeDateNote": {
+        "title": "Deadline note",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Agency explanation of the deadline (e.g. multiple due dates), when given."
+      },
+      "archiveDate": {
+        "title": "Archive date",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD when Grants.gov archives the listing.",
+        "examples": [
+          "2027-05-20"
+        ]
+      },
+      "assistanceListings": {
+        "title": "Assistance listings",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "[{number, title}] Assistance Listing (ALN/CFDA) programs.",
+        "examples": [
+          [
+            {
+              "number": "81.135",
+              "title": "Advanced Research Projects Agency - Energy"
+            }
+          ]
+        ]
+      },
+      "fundingInstruments": {
+        "title": "Funding instruments",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "e.g. [\"Grant\",\"Cooperative Agreement\"]. Null without details.",
+        "examples": [
+          [
+            "Cooperative Agreement",
+            "Grant"
+          ]
+        ]
+      },
+      "fundingCategories": {
+        "title": "Funding categories",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Funding activity categories. Null without details.",
+        "examples": [
+          [
+            "Science and Technology and other Research and Development"
+          ]
+        ]
+      },
+      "eligibleApplicants": {
+        "title": "Eligible applicants",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Eligible applicant types as listed by Grants.gov. Null without details.",
+        "examples": [
+          [
+            "Small businesses"
+          ]
+        ]
+      },
+      "eligibilityText": {
+        "title": "Eligibility details",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Agency's additional eligibility text (plain text, up to 1500 chars)."
+      },
+      "awardFloor": {
+        "title": "Award floor (USD)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Minimum award per recipient; null if not published.",
+        "examples": [
+          323090
+        ]
+      },
+      "awardCeiling": {
+        "title": "Award ceiling (USD)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Maximum award per recipient; null if not published.",
+        "examples": [
+          4630944
+        ]
+      },
+      "estimatedTotalFunding": {
+        "title": "Total program funding (USD)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Estimated total funding for the opportunity; null if not published.",
+        "examples": [
+          45000000
+        ]
+      },
+      "expectedAwards": {
+        "title": "Expected number of awards",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Expected number of awards; null if not published.",
+        "examples": [
+          12
+        ]
+      },
+      "costSharingRequired": {
+        "title": "Cost sharing required",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Whether cost sharing or matching is required.",
+        "examples": [
+          false
+        ]
+      },
+      "opportunityCategory": {
+        "title": "Opportunity category",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Discretionary, Mandatory, Continuation, Earmark or Other.",
+        "examples": [
+          "Discretionary"
+        ]
+      },
+      "fiscalYear": {
+        "title": "Fiscal year (forecasts)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Fiscal year for forecasted opportunities.",
+        "examples": [
+          2027
+        ]
+      },
+      "estimatedPostDate": {
+        "title": "Estimated post date (forecasts)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD the agency expects to post the call.",
+        "examples": [
+          "2026-07-01"
+        ]
+      },
+      "estimatedCloseDate": {
+        "title": "Estimated deadline (forecasts)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD expected application deadline.",
+        "examples": [
+          "2026-09-29"
+        ]
+      },
+      "estimatedAwardDate": {
+        "title": "Estimated award date (forecasts)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD expected award date.",
+        "examples": [
+          "2027-07-01"
+        ]
+      },
+      "descriptionText": {
+        "title": "Description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Plain-text synopsis, truncated to maxDescriptionChars.",
+        "examples": [
+          "NOFO Number: DE-FOA-0003631 - Unlocking New Levels of Output and Capacity for Key Subsurface Resources..."
+        ]
+      },
+      "additionalInfoUrl": {
+        "title": "More info URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Agency link with the full announcement (NOFO).",
+        "examples": [
+          "https://exchange.energy.gov/"
+        ]
+      },
+      "lastUpdated": {
+        "title": "Last updated",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "YYYY-MM-DD of the latest revision.",
+        "examples": [
+          "2026-10-21"
+        ]
+      },
+      "grantsGovUrl": {
+        "title": "Grants.gov URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Opportunity page on Grants.gov.",
+        "examples": [
+          "https://www.grants.gov/search-results-detail/364135"
+        ]
+      },
+      "detailsIncluded": {
+        "title": "Details included",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "false when includeDetails is off or the detail record could not be loaded (amounts/eligibility are then null).",
+        "examples": [
+          true
+        ]
+      },
+      "error": {
+        "title": "Reason (status rows)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a search returned nothing and what to try next."
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp of the lookup.",
+        "examples": [
+          "2026-11-02T17:21:42.047Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Opportunities",
+      "transformation": {
+        "fields": [
+          "type",
+          "query",
+          "status",
+          "opportunityNumber",
+          "title",
+          "agencyName",
+          "opportunityStatus",
+          "closeDate",
+          "daysUntilClose",
+          "awardCeiling",
+          "estimatedTotalFunding",
+          "eligibleApplicants",
+          "grantsGovUrl",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

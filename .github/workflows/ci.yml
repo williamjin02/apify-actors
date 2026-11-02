@@ -29,6 +29,8 @@ jobs:
           - sanctions-snapshot-refresher
           - hts-code-lookup
           - federal-awards-by-company
+          - grants-gov-opportunity-search
+          - ai-crawler-access-checker
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

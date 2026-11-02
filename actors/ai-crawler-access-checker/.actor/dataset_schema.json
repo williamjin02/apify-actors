@@ -1,0 +1,359 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "title": "Domain",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Host that was checked.",
+        "examples": [
+          "nytimes.com"
+        ]
+      },
+      "input": {
+        "title": "Input",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Your original input value.",
+        "examples": [
+          "nytimes.com"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "checked (charged), unreachable, robots_inaccessible, invalid_input or skipped_charge_limit (all free).",
+        "examples": [
+          "checked"
+        ]
+      },
+      "robotsTxtUrl": {
+        "title": "robots.txt URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Final robots.txt URL after redirects.",
+        "examples": [
+          "https://www.nytimes.com/robots.txt"
+        ]
+      },
+      "robotsTxtStatus": {
+        "title": "robots.txt HTTP status",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "HTTP status of robots.txt (404 = no file, every crawler allowed).",
+        "examples": [
+          200
+        ]
+      },
+      "robotsTxtFound": {
+        "title": "robots.txt found",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Whether a real robots.txt file was found (not a 404 or an HTML page).",
+        "examples": [
+          true
+        ]
+      },
+      "robotsTxtNote": {
+        "title": "robots.txt note",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Explanation when there is no usable robots.txt or it was truncated."
+      },
+      "checkedPath": {
+        "title": "Checked path",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Path the rules were evaluated for.",
+        "examples": [
+          "/"
+        ]
+      },
+      "aiAccessVerdict": {
+        "title": "AI access verdict",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "allows_all_ai, blocks_ai_training_only (training bots blocked, AI search and assistant bots allowed), blocks_some_ai_search, or blocks_all_ai. Googlebot/Bingbot and custom tokens are not counted.",
+        "examples": [
+          "blocks_some_ai_search"
+        ]
+      },
+      "botsChecked": {
+        "title": "Bots checked",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Number of crawlers evaluated.",
+        "examples": [
+          24
+        ]
+      },
+      "blockedBots": {
+        "title": "Blocked bots",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Crawlers disallowed from the checked path.",
+        "examples": [
+          [
+            "GPTBot",
+            "ClaudeBot",
+            "PerplexityBot"
+          ]
+        ]
+      },
+      "partiallyBlockedBots": {
+        "title": "Partially blocked bots",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Crawlers with their own robots.txt group that allows / but disallows some paths.",
+        "examples": [
+          []
+        ]
+      },
+      "allowedBots": {
+        "title": "Allowed bots",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Crawlers allowed on the checked path.",
+        "examples": [
+          [
+            "Googlebot",
+            "Bingbot",
+            "Amazonbot"
+          ]
+        ]
+      },
+      "trainingBotsBlocked": {
+        "title": "Training bots blocked",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "How many model-training crawlers (GPTBot, ClaudeBot, Google-Extended, CCBot...) are blocked.",
+        "examples": [
+          9
+        ]
+      },
+      "answerBotsBlocked": {
+        "title": "AI search/assistant bots blocked",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "How many AI search and user-triggered bots (OAI-SearchBot, ChatGPT-User, PerplexityBot, Claude-User...) are blocked.",
+        "examples": [
+          7
+        ]
+      },
+      "aiSearchAllowed": {
+        "title": "AI search allowed",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true when no AI search or assistant bot is blocked, so the site can be cited in ChatGPT, Claude, Perplexity and similar answers.",
+        "examples": [
+          false
+        ]
+      },
+      "googlebotAllowed": {
+        "title": "Googlebot allowed",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Googlebot access (Google Search and AI Overviews).",
+        "examples": [
+          true
+        ]
+      },
+      "bingbotAllowed": {
+        "title": "Bingbot allowed",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "Bingbot access (Bing and Copilot answers).",
+        "examples": [
+          true
+        ]
+      },
+      "contentSignal": {
+        "title": "Content signals",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Content-Signal from robots.txt for all crawlers (Cloudflare format), e.g. {\"search\":true,\"ai-input\":true,\"ai-train\":false}. null if absent.",
+        "examples": [
+          {
+            "search": true,
+            "ai-input": true,
+            "ai-train": true
+          }
+        ]
+      },
+      "crawlDelaySecs": {
+        "title": "Crawl delay",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Crawl-delay for generic crawlers, if set."
+      },
+      "sitemaps": {
+        "title": "Sitemaps",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Sitemap URLs listed in robots.txt.",
+        "examples": [
+          [
+            "https://www.nytimes.com/sitemaps/new/news.xml.gz"
+          ]
+        ]
+      },
+      "bots": {
+        "title": "Per-bot details",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "[{bot, operator, purpose (training/search/user/search_engine/custom), access (allowed/partial/blocked), allowed, matchedUserAgent, matchedRule}].",
+        "examples": [
+          [
+            {
+              "bot": "GPTBot",
+              "operator": "OpenAI",
+              "purpose": "training",
+              "access": "blocked",
+              "allowed": false,
+              "matchedUserAgent": "GPTBot",
+              "matchedRule": "Disallow: /"
+            }
+          ]
+        ]
+      },
+      "llmsTxt": {
+        "title": "llms.txt",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "{found, url, httpStatus, sizeBytes, title, summary, sections, linkCount, followsSpec, note}. found null = not fetched (disallowed or error).",
+        "examples": [
+          {
+            "found": true,
+            "url": "https://apify.com/llms.txt",
+            "httpStatus": 200,
+            "sizeBytes": 16830,
+            "title": "Apify"
+          }
+        ]
+      },
+      "llmsFullTxt": {
+        "title": "llms-full.txt",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "{found, url, httpStatus, sizeBytes, note}.",
+        "examples": [
+          {
+            "found": false,
+            "url": "https://apify.com/llms-full.txt",
+            "httpStatus": 404
+          }
+        ]
+      },
+      "homepage": {
+        "title": "Page meta robots",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "{fetched, url, httpStatus, metaRobots, xRobotsTag, noindex, noai, noimageai, note}. A 403 here hints that a firewall blocks bots.",
+        "examples": [
+          {
+            "fetched": true,
+            "url": "https://apify.com/",
+            "httpStatus": 200,
+            "noindex": false,
+            "noai": false
+          }
+        ]
+      },
+      "error": {
+        "title": "Reason (free rows)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a site could not be checked."
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "ISO timestamp.",
+        "examples": [
+          "2026-11-02T18:00:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "AI crawler access",
+      "transformation": {
+        "fields": [
+          "domain",
+          "status",
+          "aiAccessVerdict",
+          "aiSearchAllowed",
+          "trainingBotsBlocked",
+          "answerBotsBlocked",
+          "blockedBots",
+          "googlebotAllowed",
+          "contentSignal",
+          "llmsTxt.found",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of AI Crawler Access Checker",
+  "description": "One row per site; sites that could not be checked come back as free status rows. A run summary is in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "AI crawler access by site",
+      "description": "Example: {\"domain\":\"nytimes.com\",\"status\":\"checked\",\"aiAccessVerdict\":\"blocks_some_ai_search\",\"aiSearchAllowed\":false,\"blockedBots\":[\"GPTBot\",\"ClaudeBot\",...],\"googlebotAllowed\":true,\"llmsTxt\":{\"found\":false}}. Miss: {\"status\":\"unreachable\",\"error\":\"...\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: domainsChecked, byStatus, byVerdict, mostBlockedBots, llmsTxtFound, botsChecked, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

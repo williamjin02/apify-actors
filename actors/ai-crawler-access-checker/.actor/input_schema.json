@@ -1,0 +1,148 @@
+{
+  "title": "AI Crawler Access Checker input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "domains": {
+      "title": "Domains or website URLs",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Sites to check, e.g. [\"nytimes.com\",\"https://www.stripe.com\"]. A bare domain is checked at https:// and follows redirects (e.g. to www). Each host is checked once.",
+      "prefill": [
+        "nytimes.com",
+        "stripe.com",
+        "apify.com"
+      ]
+    },
+    "bots": {
+      "title": "AI crawlers to check",
+      "type": "array",
+      "editor": "select",
+      "description": "Leave empty to check all 23 known crawlers: OpenAI, Anthropic, Perplexity, Google, Microsoft, Apple, Meta, Amazon, DuckDuckGo, Mistral, Common Crawl, ByteDance, Cohere and Diffbot.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-SearchBot",
+          "Claude-User",
+          "anthropic-ai",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Google-Extended",
+          "Googlebot",
+          "Bingbot",
+          "Applebot",
+          "Applebot-Extended",
+          "Meta-ExternalAgent",
+          "Meta-ExternalFetcher",
+          "Amazonbot",
+          "DuckAssistBot",
+          "MistralAI-User",
+          "CCBot",
+          "Bytespider",
+          "cohere-ai",
+          "Diffbot"
+        ],
+        "enumTitles": [
+          "GPTBot (OpenAI, training)",
+          "OAI-SearchBot (OpenAI, search)",
+          "ChatGPT-User (OpenAI, user)",
+          "ClaudeBot (Anthropic, training)",
+          "Claude-SearchBot (Anthropic, search)",
+          "Claude-User (Anthropic, user)",
+          "anthropic-ai (Anthropic, training)",
+          "PerplexityBot (Perplexity, search)",
+          "Perplexity-User (Perplexity, user)",
+          "Google-Extended (Google, training)",
+          "Googlebot (Google, search engine)",
+          "Bingbot (Microsoft, search engine)",
+          "Applebot (Apple, search)",
+          "Applebot-Extended (Apple, training)",
+          "Meta-ExternalAgent (Meta, training)",
+          "Meta-ExternalFetcher (Meta, user)",
+          "Amazonbot (Amazon, search)",
+          "DuckAssistBot (DuckDuckGo, search)",
+          "MistralAI-User (Mistral, user)",
+          "CCBot (Common Crawl, training)",
+          "Bytespider (ByteDance, training)",
+          "cohere-ai (Cohere, training)",
+          "Diffbot (Diffbot, training)"
+        ]
+      }
+    },
+    "customUserAgents": {
+      "title": "Extra user-agent tokens",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Any other crawler tokens to check against robots.txt, e.g. [\"YouBot\",\"Timpibot\"]. Up to 20."
+    },
+    "testPath": {
+      "title": "Path to test",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Path the bot rules are evaluated for (and the page whose meta robots is read). Default \"/\" (the whole site). Use e.g. \"/blog/\" to check a section.",
+      "default": "/"
+    },
+    "checkLlmsTxt": {
+      "title": "Check llms.txt and llms-full.txt",
+      "type": "boolean",
+      "description": "Look for /llms.txt (title, summary, sections, link count) and /llms-full.txt.",
+      "default": true
+    },
+    "checkHomepage": {
+      "title": "Check page meta robots",
+      "type": "boolean",
+      "description": "Fetch the tested page (only if robots.txt allows generic crawlers) and report meta robots, X-Robots-Tag, noindex, noai and noimageai.",
+      "default": true
+    },
+    "includeBotDetails": {
+      "title": "Include per-bot details",
+      "type": "boolean",
+      "description": "Add the bots array (operator, purpose, access, matched user-agent and rule for each crawler). Turn off for compact rows; the blocked/allowed lists stay.",
+      "default": true
+    },
+    "datasetId": {
+      "title": "Read domains from a dataset",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional dataset ID from another Actor run (e.g. a lead list or Google Maps scrape). Domains are read from domainField."
+    },
+    "domainField": {
+      "title": "Dataset field with the domain",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Field to read from datasetId, e.g. \"website\". Auto-detected from domain, website, url and similar if empty."
+    },
+    "maxDomains": {
+      "title": "Max domains",
+      "type": "integer",
+      "editor": "number",
+      "description": "Stop after this many unique domains (1-100000). Default 1000.",
+      "default": 1000,
+      "minimum": 1,
+      "maximum": 100000
+    },
+    "concurrency": {
+      "title": "Concurrency",
+      "type": "integer",
+      "editor": "number",
+      "description": "Sites checked in parallel (1-30). Default 10.",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 30
+    },
+    "timeoutSecs": {
+      "title": "Timeout per request (seconds)",
+      "type": "integer",
+      "editor": "number",
+      "description": "Per HTTP request (3-60). Default 15.",
+      "default": 15,
+      "minimum": 3,
+      "maximum": 60
+    }
+  },
+  "required": []
+}

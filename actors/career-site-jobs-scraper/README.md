@@ -167,7 +167,7 @@ Every run saves the exact next step in its `OUTPUT` record (`nextSteps`). To mak
 This actor only reads job postings that companies publish publicly through their ATS's public job-board API, which exists so job boards and websites can display them. It doesn't log in and doesn't collect personal data (recruiter names and emails are deliberately left out). Respect each site's terms and applicable laws for your use case.
 
 **Which ATS platforms are supported?**
-Greenhouse, Lever (including EU), Ashby, Workable and Recruitee. For Workday (`myworkdayjobs.com`) sites use our [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper). SmartRecruiters and others are on the roadmap; tell us on the **Issues** tab which one you need.
+Greenhouse, Lever (global and EU: `jobs.eu.lever.co` URLs, `lever-eu:olx`, or a bare name, which falls back to the EU instance automatically), Ashby, Workable and Recruitee. For Workday (`myworkdayjobs.com`) sites use our [Workday Jobs Scraper](https://apify.com/swillz/workday-jobs-scraper). SmartRecruiters and others are on the roadmap; tell us on the **Issues** tab which one you need.
 
 **Why does a company return no jobs?**
 Either it uses a different ATS, the board name is different from the company name (e.g. `openai` vs `open-ai`), or it currently has no open roles. The run summary shows which boards were found. You're never charged for jobs that weren't returned.
@@ -194,6 +194,11 @@ More tools from the same developer, built to work together:
 - [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
 - [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain): from a list of company domains, find which ATS each uses and how many open roles, by department and location.
 - [EU VAT Number Validator (VIES)](https://apify.com/swillz/eu-vat-validator): bulk check EU VAT numbers against official VIES, with company name and address.
+- [EORI Number Validator](https://apify.com/swillz/eori-validator): bulk check EU and UK EORI numbers for customs, with trader name where published.
+- [LEI Lookup (GLEIF)](https://apify.com/swillz/lei-lookup): find a company's Legal Entity Identifier, legal name, address, status and parent from official GLEIF data.
+- [Sanctions Screener](https://apify.com/swillz/sanctions-screener): screen company and person names against official OFAC, UN, EU and UK sanctions lists with fuzzy matching.
+- [HTS Code Lookup (USITC)](https://apify.com/swillz/hts-code-lookup): US HTS codes and import duty rates from the official tariff schedule, by code or product description.
+- [Federal Contracts & Grants by Company](https://apify.com/swillz/federal-awards-by-company): federal contracts, grants and loans any US company won, from official USAspending.gov data.
 
 **Popular workflows**
 

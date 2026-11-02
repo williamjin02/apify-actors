@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "ai-crawler-access-checker",
+  "title": "AI Crawler Checker: robots.txt GPTBot, ClaudeBot & llms.txt",
+  "description": "Bulk check which AI crawlers a website allows or blocks in robots.txt: GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended and 18 more. Adds llms.txt, Content-Signal, meta robots and a verdict (training vs AI search). Misses are free.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 256
+}

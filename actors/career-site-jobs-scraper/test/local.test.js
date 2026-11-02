@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { parseCompany, pickBoard, resolveBoard, endpoint, extractRaw, mapJob, extractSalary, htmlToText, matches, parseDateInput } from '../src/ats.js';
+import { parseCompany, pickBoard, resolveBoard, endpoint, extractRaw, mapJob, extractSalary, htmlToText, matches, parseDateInput, boardUrl } from '../src/ats.js';
 let n = 0; const t = (name, fn) => { fn(); n++; };
 t('urls', () => {
     assert.deepEqual(parseCompany('https://boards.greenhouse.io/stripe'), { ats: 'greenhouse', slug: 'stripe', region: null });
@@ -74,6 +74,20 @@ ta('one failing ATS does not hide a real board; all failing throws', async () =>
     assert.equal((await resolveBoard(parseCompany('ramp'), flaky)).ats, 'ashby');
     await assert.rejects(() => resolveBoard(parseCompany('ramp'), async () => { throw new Error('down'); }), /down/);
     assert.equal(await resolveBoard(parseCompany('nonexistentxyz'), async () => ({ notFound: true })), null);
+});
+ta('EU Lever: bare name and "lever:slug" fall back to api.eu.lever.co; "lever-eu:slug" pins EU', async () => {
+    assert.deepEqual(parseCompany('lever-eu:mobileye'), { ats: 'lever', slug: 'mobileye', region: 'eu' });
+    assert.deepEqual(parseCompany('https://api.eu.lever.co/v0/postings/xm?mode=json'), { ats: 'lever', slug: 'xm', region: 'eu' });
+    const calls = [];
+    const euOnly = async (url) => { calls.push(url); return url.startsWith('https://api.eu.lever.co/v0/postings/mobileye') ? { body: [{ id: 'a1', text: 'Engineer', categories: { location: 'Jerusalem, Israel' }, hostedUrl: 'https://jobs.eu.lever.co/mobileye/a1', createdAt: 1760000000000 }] } : { notFound: true }; };
+    const pinned = await resolveBoard(parseCompany('lever:mobileye'), euOnly);
+    assert.equal(pinned.ats, 'lever'); assert.equal(pinned.region, 'eu'); assert.equal(pinned.jobs.length, 1);
+    assert.deepEqual(calls, ['https://api.lever.co/v0/postings/mobileye?mode=json', 'https://api.eu.lever.co/v0/postings/mobileye?mode=json']);
+    const bare = await resolveBoard(parseCompany('mobileye'), euOnly);
+    assert.equal(bare.ats, 'lever'); assert.equal(bare.region, 'eu');
+    assert.equal(boardUrl('lever', 'mobileye', bare.region), 'https://jobs.eu.lever.co/mobileye');
+    const glob = await resolveBoard(parseCompany('lever:spotify'), async (url) => (url.startsWith('https://api.lever.co') ? { body: [] } : { notFound: true }));
+    assert.equal(glob.region, null);
 });
 // Optional live check against the real APIs: LIVE=1 npm test
 if (process.env.LIVE) ta('LIVE: bare "ramp" resolves to ashby', async () => {

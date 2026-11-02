@@ -9,6 +9,8 @@ const SLUG_RE = /^[a-z0-9][a-z0-9._-]{0,99}$/i;
 export function parseCompany(raw) {
     const s = String(raw ?? '').trim();
     if (!s) throw new Error('Empty company entry');
+    const eu = s.match(/^lever[-_ ]?eu\s*[:/]\s*([^/?#\s]+)$/i);
+    if (eu) return { ats: 'lever', slug: eu[1], region: 'eu' };
     const pref = s.match(/^(greenhouse|lever|ashby|workable|recruitee)\s*[:/]\s*([^/?#\s]+)$/i);
     if (pref) return { ats: pref[1].toLowerCase(), slug: pref[2], region: null };
     if (/^https?:\/\//i.test(s) || /^[a-z0-9.-]+\.(io|co|com)\//i.test(s) || /\.recruitee\.com/i.test(s)) {
@@ -144,17 +146,28 @@ export function pickBoard(candidates) {
  * fetchJson(url) must return { notFound: true } or { body }; it may throw.
  * Returns { ats, companyName, jobs, alsoFoundOn: [{ ats, jobs }] } or null.
  */
+// Lever runs two instances (global api.lever.co and EU api.eu.lever.co) with separate site names.
+// When the region is unknown (bare name or "lever:slug"), try global first, then EU.
+async function fetchBoard(ats, slug, region, fetchJson) {
+    const r = await fetchJson(endpoint(ats, slug, region));
+    if (r.notFound && ats === 'lever' && !region) {
+        const eu = await fetchJson(endpoint(ats, slug, 'eu'));
+        return { r: eu, region: eu.notFound ? null : 'eu' };
+    }
+    return { r, region: region ?? null };
+}
+
 export async function resolveBoard(t, fetchJson, atsList = ATS_LIST) {
     if (t.ats) {
-        const r = await fetchJson(endpoint(t.ats, t.slug, t.region));
+        const { r, region } = await fetchBoard(t.ats, t.slug, t.region, fetchJson);
         if (r.notFound) return null;
-        return { ats: t.ats, ...extractRaw(t.ats, r.body), alsoFoundOn: [] };
+        return { ats: t.ats, region, ...extractRaw(t.ats, r.body), alsoFoundOn: [] };
     }
     const errors = [];
     const candidates = await Promise.all(atsList.map(async (ats) => {
         try {
-            const r = await fetchJson(endpoint(ats, t.slug, t.region));
-            return r.notFound ? null : { ats, ...extractRaw(ats, r.body) };
+            const { r, region } = await fetchBoard(ats, t.slug, t.region, fetchJson);
+            return r.notFound ? null : { ats, region, ...extractRaw(ats, r.body) };
         } catch (e) { errors.push(e); return null; }
     }));
     const pick = pickBoard(candidates);
