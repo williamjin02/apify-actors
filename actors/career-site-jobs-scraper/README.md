@@ -1,6 +1,6 @@
 **Career Site Jobs Scraper** extracts **open job postings directly from company career sites** hosted on **Greenhouse, Lever, Ashby, Workable and Recruitee**, and exports them to **CSV, JSON or Excel**. For every job you get the title, department, team, location, remote/hybrid flag, **salary range** (when published), posted date, full description and the apply link.
 
-Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $2 or less**. No login, no browser, no proxy.
+Just paste company names or job-board URLs. The actor reads each ATS's **official public job-board API** (the same feed that powers the company's own careers page), so it's fast, accurate and doesn't break when page layouts change: **1,000 jobs take a few seconds and cost $1.50 or less**. No login, no browser, no proxy.
 
 **When to use:** you need the open jobs of specific companies that hire through Greenhouse, Lever, Ashby, Workable or Recruitee.
 **Input:** board names or URLs, e.g. `{"companies":["stripe","https://jobs.lever.co/spotify"]}`.
@@ -43,13 +43,13 @@ Just paste company names or job-board URLs. The actor reads each ATS's **officia
 
 ## How much does it cost?
 
-This actor uses **pay-per-result pricing**: **$1.30-2.00 per 1,000 jobs** saved (by Apify plan), plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
+This actor uses **pay-per-result pricing**: **$1.30-1.50 per 1,000 jobs** saved (by Apify plan), plus a tiny $0.00005 per run start. Jobs that you filter out are free. There are no monthly fees and no compute or proxy charges on top.
 
 | Apify plan | Per 1,000 jobs | 10,000 jobs |
 |---|---|---|
-| Free | $2 | $20 |
-| Starter | $2 | $20 |
-| Scale | $1.60 | $16 |
+| Free | $1.50 | $15 |
+| Starter | $1.45 | $14.50 |
+| Scale | $1.30 | $13 |
 | Business and up | $1.30 | $13 |
 
 Prices drop on bigger Apify plans (Starter = Bronze tier, Scale = Silver, Business and up = Gold).
@@ -159,7 +159,7 @@ Every run saves the exact next step in its `OUTPUT` record (`nextSteps`). To mak
 | Login / cookies needed | ❌ none | Often | ❌ |
 | Breaks on layout changes | ❌ official APIs | Often | – |
 | Multi-ATS auto-detection | ✅ | – | ❌ |
-| Price | $1.30-2 per 1,000 jobs by plan | Varies | Your time |
+| Price | $1.30-1.50 per 1,000 jobs by plan | Varies | Your time |
 
 ## FAQ
 
@@ -199,6 +199,8 @@ More tools from the same developer, built to work together:
 - [Sanctions Screener](https://apify.com/swillz/sanctions-screener): screen company and person names against official OFAC, UN, EU and UK sanctions lists with fuzzy matching.
 - [HTS Code Lookup (USITC)](https://apify.com/swillz/hts-code-lookup): US HTS codes and import duty rates from the official tariff schedule, by code or product description.
 - [Federal Contracts & Grants by Company](https://apify.com/swillz/federal-awards-by-company): federal contracts, grants and loans any US company won, from official USAspending.gov data.
+- [Grants.gov Opportunity Search](https://apify.com/swillz/grants-gov-opportunity-search): open and forecasted US federal grants by keyword, agency or eligibility, with deadlines, award ceilings and funding.
+- [AI Crawler Access Checker](https://apify.com/swillz/ai-crawler-access-checker): which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more) any list of websites allows or blocks in robots.txt, plus llms.txt.
 
 **Popular workflows**
 

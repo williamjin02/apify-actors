@@ -113,5 +113,16 @@ More tools from the same developer, built to work together:
 - [AI Brand Visibility Tracker](https://apify.com/swillz/ai-brand-visibility-tracker): track whether ChatGPT mentions, ranks and cites your brand vs competitors (GEO).
 - [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
 - [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain): from a list of company domains, find which ATS each uses and how many open roles, by department and location.
+- [EORI Number Validator](https://apify.com/swillz/eori-validator): bulk check EU and UK EORI numbers for customs, with trader name where published.
+- [LEI Lookup (GLEIF)](https://apify.com/swillz/lei-lookup): find a company's Legal Entity Identifier, legal name, address, status and parent from official GLEIF data.
+- [Sanctions Screener](https://apify.com/swillz/sanctions-screener): screen company and person names against official OFAC, UN, EU and UK sanctions lists with fuzzy matching.
+- [HTS Code Lookup (USITC)](https://apify.com/swillz/hts-code-lookup): US HTS codes and import duty rates from the official tariff schedule, by code or product description.
+- [Federal Contracts & Grants by Company](https://apify.com/swillz/federal-awards-by-company): federal contracts, grants and loans any US company won, from official USAspending.gov data.
+- [Grants.gov Opportunity Search](https://apify.com/swillz/grants-gov-opportunity-search): open and forecasted US federal grants by keyword, agency or eligibility, with deadlines, award ceilings and funding.
+- [AI Crawler Access Checker](https://apify.com/swillz/ai-crawler-access-checker): which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more) any list of websites allows or blocks in robots.txt, plus llms.txt.
+
+**Popular workflows**
+
+- **B2B customer onboarding (KYB):** validate the VAT number with this Actor and the EORI with [EORI Number Validator](https://apify.com/swillz/eori-validator), confirm the legal entity with [LEI Lookup (GLEIF)](https://apify.com/swillz/lei-lookup), and screen the name with [Sanctions Screener](https://apify.com/swillz/sanctions-screener).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/eu-vat-validator
