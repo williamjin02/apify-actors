@@ -138,9 +138,17 @@ More tools from the same developer, built to work together:
 - [Email Provider Detector](https://apify.com/swillz/email-provider-detector): bulk check whether domains use Google Workspace, Microsoft 365, Proofpoint or Mimecast, plus SPF, DMARC and DKIM.
 - [Hiring Signals by Company Domain](https://apify.com/swillz/hiring-signals-by-domain): from a list of company domains, find which ATS each uses and how many open roles, by department and location.
 - [EU VAT Number Validator (VIES)](https://apify.com/swillz/eu-vat-validator): bulk check EU VAT numbers against official VIES, with company name and address.
+- [EORI Number Validator](https://apify.com/swillz/eori-validator): bulk check EU and UK EORI numbers for customs, with trader name where published.
+- [LEI Lookup (GLEIF)](https://apify.com/swillz/lei-lookup): find a company's Legal Entity Identifier, legal name, address, status and parent from official GLEIF data.
+- [Sanctions Screener](https://apify.com/swillz/sanctions-screener): screen company and person names against official OFAC, UN, EU and UK sanctions lists with fuzzy matching.
+- [HTS Code Lookup (USITC)](https://apify.com/swillz/hts-code-lookup): US HTS codes and import duty rates from the official tariff schedule, by code or product description.
+- [Grants.gov Opportunity Search](https://apify.com/swillz/grants-gov-opportunity-search): open and forecasted US federal grants by keyword, agency or eligibility, with deadlines, award ceilings and funding.
+- [AI Crawler Access Checker](https://apify.com/swillz/ai-crawler-access-checker): which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more) any list of websites allows or blocks in robots.txt, plus llms.txt.
 
 **Popular workflows**
 
+- **Government-contractor research:** pull a company's federal awards with this Actor, screen it with [Sanctions Screener](https://apify.com/swillz/sanctions-screener), and add contacts with [Company Website Enrichment](https://apify.com/swillz/company-website-enrichment).
+- **Grant pipeline:** search open calls with [Grants.gov Opportunity Search](https://apify.com/swillz/grants-gov-opportunity-search), see who won similar awards before with this Actor, and track deadlines in a sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 - **Weekly award watch:** schedule this Actor for your competitors or prospects and append new awards to a sheet with [Google Sheets Import & Export](https://apify.com/swillz/google-sheets-import-export).
 
 Source code: https://github.com/williamjin02/apify-actors/tree/main/actors/federal-awards-by-company

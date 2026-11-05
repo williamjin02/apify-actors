@@ -148,6 +148,7 @@ More tools from the same developer, built to work together:
 - [Sanctions Screener](https://apify.com/swillz/sanctions-screener): screen company and person names against official OFAC, UN, EU and UK sanctions lists with fuzzy matching.
 - [HTS Code Lookup (USITC)](https://apify.com/swillz/hts-code-lookup): US HTS codes and import duty rates from the official tariff schedule, by code or product description.
 - [Federal Contracts & Grants by Company](https://apify.com/swillz/federal-awards-by-company): federal contracts, grants and loans any US company won, from official USAspending.gov data.
+- [AI Crawler Access Checker](https://apify.com/swillz/ai-crawler-access-checker): which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more) any list of websites allows or blocks in robots.txt, plus llms.txt.
 
 **Popular workflows**
 
