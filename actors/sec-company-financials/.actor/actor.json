@@ -1,0 +1,21 @@
+{
+  "actorSpecification": 1,
+  "name": "sec-company-financials",
+  "title": "SEC Company Financials: Revenue, Net Income & EPS API",
+  "description": "Income statement, balance sheet and cash flow for any SEC filer by ticker, CIK or company name, from official SEC EDGAR XBRL data. Revenue, net income, EPS, margins, cash flow, debt, YoY growth; annual or quarterly incl. derived Q4. Unknown names are free status rows.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "js-empty"
+  },
+  "input": "./input_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "../README.md",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 2048,
+  "defaultMemoryMbytes": 512
+}

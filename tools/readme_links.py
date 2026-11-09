@@ -25,6 +25,7 @@ CAT = {  # slug: (Store title, one-line pitch with search keywords)
  'hts-code-lookup': ('HTS Code Lookup (USITC)', 'US HTS codes and import duty rates from the official tariff schedule, by code or product description.'),
  'federal-awards-by-company': ('Federal Contracts & Grants by Company', 'federal contracts, grants and loans any US company won, from official USAspending.gov data.'),
  'grants-gov-opportunity-search': ('Grants.gov Opportunity Search', 'open and forecasted US federal grants by keyword, agency or eligibility, with deadlines, award ceilings and funding.'),
+ 'sec-company-financials': ('SEC Company Financials', 'revenue, net income, EPS, margins, cash flow and debt for any US-listed company by ticker, from official SEC EDGAR XBRL data.'),
  'ai-crawler-access-checker': ('AI Crawler Access Checker', 'which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more) any list of websites allows or blocks in robots.txt, plus llms.txt.'),
 }
 FLOWS = [  # (actors involved in order, text)
@@ -44,6 +45,8 @@ FLOWS = [  # (actors involved in order, text)
  (['ai-crawler-access-checker', 'ai-brand-visibility-tracker', 'google-sheets-import-export'], '**GEO audit:** check which AI crawlers a site lets in with {0}, see whether ChatGPT actually mentions and cites the brand with {1}, and report both in a sheet with {2}.'),
  (['sitemap-url-extractor', 'ai-crawler-access-checker'], '**What AI can read:** list every page from the sitemap with {0}, then test key sections for AI crawlers with {1} (`testPath`).'),
  (['grants-gov-opportunity-search', 'lei-lookup', 'sanctions-screener', 'company-website-enrichment'], '**Partner research:** find open programs with {0}, check partner organisations with {1} and {2}, and add contacts with {3}.'),
+ (['sec-company-financials', 'federal-awards-by-company', 'lei-lookup'], '**Public-company due diligence:** pull 5 years of financials with {0}, see how much revenue comes from federal contracts with {1}, and confirm the legal entity and parent with {2}.'),
+ (['sec-company-financials', 'hiring-signals-by-domain', 'google-sheets-import-export'], '**Growth screen:** compare revenue growth and margins with {0}, check who is still hiring with {1}, and keep a watchlist sheet with {2}.'),
  (['federal-awards-by-company', 'google-sheets-import-export'], '**Weekly award watch:** schedule {0} for your competitors or prospects and append new awards to a sheet with {1}.'),
 ]
 def link(s): return f'[{CAT[s][0]}](https://apify.com/swillz/{s})'
