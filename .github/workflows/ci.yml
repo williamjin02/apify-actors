@@ -31,6 +31,7 @@ jobs:
           - federal-awards-by-company
           - grants-gov-opportunity-search
           - ai-crawler-access-checker
+          - sec-company-financials
     defaults:
       run:
         working-directory: actors/${{ matrix.actor }}

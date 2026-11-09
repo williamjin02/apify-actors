@@ -1,0 +1,18 @@
+{
+  "name": "sec-company-financials",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Income statement, balance sheet and cash flow summary for any SEC filer by ticker, CIK or name, from official SEC EDGAR XBRL data.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node test/local.test.js"
+  },
+  "dependencies": {
+    "apify": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

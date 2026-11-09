@@ -1,0 +1,19 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of SEC Company Financials",
+  "description": "One row per company and fiscal period; companies that cannot be answered come back as free status rows. A run summary is in the OUTPUT record.",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Financials",
+      "description": "Example: {\"type\":\"financials\",\"status\":\"found\",\"ticker\":\"AAPL\",\"periodType\":\"annual\",\"fiscalYear\":2026,\"fiscalPeriod\":\"FY\",\"periodEnd\":\"2026-09-26\",\"revenue\":478834000000,\"netIncome\":132175000000,\"epsDiluted\":8.98,\"currency\":\"USD\"}. Miss: {\"type\":\"status\",\"status\":\"not_found\",\"error\":\"...\"}.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Run summary",
+      "description": "JSON: companies, periodsReturned, period, years, byStatus, perCompany, metrics, chargeLimitReached, zeroResultsReason, nextSteps.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+    }
+  }
+}

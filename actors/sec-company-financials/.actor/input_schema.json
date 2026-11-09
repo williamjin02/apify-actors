@@ -1,0 +1,75 @@
+{
+  "title": "SEC Company Financials input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "companies": {
+      "title": "Companies",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Tickers (\"AAPL\", \"BRK.B\"), SEC CIK numbers (\"320193\") or company names as filed with the SEC (\"Microsoft\"). One company per entry, up to 500. A name that matches several filers returns a free ambiguous row listing candidate tickers.",
+      "prefill": [
+        "AAPL",
+        "MSFT"
+      ]
+    },
+    "period": {
+      "title": "Period",
+      "type": "string",
+      "editor": "select",
+      "description": "annual = one row per fiscal year (10-K, 20-F, 40-F). quarterly = one row per fiscal quarter (10-Q, plus Q4 derived from the 10-K). both = annual and quarterly rows.",
+      "enum": [
+        "annual",
+        "quarterly",
+        "both"
+      ],
+      "enumTitles": [
+        "Annual (fiscal years)",
+        "Quarterly (fiscal quarters)",
+        "Both"
+      ],
+      "default": "annual"
+    },
+    "years": {
+      "title": "Years of history",
+      "type": "integer",
+      "editor": "number",
+      "description": "How many of the most recent fiscal years to return per company (quarterly returns 4 quarters per year). Default 5. Ignored when fiscalYearFrom or fiscalYearTo is set.",
+      "minimum": 1,
+      "maximum": 30,
+      "default": 5,
+      "prefill": 3
+    },
+    "fiscalYearFrom": {
+      "title": "From fiscal year",
+      "type": "integer",
+      "editor": "number",
+      "description": "Optional. Only periods in this fiscal year or later, e.g. 2018. Fiscal years follow the company's own label (Apple's FY2026 ends Sep 2026).",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "fiscalYearTo": {
+      "title": "To fiscal year",
+      "type": "integer",
+      "editor": "number",
+      "description": "Optional. Only periods in this fiscal year or earlier, e.g. 2024.",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "includeSources": {
+      "title": "Include XBRL concept names",
+      "type": "boolean",
+      "description": "Adds a sources object mapping each metric to the XBRL concept it came from (e.g. revenue: RevenueFromContractWithCustomerExcludingAssessedTax). Useful for audits. Default off.",
+      "default": false
+    },
+    "includeStatusRows": {
+      "title": "Include free status rows",
+      "type": "boolean",
+      "description": "Return a free row for each company that could not be answered (not_found, ambiguous, no_xbrl_data, no_periods, duplicate, service_unavailable, skipped_charge_limit) with the reason. Default on.",
+      "default": true
+    }
+  },
+  "required": [
+    "companies"
+  ]
+}

@@ -1,0 +1,634 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "title": "Row type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "financials (one company-period, charged) or status (a free row explaining a miss).",
+        "examples": [
+          "financials"
+        ]
+      },
+      "query": {
+        "title": "Query",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "The company exactly as given in the input.",
+        "examples": [
+          "AAPL"
+        ]
+      },
+      "status": {
+        "title": "Status",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "found (charged), not_found, ambiguous, no_xbrl_data, no_periods, duplicate, service_unavailable, skipped_charge_limit. Only found rows are charged.",
+        "examples": [
+          "found"
+        ]
+      },
+      "cik": {
+        "title": "CIK",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "SEC Central Index Key of the filer.",
+        "examples": [
+          320193
+        ]
+      },
+      "ticker": {
+        "title": "Ticker",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Primary ticker from SEC company_tickers.json.",
+        "examples": [
+          "AAPL"
+        ]
+      },
+      "companyName": {
+        "title": "Company name",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Entity name as filed with the SEC.",
+        "examples": [
+          "Apple Inc."
+        ]
+      },
+      "exchange": {
+        "title": "Exchange",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Primary exchange from SEC submissions.",
+        "examples": [
+          "Nasdaq"
+        ]
+      },
+      "sic": {
+        "title": "SIC code",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Standard Industrial Classification code.",
+        "examples": [
+          "3571"
+        ]
+      },
+      "sicDescription": {
+        "title": "SIC description",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Industry description for the SIC code.",
+        "examples": [
+          "Electronic Computers"
+        ]
+      },
+      "fiscalYearEnd": {
+        "title": "Fiscal year end (MMDD)",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Fiscal year end month and day.",
+        "examples": [
+          "0926"
+        ]
+      },
+      "stateOfIncorporation": {
+        "title": "State of incorporation",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Two-letter state or country code.",
+        "examples": [
+          "CA"
+        ]
+      },
+      "filerCategory": {
+        "title": "Filer category",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "SEC filer category.",
+        "examples": [
+          "Large accelerated filer"
+        ]
+      },
+      "periodType": {
+        "title": "Period type",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "annual or quarterly.",
+        "examples": [
+          "annual"
+        ]
+      },
+      "fiscalYear": {
+        "title": "Fiscal year",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "Fiscal year as labelled by the company.",
+        "examples": [
+          2026
+        ]
+      },
+      "fiscalPeriod": {
+        "title": "Fiscal period",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "FY, Q1, Q2, Q3 or Q4.",
+        "examples": [
+          "FY"
+        ]
+      },
+      "periodStart": {
+        "title": "Period start",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "First day of the period (YYYY-MM-DD).",
+        "examples": [
+          "2025-09-28"
+        ]
+      },
+      "periodEnd": {
+        "title": "Period end",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Last day of the period (YYYY-MM-DD).",
+        "examples": [
+          "2026-09-26"
+        ]
+      },
+      "form": {
+        "title": "Form",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Original report for the period: 10-K, 10-Q, 20-F or 40-F.",
+        "examples": [
+          "10-K"
+        ]
+      },
+      "filed": {
+        "title": "Filed",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Date the original report was filed.",
+        "examples": [
+          "2026-11-03"
+        ]
+      },
+      "accessionNumber": {
+        "title": "Accession number",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "EDGAR accession number of the original report.",
+        "examples": [
+          "0000320193-26-000026"
+        ]
+      },
+      "currency": {
+        "title": "Currency",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Reporting currency (USD for US GAAP filers; IFRS filers may report e.g. TWD or EUR).",
+        "examples": [
+          "USD"
+        ]
+      },
+      "taxonomy": {
+        "title": "Taxonomy",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "us-gaap or ifrs-full.",
+        "examples": [
+          "us-gaap"
+        ]
+      },
+      "revenue": {
+        "title": "Revenue",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Total revenue (net sales). In currency units; null if not reported.",
+        "examples": [
+          478834000000
+        ]
+      },
+      "costOfRevenue": {
+        "title": "Cost of revenue",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Cost of goods and services sold. In currency units; null if not reported.",
+        "examples": [
+          245232000000
+        ]
+      },
+      "grossProfit": {
+        "title": "Gross profit",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Revenue minus cost of revenue. In currency units; null if not reported.",
+        "examples": [
+          233602000000
+        ]
+      },
+      "researchAndDevelopment": {
+        "title": "R&D expense",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Research and development expense. In currency units; null if not reported.",
+        "examples": [
+          45765000000
+        ]
+      },
+      "sellingGeneralAdmin": {
+        "title": "SG&A expense",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Selling, general and administrative expense. In currency units; null if not reported.",
+        "examples": [
+          29774000000
+        ]
+      },
+      "operatingIncome": {
+        "title": "Operating income",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Operating income (loss). In currency units; null if not reported.",
+        "examples": [
+          158063000000
+        ]
+      },
+      "netIncome": {
+        "title": "Net income",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Net income (loss) attributable to the parent. In currency units; null if not reported.",
+        "examples": [
+          132175000000
+        ]
+      },
+      "epsBasic": {
+        "title": "EPS basic",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Basic earnings per share. Null for derived Q4 rows (not additive).",
+        "examples": [
+          9.01
+        ]
+      },
+      "epsDiluted": {
+        "title": "EPS diluted",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Diluted earnings per share. Null for derived Q4 rows (not additive).",
+        "examples": [
+          8.98
+        ]
+      },
+      "dilutedSharesWeighted": {
+        "title": "Diluted shares (weighted)",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Weighted average diluted shares outstanding for the period.",
+        "examples": [
+          14720306000
+        ]
+      },
+      "operatingCashFlow": {
+        "title": "Operating cash flow",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Net cash from operating activities. Null if not reported.",
+        "examples": [
+          145097000000
+        ]
+      },
+      "capitalExpenditure": {
+        "title": "Capital expenditure",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Payments for property, plant and equipment (positive number). Null if not reported.",
+        "examples": [
+          9041000000
+        ]
+      },
+      "cashAndEquivalents": {
+        "title": "Cash and equivalents",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Cash and cash equivalents at period end. Null if not reported.",
+        "examples": [
+          36305000000
+        ]
+      },
+      "totalAssets": {
+        "title": "Total assets",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Total assets at period end. Null if not reported.",
+        "examples": [
+          404548000000
+        ]
+      },
+      "totalLiabilities": {
+        "title": "Total liabilities",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Total liabilities at period end (derived from liabilities and equity when not tagged). Null if not reported.",
+        "examples": [
+          292455000000
+        ]
+      },
+      "stockholdersEquity": {
+        "title": "Stockholders' equity",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Equity attributable to the parent at period end. Null if not reported.",
+        "examples": [
+          112093000000
+        ]
+      },
+      "longTermDebt": {
+        "title": "Long-term debt",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Non-current long-term debt at period end. Null if not reported.",
+        "examples": [
+          68208000000
+        ]
+      },
+      "freeCashFlow": {
+        "title": "Free cash flow",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "operatingCashFlow minus capitalExpenditure. Null if not reported.",
+        "examples": [
+          136056000000
+        ]
+      },
+      "grossMargin": {
+        "title": "Gross margin",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "grossProfit / revenue (0-1).",
+        "examples": [
+          0.4879
+        ]
+      },
+      "operatingMargin": {
+        "title": "Operating margin",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "operatingIncome / revenue (0-1).",
+        "examples": [
+          0.3301
+        ]
+      },
+      "netMargin": {
+        "title": "Net margin",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "netIncome / revenue (0-1).",
+        "examples": [
+          0.276
+        ]
+      },
+      "revenueGrowthYoY": {
+        "title": "Revenue growth YoY",
+        "type": [
+          "number",
+          "null"
+        ],
+        "description": "Revenue vs the same period one year earlier (0.15 = +15%). Null when the prior period is not in SEC data.",
+        "examples": [
+          0.1506
+        ]
+      },
+      "derivedMetrics": {
+        "title": "Derived metrics",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "Metrics computed by subtraction (Q4 = FY minus 9 months, quarterly cash flow from year-to-date, gross profit, liabilities).",
+        "examples": [
+          []
+        ]
+      },
+      "restated": {
+        "title": "Restated",
+        "type": [
+          "boolean",
+          "null"
+        ],
+        "description": "true if a later filing changed any value for this period; values shown are the latest.",
+        "examples": [
+          false
+        ]
+      },
+      "metricsFound": {
+        "title": "Metrics found",
+        "type": [
+          "integer",
+          "null"
+        ],
+        "description": "How many of the 17 standard metrics had a value.",
+        "examples": [
+          17
+        ]
+      },
+      "sources": {
+        "title": "XBRL sources",
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Only with includeSources: metric -> XBRL concept used.",
+        "examples": [
+          {
+            "revenue": "RevenueFromContractWithCustomerExcludingAssessedTax"
+          }
+        ]
+      },
+      "filingUrl": {
+        "title": "Filing URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "EDGAR index page of the original report.",
+        "examples": [
+          "https://www.sec.gov/Archives/edgar/data/320193/000032019326000026/0000320193-26-000026-index.htm"
+        ]
+      },
+      "secFactsUrl": {
+        "title": "SEC facts URL",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "SEC companyfacts JSON the values came from.",
+        "examples": [
+          "https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json"
+        ]
+      },
+      "candidates": {
+        "title": "Candidates",
+        "type": [
+          "array",
+          "null"
+        ],
+        "description": "For ambiguous names: up to 5 matching filers (cik, ticker, name).",
+        "examples": [
+          [
+            {
+              "cik": 70858,
+              "ticker": "BAC",
+              "name": "BANK OF AMERICA CORP /DE/"
+            }
+          ]
+        ]
+      },
+      "error": {
+        "title": "Error",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "Why a status row was not answered and what to try. Null on found rows.",
+        "examples": [
+          "No SEC filer matches \"Acme Robotics\". Not charged."
+        ]
+      },
+      "checkedAt": {
+        "title": "Checked at",
+        "type": [
+          "string",
+          "null"
+        ],
+        "description": "When the row was produced (ISO 8601 UTC).",
+        "examples": [
+          "2026-11-09T17:30:00.000Z"
+        ]
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Financials",
+      "transformation": {
+        "fields": [
+          "type",
+          "query",
+          "status",
+          "ticker",
+          "companyName",
+          "periodType",
+          "fiscalYear",
+          "fiscalPeriod",
+          "periodEnd",
+          "revenue",
+          "grossProfit",
+          "operatingIncome",
+          "netIncome",
+          "epsDiluted",
+          "operatingCashFlow",
+          "freeCashFlow",
+          "totalAssets",
+          "totalLiabilities",
+          "netMargin",
+          "revenueGrowthYoY",
+          "currency",
+          "filingUrl",
+          "error"
+        ]
+      },
+      "display": {
+        "component": "table"
+      }
+    }
+  }
+}
