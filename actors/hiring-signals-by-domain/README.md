@@ -105,6 +105,17 @@ Minimal input: `{"domains": ["stripe.com"]}`.
 
 Run it from the Apify API, the Python or JavaScript client, Make, Zapier or n8n. To chain it, pass `{"datasetId": "<another run's dataset>"}`. When this Actor runs as an integration after another Actor, it uses the triggering run's dataset automatically. The OUTPUT record holds a run summary (`byStatus`, `bySignal`, `zeroResultsReason`, `nextSteps`).
 
+## Hiring Signals by Company Domain vs alternatives
+
+| Actor | Price per 1,000 domains | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $5.00 (down to $3.50 on Gold), only when a board is found | $0.00005 | Finds the ATS from the homepage, counts open roles by department and location, adds hiring signals; misses free |
+| `coregent/career-page-discovery-ats-detector` | $4.00 | $0.001 | Career page and ATS detection |
+| `brenton8907/hiring-signal-check` | $8.00 | none | Hiring check and ATS detection |
+| `actorworks/ats-detector` | $8.00 | $0.001 | ATS detection |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Is it legal?** It reads public job postings through the ATS vendors' public job-board APIs, which exist so that companies can publish their jobs. Company websites are read only where robots.txt allows it.

@@ -117,6 +117,17 @@ Minimal input: `{"keywords": ["climate resilience"], "maxResults": 20}`. To cap 
 
 Run it from the Apify API, the clients, Make, Zapier or n8n. Schedule it daily or weekly with `postedWithinDays` to get only new calls. The OUTPUT record holds a run summary (`byStatus`, `perSearch`, `zeroResultsReason`, `nextSteps`).
 
+## Grants.gov Opportunity Search vs alternatives
+
+| Actor | Price per 1,000 opportunities | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $1.20 (down to $0.90 on Gold) | $0.00005 | Department-level agency filter, eligibility labels, deadline and award-size filters, forecasts; misses free |
+| `hridayrungta/grants-gov-scraper` | $1.50 | none | Grants.gov opportunities |
+| `pink_comic/grants-gov-opportunities` | $2.00 | $0.0001 | Grants.gov opportunities |
+| `solidcode/grants-gov-scraper` | $9.60 | $0.005 | Grants.gov opportunities |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Where does the data come from?** The public Grants.gov API (`api.grants.gov`, Search2 and fetchOpportunity), which is run by the US Department of Health and Human Services for all federal grant-making agencies. No login or API key is needed.

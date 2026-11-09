@@ -91,6 +91,17 @@ Minimal input: `{"eoriNumbers": ["GB117223643000"]}`. To cap the cost, pass `max
 
 Run it from the Apify API, the clients, Make, Zapier or n8n. To chain it, pass `{"datasetId": "...", "eoriField": "eori"}`. The OUTPUT record holds a run summary (`byStatus`, `zeroResultsReason`, `nextSteps`).
 
+## EORI Number Validator vs alternatives
+
+| Actor | Price per 1,000 checks | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $3.00 (down to $1.50 on Gold) | $0.00005 | EU (EOS) and UK (HMRC) in one run; invalid formats, outages and misses free |
+| `wsystem/eu-eori-checker` | $5.00 | $0.005 | EU EORI check |
+| `nexgenwatch/eu-eori-customs-registration-check` | $50.00 | $0.02 | EU EORI check |
+| `vaphab/commerce-validators` | $20.00 | none | VAT, EORI, IBAN and GTIN validators |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Is this the official source?** Yes. Every answer comes live from the European Commission's EOS validation service or HMRC's public EORI API. Nothing is cached.

@@ -91,6 +91,17 @@ Minimal input: `{"queries": ["Siemens AG | DE"]}`. To cap the cost, pass `maxTot
 
 Run it from the Apify API, the clients, Make, Zapier or n8n. To chain it, pass `{"datasetId": "...", "queryField": "companyName", "countryField": "country"}`. The OUTPUT record holds a run summary (`byStatus`, `zeroResultsReason`, `nextSteps`).
 
+## LEI Lookup vs alternatives
+
+| Actor | Price per 1,000 records | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $2.00 (down to $1.10 on Gold) | $0.00005 | Search by LEI, name, ISIN or BIC; parents; free check-digit validation and misses |
+| `ryanclinton/gleif-lei-lookup` | $2.00 | $0.00005 | GLEIF LEI lookup |
+| `logiover/gleif-lei-company-registry-scraper` | $3.00 | none | GLEIF records |
+| `foxlabs/lei-company-ownership` | $5.00 | $0.00005 | LEI identity and ownership |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Is this the official source?** Yes. Every answer comes live from the GLEIF API, which publishes the LEI golden copy. Nothing is cached between runs.
