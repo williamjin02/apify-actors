@@ -114,6 +114,17 @@ Minimal input: `{"companies": ["Palantir"], "maxAwardsPerCompany": 10}`. To cap 
 
 Run it from the Apify API, the clients, Make, Zapier or n8n. To enrich a lead list, chain it with `{"datasetId": "...", "companyField": "companyName"}`. The OUTPUT record holds a run summary (`byStatus`, `period`, `zeroResultsReason`, `nextSteps`).
 
+## Federal Contracts & Grants by Company vs alternatives
+
+| Actor | Price per 1,000 records | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $2.00 (down to $1.10 on Gold) | $0.00005 | Company name or UEI to awards, strict name matching, per-company summary row; misses free |
+| `ryanclinton/usaspending-search` | $2.00 | $0.00005 | USAspending search |
+| `bercikgroup/usaspending-federal-awards-scraper` | $3.50 | $0.02 | USAspending awards |
+| `parseforge/usaspending-scraper` | $12.00 | $0.16 | USAspending awards |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Where does the data come from?** The public USAspending.gov API (US Treasury), which publishes FPDS contract data and FABS assistance data. No login or API key is needed.

@@ -96,6 +96,17 @@ Minimal input: `{"queries": ["8507.60.00"]}`. To cap the cost, pass `maxTotalCha
 
 Run it from the Apify API, the clients, Make, Zapier or n8n. To chain it, pass `{"datasetId": "...", "queryField": "title"}`. The OUTPUT record holds a run summary (`byStatus`, `htsRelease`, `zeroResultsReason`, `nextSteps`).
 
+## HTS Code Lookup vs alternatives
+
+| Actor | Price per 1,000 lines | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $1.00 (down to $0.70 on Gold) | $0.00005 | Code and product-description search, inherited 10-digit rates, Chapter 99 references resolved; misses free |
+| `pink_comic/us-tariff-hts-lookup` | $2.00 | $0.0001 | HTS codes and duty rates |
+| `george.the.developer/us-tariff-lookup` | $5.00 | none | Tariff and HS code lookup |
+| `lulzasaur/tariff-hts-scraper` | $10.00 | $0.00005 | Tariff and HTS codes |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Is this the official source?** Yes. Every run downloads the current schedule from the US International Trade Commission's public HTS service (hts.usitc.gov). Nothing is cached between runs.

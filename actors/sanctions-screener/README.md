@@ -90,6 +90,17 @@ Minimal input: `{"names": ["Acme Trading LLC"]}`. Every row has a `status`, and 
 
 Call it from the Apify API, the JavaScript or Python client, Make, Zapier, n8n or a webhook. To chain it after another Actor, pass that run's `datasetId` (or use an Actor-to-Actor integration). The name field is auto-detected, or set `nameField`.
 
+## Sanctions Screener vs alternatives
+
+| Actor | Price per 1,000 names | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $3.00 (down to $1.50 on Gold) | $0.00005 | OFAC SDN + consolidated, UN, EU and UK lists in one run, fuzzy score, country flag; empty, duplicate and list-down names free |
+| `ryanclinton/ofac-sanctions-search` | $2.00 | $0.00005 | OFAC SDN search |
+| `ryanclinton/opensanctions-search` | $3.00 | $0.00005 | OpenSanctions search |
+| `george.the.developer/ofac-sanctions-screener` | $10.00 | none | OFAC screening |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Is this legal or compliance advice?** No. This is a screening aid built on the official public lists. Review every `potential_match` by comparing dates of birth, countries and programs before you act, and follow your own compliance procedures.

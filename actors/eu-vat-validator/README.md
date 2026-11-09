@@ -92,6 +92,17 @@ Minimal input: `{"vatNumbers": ["IE6388047V"]}`. To cap the cost, pass `maxTotal
 
 Run it from the Apify API, the clients, Make, Zapier or n8n. To chain it, pass `{"datasetId": "...", "vatField": "vat"}`. The OUTPUT record holds a run summary (`byStatus`, `memberStatesUnavailable`, `zeroResultsReason`, `nextSteps`).
 
+## EU VAT Number Validator vs alternatives
+
+| Actor | Price per 1,000 checks | Start fee | What it covers |
+|---|---|---|---|
+| **This Actor** | $2.00 (down to $1.10 on Gold) | $0.00005 | VIES with per-country throttling and retries, consultation numbers, name match; invalid formats and outages free |
+| `andok/eu-vat-validator` | $2.00 | $0.01 | VIES validation |
+| `ryanclinton/eu-vat-validator` | $4.00 | $0.01 | VIES validation with monitoring |
+| `neuton/eu-vies-vat-validator` | $4.00 | none | VIES validation |
+
+Prices are from each Apify Store listing on Nov 9, 2026 (Free plan). Check the listings for current prices.
+
 ## FAQ
 
 **Is this the official source?** Yes. Every answer comes live from the European Commission's VIES REST service. Nothing is cached.
